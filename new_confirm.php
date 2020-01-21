@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+$pre = $_POST['pre'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -26,6 +33,7 @@
     </head>
     <main>
         <div class="container">
+        <p style="color: red"><?php echo $pre; ?></p>
             <div class="row justify-content-center">               
                 <div class="col-sm-12 col-lg-4">
                     <div class="row justify-content-center">

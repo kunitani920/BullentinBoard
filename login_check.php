@@ -1,102 +1,88 @@
 <?php
 
-require_once 'common.php';
-require_once 'dbconnect.php';
+require_once 'sanitize.php';
+require_once 'Db.php';
 require_once 'validation/BaseValidation.php';
+require_once 'validation/emailValidation.php';
+require_once 'validation/passwordValidation.php';
 
 session_start();
 
 class Login
 {
-  const LOGIN_STATUS_NEW = 2;   //新規登録
-  const LOGIN_STATUS_TRUE = 1;  //ログイン成功
-  const LOGIN_STATUS_FALSE = 0; //ログイン失敗
-  private $login_status = self::LOGIN_STATUS_FALSE;
-  private $member;
+  private $clean = array(); //グローバル変数のサニタイズ受取
 
-  public function start()
+  public function __construct()
   {
-    $_POST = sanitize($_POST);
-    $validation = new BaseValidation();
-    $check_email = $validation->check($_POST['email']);
-    $check_password = $validation->check($_POST['text']);
-    if($check_email === false || $check_password = false) {
-      $_SESSION['error'] = $validation->getErrorMessages();
-      header('Location: login.php');
-      exit();
-    }
-    $this->emailCheck();
-    switch($this->login_status) {
-      case(self::LOGIN_STATUS_NEW) :
-        $_SESSION['email'] = $_POST['email'];
-        $_SESSION['text'] = $_POST['text'];
-        header('Location: new.php');
-      break;
+    $this->clean = sanitize::clean($_POST);
 
-      case(self::LOGIN_STATUS_TRUE) :
-        $_SESSION['id'] = $this->member['id'];
+    //validation
+    $email_validation = new emailValidation();
+    $is_email = $email_validation->isEmail($this->clean['email']);
+    $password_validation = new passwordValidation();
+    $is_password = $password_validation->isPassword($this->clean['text']);
+
+    //validationエラー
+    if ($is_email === false || $is_password === false) {
+        $_SESSION['email_error'] = $email_validation->getErrorMessages();
+        $_SESSION['password_error'] = $password_validation->getErrorMessages();
+        header('Location: login.php');
+        exit();
+    }
+  }
+
+  public function main()
+  {
+    //DB接続
+    $db = new Db();
+    $pdo = $db->dbconnect();
+    //membersテーブル参照
+    $collation = $pdo->prepare('SELECT * FROM members WHERE email=?');
+    $collation->execute(array($this->clean['email']));
+    $member = $collation->fetch();
+    //jinjiテーブル参照
+    $collation = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
+    $collation->execute(array($this->clean['email']));
+    $jinji = $collation->fetch();
+
+    //新規登録（登録emailなし）
+    if (!$member && !$jinji) {
+        $_SESSION['email'] = $this->clean['email'];
+        $_SESSION['text'] = $this->clean['text'];
+        header('Location: new_intention.php');
+    //ログイン成功（email,password一致）
+    } elseif ($member['password'] === $this->clean['text']) {
+        // $_SESSION['id'] = $member['id'];
         $_SESSION['time'] = time();
         
         //ログイン情報記録
-        if($_POST['save'] === 'on') {
-          setcookie('email', $_POST['email'], time()+60*60*24*14);
-          setcookie('password', $_POST['text'], time()+60*60*24*14);
-        }
+        // if($this->clean['save'] === 'on') {
+        //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
+        //   setcookie('password', $this->clean['text'], time()+60*60*24*14);
+        // }
         header('Location: list.php');
-      break;
+    //ログイン失敗（email一致、password不一致）
+    } elseif ($jinji['password'] === $this->clean['text']) {
+      // $_SESSION['id'] = $jinji['id'];
+      $_SESSION['time'] = time();
+      //jinji用のフラグ
       
-      case(self::LOGIN_STATUS_FALSE) :
+      //ログイン情報記録
+      // if($this->clean['save'] === 'on') {
+      //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
+      //   setcookie('password', $this->clean['text'], time()+60*60*24*14);
+      // }
+      header('Location: list.php');
+      } else {
         $_SESSION['error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
-        header('Location: list.php');
-      break;
-    }
-    exit();
-  }
-
-  public function emailCheck()
-  {
-    $collation = $db->prepare('SELECT * FROM members WHERE email=?'); //jinjiのテーブルも検索対象に入れる
-    $collation->execute(array(
-    $_POST['email']
-    ));
-    $this->member = $collation->fetch();
-
-    if (!$this->member) {
-        $this->login_status = self::LOGIN_STATUS_NEW;
-    }
-    if ($this->member['password'] === $_POST['text']) {
-        $this->login_status = self::LOGIN_STATUS_TRUE;
-    } else {
-        $this->login_status = self::LOGIN_STATUS_FALSE;
+        header('Location: login.php');
     }
     $collation = NULL;
-  }
-}
-
-if (empty($_POST)) {
-    $_SESSION['error'] = '入力が確認出来ません。' . PHP_EOL;
-    header('Location: login.php');
     exit();
+  }
 }
 
 $login = new Login();
-$login->start();
+$login->main();
 
-  header('Location: login.php');
-  exit();
-  
-  //ログイン処理
-  // if ($_POST['email']) {
-  //   $login = $db->prepare('SELECT * FROM members WHERE email=?');
-  //   $login->execute(array($_POST['email']));
-  //   $this->member = $login->fetch();
-  
-    // アドレス、パス一致しか抽出出来ないので、却下
-    // $login = $db->prepare('SELECT * FROM members WHERE email=? AND password=?');
-    // $login->execute(array(
-    //   $_POST['email'],
-    //   $_POST['text']
-    //   //passwordのハッシュ化は、テストが終わってから実装する
-    // ));
-    // $this->member = $login->fetch();
-  ?>
+?>
