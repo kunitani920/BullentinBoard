@@ -3,8 +3,8 @@ require_once 'BaseValidation.php';
 
 class emailValidation extends BaseValidation {
 
-    public function isEmail($input) {
-        if($input === '') {
+    public function isEmail($email) {
+        if($email === '') {
             $msg = 'メールアドレスが入力されていません。';
             $this->addErrorMessage($msg);
         }

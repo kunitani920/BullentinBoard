@@ -83,6 +83,9 @@ UNION ALLを検討するも、やりたいこと少し違うので、２度参�
 Db::dbconnect
 でやるとどうしてもエラーになるので、インスタンスを作成して対応した。
 
-●checkを使わないようにした
+●単語「check」を使わないようにした（広義過ぎて、可読性が低い）
 check_emailをis_emailにしたり、
 validationのcheckメソッドをisEmailにしたり
+
+●checkboxの処理
+３つ選択にしているので、POSTでの受取を配列で実施。

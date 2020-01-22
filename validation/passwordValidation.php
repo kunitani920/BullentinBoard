@@ -3,8 +3,8 @@ require_once 'BaseValidation.php';
 
 class passwordValidation extends BaseValidation {
 
-    public function isPassword($input) {
-        if($input === '') {
+    public function isPassword($password) {
+        if($password === '') {
             $msg = 'パスワードが入力されていません。';
             $this->addErrorMessage($msg);
         }

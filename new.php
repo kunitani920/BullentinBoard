@@ -2,6 +2,35 @@
 session_start();
 require_once 'sanitize.php';
 require_once 'Db.php';
+require_once 'validation/BaseValidation.php';
+require_once 'validation/nameValidation.php';
+require_once 'validation/interestingValidation.php';
+
+$clean = sanitize::clean($_POST);
+
+$name_validation = new nameValidation();
+$is_last_name = $name_validation->isName($clean['LastName']);
+if(!$is_last_name) {
+  $error_messages_last_name = $name_validation->getErrorMessages();
+}
+
+// $is_first_name = $name_validation->isName($clean['FirstName']);
+// $is_nick_name = $name_validation->isName($clean['NickName']);
+
+// if($clean['pre'] === ''){};
+//error
+
+// $intere_validation = new interestingValidation();
+// $selection_count = count($clean['intere_array']);
+// $is_intere = $intere_validation->isSelectionCountMatched($selection_count);
+
+//取り急ぎ、name,interestingのバリデーション作成。
+//last_nameでエラー表示の実験をするところで終了
+
+// 各項目ごとにバリデーションチェック
+// falseなら、getErrorMessagesして、各項目の下にエラーメッセージ表示
+// １つでもfalseがあれば、このページに留まる
+// falseが１つもなければ、new_confirmへ
 
 ?>
 
@@ -25,50 +54,54 @@ require_once 'Db.php';
   <h2 class="mt-3">内定者懇親フォーム</h2>
   <h3 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h3>
 
-  <form method="post" action="new_confirm.php">
+  <form method="post" action="new.php">
+  <!-- <form method="post" action="new_confirm.php"> 同じページアクセスの方が良さそう-->
     <div class="form-row mt-5">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <label for="inputLastname">氏</label>
-        <input type="text" class="form-control" id="inputLastname" placeholder="Last Name（山田）">
+        <input type="text" class="form-control" id="inputLastname" name="LastName" placeholder="Last Name（山田）">
       </div>
-      <div class="form-group col-md-6">
+      <p class="text-danger"><?php foreach($error_messages_last_name as $msg){echo $msg;} var_dump($error_messages_last_name);?></p>
+      <div class="form-group col-md-4">
         <label for="inputFirstname">名</label>
-        <input type="text" class="form-control" id="inputFirstname" placeholder="First Name（太郎）">
+        <input type="text" class="form-control" id="inputFirstname" name="FirstName" placeholder="First Name（太郎）">
       </div>
     </div>
-    <div class="form-group">
-      <label for="inputNickname">ニックネーム</label>
-      <input type="text" class="form-control" id="inputNickname" placeholder="ヤマちゃん">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputNickname">ニックネーム</label>
+        <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん">
+      </div>
     </div>
 
-    <fieldset class="form-group mt-5">
+    <fieldset class="form-group mt-3">
       <div class="row">
-        <legend class="col-form-label col-sm-2 pt-0">●学校</legend>
-        <div class="col-sm-10">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="school" id="College" value="College" checked>
-            <label class="form-check-label" for="College">大学生</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="scholl" id="JuniorCollege" value="JuniorCollege">
-            <label class="form-check-label" for="JuniorCollege">短大生</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="scholl" id="Vocational" value="Vocational">
-            <label class="form-check-label" for="Vocational">専門学校生</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="scholl" id="High" value="High">
-            <label class="form-check-label" for="High">高校生</label>
-          </div>
+        <div class="col-md-7">
+          <legend class="col-form-label">●学校</legend>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="school" id="College" value="College" checked>
+              <label class="form-check-label" for="College">大学生</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="school" id="JuniorCollege" value="JuniorCollege">
+              <label class="form-check-label" for="JuniorCollege">短大生</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="school" id="Vocational" value="Vocational">
+              <label class="form-check-label" for="Vocational">専門学校生</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="school" id="High" value="High">
+              <label class="form-check-label" for="High">高校生</label>
+            </div>
         </div>
       </div>
     </fieldset>
 
-    <div class="form-inline col-md-6">
+    <div class="form-inline mt-3 col-md-12">
       <div class="row">
-        <label class="my-1 mr-5" for="inputPre">●出身</label>
-        <select id="inputPre" name="pre" class="form-control">
+        <label for="inputPre">●出身</label>
+        <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
           <option value="" selected>-都道府県を選択-</option>
           <?php
             //DB接続
@@ -84,14 +117,14 @@ require_once 'Db.php';
     </div>
     
     <div class="form-group row">
-      <div class="col-sm-12 my-1 mr-5">●興味があること（３つ選んでください）</div>
-      <div class="col-sm-12">
+      <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
+      <div class="mt-1 col-sm-12">
         <?php
           $interesting = $pdo->query('SELECT * FROM interesting');
           while($intere = $interesting->fetch()):
         ?>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere" value="<?php echo $intere['id']; ?>">
+          <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>">
           <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
         </div>
         <?php endwhile; ?>
@@ -100,7 +133,7 @@ require_once 'Db.php';
 
     <div class="form-group">
       <label for="message">●内定者へ一言（120文字以内ーやめようか・・）</label>
-      <textarea class="form-control" id="message" rows="3"></textarea>
+      <textarea class="form-control" id="message" name="message" rows="3"></textarea>
     </div>
 
     <div class="form-group">
