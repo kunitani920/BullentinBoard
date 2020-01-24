@@ -6,7 +6,7 @@ class interestingValidation extends BaseValidation {
 
     public function isSelectionCountMatched($selection_count) {
 
-        if($selection_count === '') {
+        if($selection_count === 0) {
             $msg = sprintf('%d個選択してください。（1つも選択されていません）', $this->valid_selection_number);
             $this->addErrorMessage($msg);
         } elseif($selection_count < $this->valid_selection_number) {

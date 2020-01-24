@@ -89,3 +89,6 @@ validationのcheckメソッドをisEmailにしたり
 
 ●checkboxの処理
 ３つ選択にしているので、POSTでの受取を配列で実施。
+
+●空白かどうか、===は避けた方が良い
+https://qiita.com/mpyw/items/2f9955db1c02eeef43ea

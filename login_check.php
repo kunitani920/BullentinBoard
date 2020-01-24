@@ -2,7 +2,6 @@
 
 require_once 'sanitize.php';
 require_once 'Db.php';
-require_once 'validation/BaseValidation.php';
 require_once 'validation/emailValidation.php';
 require_once 'validation/passwordValidation.php';
 
@@ -24,8 +23,8 @@ class Login
 
     //validationエラー
     if ($is_email === false || $is_password === false) {
-        $_SESSION['email_error'] = $email_validation->getErrorMessages();
-        $_SESSION['password_error'] = $password_validation->getErrorMessages();
+        $_SESSION['email_error'] = $email_validation->getErrorMessage();
+        $_SESSION['password_error'] = $password_validation->getErrorMessage();
         header('Location: login.php');
         exit();
     }

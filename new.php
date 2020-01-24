@@ -2,7 +2,6 @@
 session_start();
 require_once 'sanitize.php';
 require_once 'Db.php';
-require_once 'validation/BaseValidation.php';
 require_once 'validation/nameValidation.php';
 require_once 'validation/interestingValidation.php';
 
@@ -11,26 +10,42 @@ $clean = sanitize::clean($_POST);
 $name_validation = new nameValidation();
 $is_last_name = $name_validation->isName($clean['LastName']);
 if(!$is_last_name) {
-  $error_messages_last_name = $name_validation->getErrorMessages();
+  $error_message_last_name = $name_validation->getErrorMessage();
 }
 
-// $is_first_name = $name_validation->isName($clean['FirstName']);
-// $is_nick_name = $name_validation->isName($clean['NickName']);
+$is_first_name = $name_validation->isName($clean['FirstName']);
+if(!$is_first_name) {
+  $error_message_first_name = $name_validation->getErrorMessage();
+}
 
-// if($clean['pre'] === ''){};
-//error
+$is_nick_name = $name_validation->isName($clean['NickName']);
+if(!$is_nick_name) {
+  $error_message_nick_name = $name_validation->getErrorMessage();
+}
 
-// $intere_validation = new interestingValidation();
-// $selection_count = count($clean['intere_array']);
-// $is_intere = $intere_validation->isSelectionCountMatched($selection_count);
+if($clean['pre'] === ''){
+  $error_message_pre = '選択されていません。';
+}
 
-//取り急ぎ、name,interestingのバリデーション作成。
-//last_nameでエラー表示の実験をするところで終了
+$intere_validation = new interestingValidation();
+$selection_count = count($_POST['intere_array']);
+$is_intere = $intere_validation->isSelectionCountMatched($selection_count);
+if(!$is_intere) {
+  $error_message_intere = $intere_validation->getErrorMessage();
+}
 
 // 各項目ごとにバリデーションチェック
 // falseなら、getErrorMessagesして、各項目の下にエラーメッセージ表示
 // １つでもfalseがあれば、このページに留まる
 // falseが１つもなければ、new_confirmへ
+
+//エラーがあるとき、入力値の保存が出来ないので、一度別ページに行って、
+// <input type="button" onclick="history.back()" value="戻る">
+// を利用する。画面表示無しで、自動で押したことにしたい
+
+// ダメだ・・エラー表示と両立させようとすると出来ない。
+// 入力項目ごとに画面を切り替えることにしよう！
+
 
 ?>
 
@@ -52,27 +67,55 @@ if(!$is_last_name) {
 <body>
 <div class="container">
   <h2 class="mt-3">内定者懇親フォーム</h2>
-  <h3 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h3>
+  <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
 
-  <form method="post" action="new.php">
+  <form method="post" action="new2.php">
   <!-- <form method="post" action="new_confirm.php"> 同じページアクセスの方が良さそう-->
     <div class="form-row mt-5">
       <div class="form-group col-md-4">
         <label for="inputLastname">氏</label>
         <input type="text" class="form-control" id="inputLastname" name="LastName" placeholder="Last Name（山田）">
       </div>
-      <p class="text-danger"><?php foreach($error_messages_last_name as $msg){echo $msg;} var_dump($error_messages_last_name);?></p>
+      <?php if(!$is_last_name): ?>
+        <div class="col-md-4 d-md-none">
+          <p class="text-danger"><?php echo $error_message_last_name; ?></p>
+        </div>
+      <?php endif; ?>
       <div class="form-group col-md-4">
         <label for="inputFirstname">名</label>
         <input type="text" class="form-control" id="inputFirstname" name="FirstName" placeholder="First Name（太郎）">
       </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="inputNickname">ニックネーム</label>
-        <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん">
+      <?php if(!$is_last_name): ?>
+        <div class="col-md-4 d-md-none">
+          <p class="text-danger"><?php echo $error_message_first_name; ?></p>
+        </div>
+      <?php endif; ?>
+      <div class="col-md-4">
+        <!-- 空白 -->
       </div>
-    </div>
+      <?php if(!$is_last_name || !$is_first_name): ?>
+        <div class="col-md-4 d-none d-md-block">
+          <p class="text-danger"><?php echo $error_message_last_name; ?></p>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <p class="text-danger"><?php echo $error_message_first_name; ?></p>
+        </div>
+        <?php endif; ?>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputNickname">ニックネーム</label>
+          <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん">
+        </div>
+        <div class="col-md-8">
+          <!-- 空白 -->
+        </div>
+        <?php if(!$is_nick_name): ?>
+        <div class="col-md-4">
+          <p class="text-danger"><?php echo $error_message_nick_name; ?></p>
+        </div>
+        <?php endif; ?>
+      </div>
 
     <fieldset class="form-group mt-3">
       <div class="row">
@@ -115,6 +158,9 @@ if(!$is_last_name) {
         </select>
       </div>
     </div>
+    <?php if(!empty($error_message_pre)): ?>
+      <p class="text-danger"><?php echo $error_message_pre; ?></p>
+    <?php endif; ?>
     
     <div class="form-group row">
       <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
@@ -128,6 +174,10 @@ if(!$is_last_name) {
           <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
         </div>
         <?php endwhile; ?>
+        <?php if(!$is_intere): ?>
+          <p class="text-danger"><?php echo $error_message_intere; ?></p>
+          <p class="text-danger"><?php echo $selection_count; ?></p>
+        <?php endif; ?>
       </div>
     </div>
 
@@ -150,5 +200,6 @@ if(!$is_last_name) {
 <!-- bootstrap CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
 </body>
 </html>
