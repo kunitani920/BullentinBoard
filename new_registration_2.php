@@ -2,50 +2,20 @@
 session_start();
 require_once 'sanitize.php';
 require_once 'Db.php';
-require_once 'validation/nameValidation.php';
 require_once 'validation/interestingValidation.php';
 
 $clean = sanitize::clean($_POST);
-
-$name_validation = new nameValidation();
-$is_last_name = $name_validation->isName($clean['LastName']);
-if(!$is_last_name) {
-  $error_message_last_name = $name_validation->getErrorMessage();
-}
-
-$is_first_name = $name_validation->isName($clean['FirstName']);
-if(!$is_first_name) {
-  $error_message_first_name = $name_validation->getErrorMessage();
-}
-
-$is_nick_name = $name_validation->isName($clean['NickName']);
-if(!$is_nick_name) {
-  $error_message_nick_name = $name_validation->getErrorMessage();
-}
+$error_msg = array();
 
 if($clean['pre'] === ''){
-  $error_message_pre = '選択されていません。';
+  $error_msg['pre'] = '選択されていません。';
 }
 
-$intere_validation = new interestingValidation();
-$selection_count = count($_POST['intere_array']);
-$is_intere = $intere_validation->isSelectionCountMatched($selection_count);
-if(!$is_intere) {
-  $error_message_intere = $intere_validation->getErrorMessage();
+if(empty($error_msg)) {
+  header('Location: new_registration_3.php');
 }
 
-// 各項目ごとにバリデーションチェック
-// falseなら、getErrorMessagesして、各項目の下にエラーメッセージ表示
-// １つでもfalseがあれば、このページに留まる
-// falseが１つもなければ、new_confirmへ
-
-//エラーがあるとき、入力値の保存が出来ないので、一度別ページに行って、
-// <input type="button" onclick="history.back()" value="戻る">
-// を利用する。画面表示無しで、自動で押したことにしたい
-
-// ダメだ・・エラー表示と両立させようとすると出来ない。
-// 入力項目ごとに画面を切り替えることにしよう！
-
+//3 DB接続がうまく出来てない
 
 ?>
 
@@ -68,73 +38,25 @@ if(!$is_intere) {
 <div class="container">
   <h2 class="mt-3">内定者懇親フォーム</h2>
   <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
-
-  <form method="post" action="new2.php">
-  <!-- <form method="post" action="new_confirm.php"> 同じページアクセスの方が良さそう-->
-    <div class="form-row mt-5">
-      <div class="form-group col-md-4">
-        <label for="inputLastname">氏</label>
-        <input type="text" class="form-control" id="inputLastname" name="LastName" placeholder="Last Name（山田）">
-      </div>
-      <?php if(!$is_last_name): ?>
-        <div class="col-md-4 d-md-none">
-          <p class="text-danger"><?php echo $error_message_last_name; ?></p>
-        </div>
-      <?php endif; ?>
-      <div class="form-group col-md-4">
-        <label for="inputFirstname">名</label>
-        <input type="text" class="form-control" id="inputFirstname" name="FirstName" placeholder="First Name（太郎）">
-      </div>
-      <?php if(!$is_last_name): ?>
-        <div class="col-md-4 d-md-none">
-          <p class="text-danger"><?php echo $error_message_first_name; ?></p>
-        </div>
-      <?php endif; ?>
-      <div class="col-md-4">
-        <!-- 空白 -->
-      </div>
-      <?php if(!$is_last_name || !$is_first_name): ?>
-        <div class="col-md-4 d-none d-md-block">
-          <p class="text-danger"><?php echo $error_message_last_name; ?></p>
-        </div>
-        <div class="col-md-4 d-none d-md-block">
-          <p class="text-danger"><?php echo $error_message_first_name; ?></p>
-        </div>
-        <?php endif; ?>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="inputNickname">ニックネーム</label>
-          <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん">
-        </div>
-        <div class="col-md-8">
-          <!-- 空白 -->
-        </div>
-        <?php if(!$is_nick_name): ?>
-        <div class="col-md-4">
-          <p class="text-danger"><?php echo $error_message_nick_name; ?></p>
-        </div>
-        <?php endif; ?>
-      </div>
-
+  <form method="post" action="new_registration_2.php">
     <fieldset class="form-group mt-3">
       <div class="row">
         <div class="col-md-7">
           <legend class="col-form-label">●学校</legend>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="College" value="College" checked>
+              <input class="form-check-input" type="radio" name="school" id="College" value="College" <?php if($clean['school'] === 'College' || empty($clean['school'])) { echo 'checked';} ?>>
               <label class="form-check-label" for="College">大学生</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="JuniorCollege" value="JuniorCollege">
+              <input class="form-check-input" type="radio" name="school" id="JuniorCollege" value="JuniorCollege" <?php if($clean['school'] === 'JuniorCollege') { echo 'checked';} ?>>
               <label class="form-check-label" for="JuniorCollege">短大生</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="Vocational" value="Vocational">
+              <input class="form-check-input" type="radio" name="school" id="Vocational" value="Vocational" <?php if($clean['school'] === 'Vocational') { echo 'checked';} ?>>
               <label class="form-check-label" for="Vocational">専門学校生</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="High" value="High">
+              <input class="form-check-input" type="radio" name="school" id="High" value="High" <?php if($clean['school'] === 'High') { echo 'checked';} ?>>
               <label class="form-check-label" for="High">高校生</label>
             </div>
         </div>
@@ -145,55 +67,29 @@ if(!$is_intere) {
       <div class="row">
         <label for="inputPre">●出身</label>
         <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
-          <option value="" selected>-都道府県を選択-</option>
+          <option value="" <?php if(empty($clean['intere'])) { echo 'selected';} ?>>-都道府県を選択-</option>
           <?php
             //DB接続
             $db = new Db();
             $pdo = $db->dbconnect();
             $prefectures = $pdo->query('SELECT * FROM prefectures');
             while($pre = $prefectures->fetch()) {
-              echo '<option value="' . $pre['id'] . '">' . $pre['pre_name'] . '</option>"';
-            };
+              echo '<option value="' . $pre['id'] . '"';
+                if($pre['id'] === $clean['pre']) {
+                  echo 'selected';
+                }
+              echo '>' . $pre['pre_name'] . '</option>"';
+            }
+            $pdo = NULL;
           ?>
         </select>
       </div>
     </div>
-    <?php if(!empty($error_message_pre)): ?>
-      <p class="text-danger"><?php echo $error_message_pre; ?></p>
+    <?php if(!empty($error_msg['pre'])): ?>
+      <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
     <?php endif; ?>
-    
-    <div class="form-group row">
-      <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
-      <div class="mt-1 col-sm-12">
-        <?php
-          $interesting = $pdo->query('SELECT * FROM interesting');
-          while($intere = $interesting->fetch()):
-        ?>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>">
-          <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
-        </div>
-        <?php endwhile; ?>
-        <?php if(!$is_intere): ?>
-          <p class="text-danger"><?php echo $error_message_intere; ?></p>
-          <p class="text-danger"><?php echo $selection_count; ?></p>
-        <?php endif; ?>
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label for="message">●内定者へ一言（120文字以内ーやめようか・・）</label>
-      <textarea class="form-control" id="message" name="message" rows="3"></textarea>
-    </div>
-
-    <div class="form-group">
-      <p>●アイコン登録</p>
-      <div class="custom-file">
-      <input type="file" class="icon-input" id="iconFile">
-      <label class="custom-file-label" for="iconFile">画像を選択してください（JPEG,PNG）</label>
-    </div>
-
-    <button class="btn btn-primary mt-3" type="submit" name="submit">確認画面へ</button>
+    <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
   </form>
 </div>

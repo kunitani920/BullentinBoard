@@ -92,3 +92,30 @@ validationのcheckメソッドをisEmailにしたり
 
 ●空白かどうか、===は避けた方が良い
 https://qiita.com/mpyw/items/2f9955db1c02eeef43ea
+
+空要素かの判断
+
+・empty($var)
+$varは変数でないとダメ
+true:変数がある
+flase:
+    "" (空文字列)
+    0 (整数 の 0)
+    0.0 (浮動小数点数の 0)
+    "0" (文字列 の 0)
+    NULL
+    FALSE
+    array() (空の配列)
+
+@new_intention
+$error_msg
+if(!empty($error_msg['pre'])
+自身のページに戻って来て、都度array()で初期化している
+$clean['school'],['intere']
+最初はNULL
+
+・isset($var)
+$varは変数でないとダメ
+true:変数がある
+false:NULL
+

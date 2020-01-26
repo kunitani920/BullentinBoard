@@ -30,7 +30,7 @@ $password = $_SESSION['password'];
   <div><br></div>
   <p style="color: red"><?php echo $error; ?></p>
   <a class="btn btn-secondary" href="login.php" role="button">戻る</a>
-  <a class="btn btn-primary" href="new.php" role="button">このアドレスで登録する</a>
+  <a class="btn btn-primary" href="new_registration_1.php" role="button">このアドレスで登録する</a>
 </div>
 
 <!-- bootstrap CDN -->

@@ -76,7 +76,7 @@ class Login
         $_SESSION['error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
         header('Location: login.php');
     }
-    $collation = NULL;
+    $pdo = NULL;
     exit();
   }
 }
