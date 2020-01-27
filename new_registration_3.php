@@ -15,6 +15,7 @@ if(!$is_intere) {
 }
 
 if(empty($error_msg)) {
+  $_SESSION['first_visit'] = 'on';
   header('Location: new_registration_4.php');
 }
 
@@ -57,11 +58,10 @@ if(empty($error_msg)) {
         </div>
         <?php endwhile; ?>
         <?php if(!$is_intere): ?>
-          <p class="text-danger"><?php echo $error_msg['intere']; ?></p>
+          <p class="text-danger"><?php echo $error_msg["intere"]; ?></p>
         <?php endif; ?>
       </div>
     </div>
-
     <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
   </form>

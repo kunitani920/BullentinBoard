@@ -20,16 +20,16 @@ $pre = $_POST['pre'];
     <title>詳細ページ</title>
 </head>
 <body>
-    <head>
+<head>
         <!-- 常にバーを表示させておきたい -->
         <ul class="nav justify-content-end">
-                <!-- <li class="nav-item">
-                  <a class="nav-link active" href="#">一覧</a>
-                </li> -->
-                <li class="nav-item">
-                  <a class="nav-link" href="#">ログアウト</a>
-                </li>
-              </ul>
+            <!-- <li class="nav-item">
+                <a class="nav-link active" href="#">一覧</a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">ログアウト</a>
+            </li>
+            </ul>
     </head>
     <main>
         <div class="container">

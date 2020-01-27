@@ -15,7 +15,7 @@ if(!$is_msg) {
   $error_msg['msg'] = $msg_validation->getErrorMessage();
 }
 
-if(empty($error_msg)) {
+if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
   header('Location: new_confirm.php');
 }
 
@@ -43,10 +43,10 @@ if(empty($error_msg)) {
   <form method="post" action="new_registration_4.php">
     <div class="form-group">
       <label for="message">●内定者へ一言（120文字以内）</label>
-      <textarea class="form-control" id="message" name="message" rows="3">
-        <?php if(isset($clean['message'])) { echo $clean['message']; } ?>
-      </textarea>
-      <?php if(!$is_msg) { echo $erorr_msg['msg']; } ?>
+      <textarea class="form-control" id="message" name="message" rows="3"><?php if(isset($clean['message'])) { echo $clean['message']; } ?></textarea>
+      <?php if(!$is_msg): ?>
+          <p class="text-danger"><?php echo $error_msg['msg']; var_dump($error_msg); ?></p>
+      <?php endif; ?>
     </div>
 
     <div class="form-group">
@@ -56,6 +56,7 @@ if(empty($error_msg)) {
         <label class="custom-file-label" for="iconFile">画像を選択してください（JPEG,PNG）</label>
       </div>
     </div>
+    <?php $_SESSION['first_visit'] = 'off'; ?>
   <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
   </form>
