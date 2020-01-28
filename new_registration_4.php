@@ -16,7 +16,11 @@ if(!$is_msg) {
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
+  $_SESSION['message'] = $clean['message'];
+  $_SESSION['icon'] = $clean['icon'];
+  $_SESSION['first_visit'] = 'on';
   header('Location: new_confirm.php');
+  exit();
 }
 
 ?>
@@ -44,15 +48,15 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <div class="form-group">
       <label for="message">●内定者へ一言（120文字以内）</label>
       <textarea class="form-control" id="message" name="message" rows="3"><?php if(isset($clean['message'])) { echo $clean['message']; } ?></textarea>
-      <?php if(!$is_msg): ?>
-          <p class="text-danger"><?php echo $error_msg['msg']; var_dump($error_msg); ?></p>
+      <?php if(!$is_msg && $_SESSION['first_visit'] === 'off'): ?>
+          <p class="text-danger"><?php echo $error_msg['msg']; ?></p>
       <?php endif; ?>
     </div>
 
     <div class="form-group">
       <p>●アイコン登録</p>
       <div class="custom-file">
-        <input type="file" class="icon-input" id="iconFile">
+        <input type="file" class="icon-input" id="iconFile" name="icon">
         <label class="custom-file-label" for="iconFile">画像を選択してください（JPEG,PNG）</label>
       </div>
     </div>

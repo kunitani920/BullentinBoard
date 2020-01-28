@@ -48,6 +48,7 @@ class Login
     if (!$member && !$jinji) {
         $_SESSION['email'] = $this->clean['email'];
         $_SESSION['text'] = $this->clean['text'];
+        $_SESSION['first_visit'] = 'on';
         header('Location: new_intention.php');
     //ログイン成功（email,password一致）
     } elseif ($member['password'] === $this->clean['text']) {

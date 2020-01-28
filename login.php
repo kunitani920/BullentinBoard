@@ -30,6 +30,8 @@ $test = $_SESSION['test'];
   <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
   <div><br></div>
   <p style="color: red"><?php echo $error; ?></p>
+  <p style="color: red"><?php var_dump($email_error); ?></p>
+  <p style="color: red"><?php var_dump($password_error); ?></p>
   <p style="color: red"><?php var_dump($test); ?></p>
   <p style="color: red"><?php foreach($test as $tes){echo $tes . PHP_EOL;} ?></p>
   <form method="post" action="login_check.php">
@@ -86,8 +88,8 @@ $test = $_SESSION['test'];
 
 <?php
 //sessionの初期化、破棄
-$_SESSION = array();
-session_destroy();
+// $_SESSION = array();
+// session_destroy();
 // unset($_SESSION['email_error']);
 // unset($_SESSION['password_error']);
 // unset($_SESSION['error']);

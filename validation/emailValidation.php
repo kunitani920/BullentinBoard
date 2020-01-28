@@ -4,7 +4,7 @@ require_once 'BaseValidation.php';
 class emailValidation extends BaseValidation {
 
     public function isEmail($email) {
-        if(isset($email) || $email === '') {
+        if(!isset($email) || $email === '') {
             $msg = 'メールアドレスが入力されていません。';
             $this->addErrorMessage($msg);
         }

@@ -14,9 +14,11 @@ if(!$is_intere) {
   $error_msg['intere'] = $intere_validation->getErrorMessage();
 }
 
-if(empty($error_msg)) {
+if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
+  $_SESSION['intere'] = $_POST['intere_arrayΩ'];
   $_SESSION['first_visit'] = 'on';
   header('Location: new_registration_4.php');
+  exit();
 }
 
 ?>
@@ -57,11 +59,13 @@ if(empty($error_msg)) {
           <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
         </div>
         <?php endwhile; ?>
-        <?php if(!$is_intere): ?>
+        <?php if(!$is_intere && $_SESSION["first_visit"] === "off"): ?>
           <p class="text-danger"><?php echo $error_msg["intere"]; ?></p>
         <?php endif; ?>
       </div>
     </div>
+    <?php $_SESSION["first_visit"] = 'off'; ?>
+
     <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
   </form>

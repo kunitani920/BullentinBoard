@@ -11,8 +11,12 @@ if($clean['pre'] === ''){
   $error_msg['pre'] = '選択されていません。';
 }
 
-if(empty($error_msg)) {
+if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
+  $_SESSION['school'] = $clean['school'];
+  $_SESSION['pre'] = $clean['pre'];
+  $_SESSION['first_visit'] = 'on';
   header('Location: new_registration_3.php');
+  exit();
 }
 
 //3 DB接続がうまく出来てない
@@ -88,6 +92,7 @@ if(empty($error_msg)) {
     <?php if(!empty($error_msg['pre'])): ?>
       <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
     <?php endif; ?>
+    <?php $_SESSION['first_visit'] = 'off'; ?>
 
     <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
