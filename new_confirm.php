@@ -1,7 +1,12 @@
 <?php
-
 session_start();
-$pre = $_POST['pre'];
+require_once 'Db.php';
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+
+$display = $_SESSION;
+$icon = $_SESSION['icon'];
 
 ?>
 
@@ -17,80 +22,73 @@ $pre = $_POST['pre'];
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>詳細ページ</title>
+    <title>登録内容確認</title>
 </head>
 <body>
-<head>
-        <!-- 常にバーを表示させておきたい -->
-        <ul class="nav justify-content-end">
-            <!-- <li class="nav-item">
-                <a class="nav-link active" href="#">一覧</a>
-            </li> -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">ログアウト</a>
-            </li>
-            </ul>
-    </head>
-    <main>
-        <div class="container">
-        <p style="color: red"><?php echo $pre; ?></p>
-            <div class="row justify-content-center">               
-                <div class="col-sm-12 col-lg-4">
-                    <div class="row justify-content-center">
-                        <!-- Fアイコン -->
-                        <img src="./img/azarashi.png" class="img-fluid rounded-circle" alt="アイコン">
-                    </div>
-                    <div class="row justify-content-center">
-                        <!-- G趣味 -->
-                        <div><span class="badge badge-pill badge-primary mr-1">アニメ</span></div>
-                        <div><span class="badge badge-pill badge-primary mr-1">漫画</span></div>
-                        <div><span class="badge badge-pill badge-primary">映画</span></div>
-                    </div>
-                </div> 
-
-                <div class="col-sm-12 col-lg-7 border bg-info rounded m-2 p-3">
-                    <!-- Eひと言 -->
-                    どんな仲間がいるのか楽しみです！内定式で会えるのを楽しみにしています。
+<main>
+    <div class="container">
+        <div class="row justify-content-center mt-5">         
+            <div class="col-sm-12 col-lg-4">
+                <div class="row justify-content-center">
+                    <?php
+                        move_uploaded_file($icon['tmp_name'],'.img/'.$icon['name']);
+                    ?>
+                    <img src="img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="アイコン">
                 </div>
+                <div class="row justify-content-center">
+                    <?php
+                        for($i = 0; $i < 3; $i++) {
+                            $interesting = $pdo->prepare('SELECT intere_name FROM interesting WHERE id=?');
+                            $interesting->execute(array($display['intere'][$i]));
+                            $intere = $interesting->fetch();
+                            echo '<div><span class="badge badge-pill badge-primary mr-1">' . $intere[0] . '</span></div>';
+                        }
+                    ?>
+                </div>
+            </div> 
 
+            <div class="col-sm-12 col-lg-6 border bg-info rounded m-2 p-3">
+                <?php echo $display['message']; ?>
             </div>
 
-        <div class="row justify-content-center">
-            <div class="col-sm-12 col-lg-5 card border-info m-2">
-                <div class="card-body text-info">
-                    <p class="card-text">ニックネーム：KOO</p>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-5 card border-info m-2">
-                <div class="card-body text-info">
-                    <p class="card-text">所属：大学生</p>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-5 card border-info m-2">
-                <div class="card-body text-info">
-                    <p class="card-text">氏名（任意）：谷川邦夫</p>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-5 card border-info m-2">
-                <div class="card-body text-info">
-                    <p class="card-text">出身：千葉県</p>
-                </div>
-            </div>
-                    
         </div>
 
-            <nav aria-label="...">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">前</a></li>
-                    <li class="page-item"><a class="page-link" href="#">一覧</a></li>
-                    <li class="page-item"><a class="page-link" href="#">次</a></li>
-                </ul>
-            </nav>
-            <!-- リンク先がない時、選択できないようにする。などを追加する時
-            https://getbootstrap.jp/docs/4.2/components/pagination/ -->
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-5 card border-info m-2">
+            <div class="card-body text-info">
+                <p class="card-text">ニックネーム：<?php echo $display['NickName']; ?></p>
+            </div>
         </div>
-    </main>
-    <footer></footer>
+        <div class="col-sm-12 col-lg-5 card border-info m-2">
+            <div class="card-body text-info">
+                <p class="card-text">所属：<?php echo $display['school']; ?></p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-5 card border-info m-2">
+            <div class="card-body text-info">
+                <p class="card-text">氏名（任意）：<?php echo $display['LastName'] . ' ' . $display['FirstName']; ?></p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-5 card border-info m-2">
+            <div class="card-body text-info">
+                <?php 
+                    $prefectures = $pdo->prepare('SELECT pre_name FROM prefectures WHERE id=?');
+                    $prefectures->execute(array($display['pre']));
+                    $pre = $prefectures->fetch();
+                    echo '<p class="card-text">出身：' . $pre[0] . '</p>';
+                ?>
+            </div>
+        </div>
+    </div>
+    <form method="post" action="new_registration_db.php">
+        <div class="row justify-content-center  mt-3">
+            <a class="btn btn-secondary mr-3" href="new_registration_1.php" role="button">やり直す</a>
+            <button class="btn btn-primary" type="submit" name="submit">登録する</button>
+        </div>
+    </form>
+    </div>
+</main>
+ 
 
     <!-- bootstrap CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

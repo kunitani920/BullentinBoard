@@ -4,7 +4,11 @@ require_once 'sanitize.php';
 require_once 'Db.php';
 require_once 'validation/interestingValidation.php';
 
-$clean = sanitize::clean($_POST);
+if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
+    $clean = $_SESSION;
+} else {
+    $clean = sanitize::clean($_POST);
+}
 $error_msg = array();
 
 if($clean['pre'] === ''){
@@ -18,8 +22,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
   header('Location: new_registration_3.php');
   exit();
 }
-
-//3 DB接続がうまく出来てない
 
 ?>
 
@@ -40,63 +42,63 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
 <body>
 <div class="container">
-  <h2 class="mt-3">内定者懇親フォーム</h2>
-  <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
-  <form method="post" action="new_registration_2.php">
-    <fieldset class="form-group mt-3">
-      <div class="row">
-        <div class="col-md-7">
-          <legend class="col-form-label">●学校</legend>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="College" value="College" <?php if($clean['school'] === 'College' || empty($clean['school'])) { echo 'checked';} ?>>
-              <label class="form-check-label" for="College">大学生</label>
+    <h2 class="mt-3">内定者懇親フォーム</h2>
+    <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
+    <form method="post" action="new_registration_2.php">
+        <fieldset class="form-group mt-3">
+            <div class="row">
+                <div class="col-md-7">
+                    <legend class="col-form-label">●学校</legend>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="school" id="College" value="大学生" <?php if($clean['school'] === '大学生' || empty($clean['school'])) { echo 'checked';} ?>>
+                        <label class="form-check-label" for="College">大学生</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="school" id="JuniorCollege" value="短大生" <?php if($clean['school'] === '短大生') { echo 'checked';} ?>>
+                        <label class="form-check-label" for="JuniorCollege">短大生</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="school" id="Vocational" value="専門学校生" <?php if($clean['school'] === '専門学校生') { echo 'checked';} ?>>
+                        <label class="form-check-label" for="Vocational">専門学校生</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="school" id="High" value="高校生" <?php if($clean['school'] === '高校生') { echo 'checked';} ?>>
+                        <label class="form-check-label" for="High">高校生</label>
+                    </div>
+                </div>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="JuniorCollege" value="JuniorCollege" <?php if($clean['school'] === 'JuniorCollege') { echo 'checked';} ?>>
-              <label class="form-check-label" for="JuniorCollege">短大生</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="Vocational" value="Vocational" <?php if($clean['school'] === 'Vocational') { echo 'checked';} ?>>
-              <label class="form-check-label" for="Vocational">専門学校生</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="school" id="High" value="High" <?php if($clean['school'] === 'High') { echo 'checked';} ?>>
-              <label class="form-check-label" for="High">高校生</label>
+        </fieldset>
+
+        <div class="form-inline mt-3 col-md-12">
+            <div class="row">
+                <label for="inputPre">●出身</label>
+                <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
+                    <option value="" <?php if(empty($clean['intere'])) { echo 'selected';} ?>>-都道府県を選択-</option>
+                    <?php
+                        //DB接続
+                        $db = new Db();
+                        $pdo = $db->dbconnect();
+                        $prefectures = $pdo->query('SELECT * FROM prefectures');
+                        while($pre = $prefectures->fetch()) {
+                        echo '<option value="' . $pre['id'] . '"';
+                            if($pre['id'] === $clean['pre']) {
+                            echo 'selected';
+                            }
+                        echo '>' . $pre['pre_name'] . '</option>"';
+                        }
+                        $pdo = NULL;
+                    ?>
+                </select>
             </div>
         </div>
-      </div>
-    </fieldset>
+        <?php if(!empty($error_msg['pre'])): ?>
+        <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
+        <?php endif; ?>
+        <?php $_SESSION['first_visit'] = 'off'; ?>
 
-    <div class="form-inline mt-3 col-md-12">
-      <div class="row">
-        <label for="inputPre">●出身</label>
-        <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
-          <option value="" <?php if(empty($clean['intere'])) { echo 'selected';} ?>>-都道府県を選択-</option>
-          <?php
-            //DB接続
-            $db = new Db();
-            $pdo = $db->dbconnect();
-            $prefectures = $pdo->query('SELECT * FROM prefectures');
-            while($pre = $prefectures->fetch()) {
-              echo '<option value="' . $pre['id'] . '"';
-                if($pre['id'] === $clean['pre']) {
-                  echo 'selected';
-                }
-              echo '>' . $pre['pre_name'] . '</option>"';
-            }
-            $pdo = NULL;
-          ?>
-        </select>
-      </div>
-    </div>
-    <?php if(!empty($error_msg['pre'])): ?>
-      <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
-    <?php endif; ?>
-    <?php $_SESSION['first_visit'] = 'off'; ?>
+        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
 
-    <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
-
-  </form>
+    </form>
 </div>
 <!-- bootstrap CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

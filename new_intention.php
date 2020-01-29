@@ -13,7 +13,7 @@ $password = $_SESSION['password'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./style.css">
-        <!-- bootstrap CDN -->
+    <!-- bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>新規登録</title>
@@ -21,16 +21,15 @@ $password = $_SESSION['password'];
 
 <body>
 <div class="container">
-  <h2 class="mt-3">内定者懇親フォーム</h2>
-  <div><br></div>
-  <p>こちらのメールアドレスで登録しますが、よろしいですか？</p>
-  <p class="text-success"><strong><u><?php echo $email; ?></u></strong></p>
+    <h2 class="mt-3">内定者懇親フォーム</h2>
+    <div><br></div>
+    <p>こちらのメールアドレスで登録しますが、よろしいですか？</p>
+    <p class="text-success"><strong><u><?php echo $email; ?></u></strong></p>
 
-
-  <div><br></div>
-  <p style="color: red"><?php echo $error; ?></p>
-  <a class="btn btn-secondary" href="login.php" role="button">戻る</a>
-  <a class="btn btn-primary" href="new_registration_1.php" role="button">このアドレスで登録する</a>
+    <div><br></div>
+    <p style="color: red"><?php echo $error; ?></p>
+    <a class="btn btn-secondary" href="login.php" role="button">戻る</a>
+    <a class="btn btn-primary" href="new_registration_1.php" role="button">このアドレスで登録する</a>
 </div>
 
 <!-- bootstrap CDN -->
