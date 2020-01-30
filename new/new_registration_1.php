@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'sanitize.php';
-require_once 'validation/nameValidation.php';
+require_once '../sanitize.php';
+require_once '../validation/nameValidation.php';
 
 if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['NickName'])) {
     $clean = $_SESSION;

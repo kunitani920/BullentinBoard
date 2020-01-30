@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once 'sanitize.php';
-require_once 'Db.php';
-require_once 'validation/interestingValidation.php';
+require_once '../sanitize.php';
+require_once '../Db.php';
+require_once '../validation/interestingValidation.php';
 
 if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
     $clean = $_SESSION;

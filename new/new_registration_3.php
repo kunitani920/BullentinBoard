@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once 'sanitize.php';
-require_once 'Db.php';
-require_once 'validation/interestingValidation.php';
+require_once '../sanitize.php';
+require_once '../Db.php';
+require_once '../validation/interestingValidation.php';
 
 $clean = sanitize::clean($_POST);
 $error_msg = array();

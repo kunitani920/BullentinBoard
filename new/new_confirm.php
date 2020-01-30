@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'Db.php';
+require_once '../Db.php';
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
@@ -31,9 +31,9 @@ $icon = $_SESSION['icon'];
             <div class="col-sm-12 col-lg-4">
                 <div class="row justify-content-center">
                     <?php
-                        move_uploaded_file($icon['tmp_name'],'.img/'.$icon['name']);
+                        move_uploaded_file($icon['tmp_name'],'../img/'.$icon['name']);
                     ?>
-                    <img src="img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="アイコン">
+                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="未登録">
                 </div>
                 <div class="row justify-content-center">
                     <?php
@@ -76,6 +76,7 @@ $icon = $_SESSION['icon'];
                     $prefectures->execute(array($display['pre']));
                     $pre = $prefectures->fetch();
                     echo '<p class="card-text">出身：' . $pre[0] . '</p>';
+                    $db = null;
                 ?>
             </div>
         </div>

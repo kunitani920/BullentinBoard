@@ -133,3 +133,13 @@ trueを返してしまうのだ。
 if(!isset($name) || $name === '') {
 こうすることで、NULLをfalse扱いしてくれるようになった。
 ただし、冒頭のエラーメッセージは表示されてしまう。
+
+●DB登録時、intへのキャスト @new_registration_db
+string型データを、int指定のDBに突っ込むが、勝手に変換してくれるので、不要。
+だが、念のため$member_idだけは残しておこう
+・削除した２つ
+$member['pre'] = (int) $member['pre'];
+
+foreach($member['intere'] as $key=>$value) {
+    $member[$key] = (int) $value;
+}

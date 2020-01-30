@@ -22,56 +22,55 @@ $test = $_SESSION['test'];
 
     <title>ログイン・新規登録</title>
 </head>
-
 <body>
 <div class="container">
-  <h2 class="mt-3">内定者懇親フォーム</h2>
-  <p>メールアドレス、パスワードを入力してください。</p>
-  <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
-  <div><br></div>
-  <p style="color: red"><?php echo $error; ?></p>
-  <p style="color: red"><?php var_dump($email_error); ?></p>
-  <p style="color: red"><?php var_dump($password_error); ?></p>
-  <p style="color: red"><?php var_dump($test); ?></p>
-  <p style="color: red"><?php foreach($test as $tes){echo $tes . PHP_EOL;} ?></p>
-  <form method="post" action="login_check.php">
-    <div class="form-group row">
-      <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
-      <div class="col-sm-9">
-        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
-        <p style="color: red">
-          <?php
-            foreach($email_errors as $email_error) {
-              echo $email_error;
-            }
-          ?>
-        </p>
-      </div>
-    </div>
-    <!-- name,textをpasswordへ　要検討 -->
-    <div class="form-group row">
-      <label for="text" class="col-sm-3 col-form-label">パスワード</label>
-      <div class="col-sm-9">
-        <input type="text" class="form-control" id="text" name="text" placeholder="Password">
-        <p style="color: red">
-          <?php
-            foreach($password_errors as $password_error) {
-              echo $password_error;
-            }
-          ?>
-        </p>
-      </div>
-    </div>
-    <!-- chekcbox 未選択なのにvalueのonが送信されてしまうので、とりあえず封印
-    <div class="form-group row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-9">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck1" name="save" value="on">
-          <label class="form-check-label" for="gridCheck1">パスワードを記録する</label>
+    <h2 class="mt-3">内定者懇親フォーム</h2>
+    <p>メールアドレス、パスワードを入力してください。</p>
+    <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
+    <div><br></div>
+    <p style="color: red"><?php echo $error; ?></p>
+    <p style="color: red"><?php var_dump($email_error); ?></p>
+    <p style="color: red"><?php var_dump($password_error); ?></p>
+    <p style="color: red"><?php var_dump($test); ?></p>
+    <p style="color: red"><?php foreach($test as $tes){echo $tes . PHP_EOL;} ?></p>
+    <form method="post" action="login_check.php">
+        <div class="form-group row">
+        <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
+        <div class="col-sm-9">
+            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
+            <p style="color: red">
+            <?php
+                foreach($email_errors as $email_error) {
+                echo $email_error;
+                }
+            ?>
+            </p>
         </div>
-      </div>
-    </div> -->
+        </div>
+        <!-- name,passwordをpasswordへ　要検討 -->
+        <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">パスワード</label>
+        <div class="col-sm-9">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <p style="color: red">
+            <?php
+                foreach($password_errors as $password_error) {
+                echo $password_error;
+                }
+            ?>
+            </p>
+        </div>
+        </div>
+        <!-- chekcbox 未選択なのにvalueのonが送信されてしまうので、とりあえず封印
+        <div class="form-group row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck1" name="save" value="on">
+            <label class="form-check-label" for="gridCheck1">パスワードを記録する</label>
+            </div>
+        </div>
+        </div> -->
     <div class="form-group row">
       <button type="submit" class="btn btn-primary">ログイン・新規登録</button>
     </div>
