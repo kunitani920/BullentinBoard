@@ -1,10 +1,13 @@
 <?php
 
 session_start();
-$email_errors = $_SESSION['email_error'];
-$password_errors = $_SESSION['password_error'];
-$error = $_SESSION['error'];
+$email = $_SESSION['email'];
+$email_error = $_SESSION['email_error'];
+$password_error = $_SESSION['password_error'];
+$mismatch = $_SESSION['mismatch_error'];
 $test = $_SESSION['test'];
+
+//エラー表示がおかしい。テスト表を作って実験すべし
 
 ?>
 
@@ -28,39 +31,41 @@ $test = $_SESSION['test'];
     <p>メールアドレス、パスワードを入力してください。</p>
     <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
     <div><br></div>
-    <p style="color: red"><?php echo $error; ?></p>
-    <p style="color: red"><?php var_dump($email_error); ?></p>
-    <p style="color: red"><?php var_dump($password_error); ?></p>
-    <p style="color: red"><?php var_dump($test); ?></p>
-    <p style="color: red"><?php foreach($test as $tes){echo $tes . PHP_EOL;} ?></p>
+    <?php if(isset($mismatch_error) && $_SESSION['first_visit'] === 'off'): ?>
+        <p class="text-danger"><?php echo $mismatch_error; ?></p>
+    <?php endif; ?>
+
     <form method="post" action="login_check.php">
         <div class="form-group row">
-        <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
-        <div class="col-sm-9">
-            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
-            <p style="color: red">
-            <?php
-                foreach($email_errors as $email_error) {
-                echo $email_error;
-                }
-            ?>
-            </p>
+            <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php if(isset($email)){echo $email;} ?>">
+                 <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-sm-2">
+                        <!-- 空白 -->
+                    </div>
+                    <div class="col-sm-10">
+                        <p class="text-danger"><?php echo $email_error; ?></p>
+                    </div>
+                 <?php endif; ?>
+            </div>
         </div>
-        </div>
-        <!-- name,passwordをpasswordへ　要検討 -->
+
         <div class="form-group row">
-        <label for="password" class="col-sm-3 col-form-label">パスワード</label>
-        <div class="col-sm-9">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-            <p style="color: red">
-            <?php
-                foreach($password_errors as $password_error) {
-                echo $password_error;
-                }
-            ?>
-            </p>
+            <label for="password" class="col-sm-3 col-form-label">パスワード</label>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-sm-2">
+                        <!-- 空白 -->
+                    </div>
+                    <div class="col-sm-10">
+                        <p class="text-danger"><?php echo $password_error; ?></p>
+                    </div>
+                    <?php endif; ?>
+            </div>
         </div>
-        </div>
+
         <!-- chekcbox 未選択なのにvalueのonが送信されてしまうので、とりあえず封印
         <div class="form-group row">
         <div class="col-sm-3"></div>

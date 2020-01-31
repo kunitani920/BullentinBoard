@@ -2,7 +2,7 @@
 require_once 'BaseValidation.php';
 
 class passwordValidation extends BaseValidation {
-    private $min_strlen = 5;
+    private $min_strlen = 4;
     private $max_strlen = 13;
 
     public function isPassword($password) {
@@ -10,11 +10,11 @@ class passwordValidation extends BaseValidation {
             $msg = 'パスワードが入力されていません。';
             $this->addErrorMessage($msg);
         } elseif(mb_strlen($password) < $this->min_strlen) {
-            $msg = '5文字以上必要です。';
+            $msg = $this->min_strlen . '文字以上必要です。';
             $this->addErrorMessage($msg);
         }
         if ($this->max_strlen < mb_strlen($password)) {
-            $msg = '12文字以内でご入力ください。';
+            $msg = $this->max_strlen . '文字以内でご入力ください。';
             $this->addErrorMessage($msg);
         }
         

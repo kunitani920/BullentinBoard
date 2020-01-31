@@ -25,6 +25,8 @@ class Login
     if (!$is_email || !$is_password) {
         $_SESSION['email_error'] = $email_validation->getErrorMessage();
         $_SESSION['password_error'] = $password_validation->getErrorMessage();
+        $_SESSION['email'] = $this->clean['email'];
+        $_SESSION['first_visit'] = 'off';
         header('Location: login.php');
         exit();
     }
@@ -49,22 +51,30 @@ class Login
         $_SESSION['email'] = $this->clean['email'];
         $_SESSION['password'] = $this->clean['password'];
         $_SESSION['first_visit'] = 'on';
+        $pdo = null;
         header('Location: ./new/new_intention.php');
-    //ログイン成功（email,password一致）
-    } elseif ($member['password'] === $this->clean['password']) {
+        exit();
+    } 
+    
+    //memberログイン成功（email,password一致）
+    if ($member && $member['password'] === $this->clean['password']) {
         // $_SESSION['id'] = $member['id'];
-        $_SESSION['time'] = time();
+        // $_SESSION['time'] = time();
         
         //ログイン情報記録
         // if($this->clean['save'] === 'on') {
         //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
         //   setcookie('password', $this->clean['password'], time()+60*60*24*14);
         // }
+        $pdo = null;
         header('Location: list.php');
-    //ログイン失敗（email一致、password不一致）
-    } elseif ($jinji['password'] === $this->clean['password']) {
+        exit();
+    }
+
+    //jinjiログイン成功（email,password一致）
+    if ($jinji && $jinji['password'] === $this->clean['password']) {
       // $_SESSION['id'] = $jinji['id'];
-      $_SESSION['time'] = time();
+    //   $_SESSION['time'] = time();
       //jinji用のフラグ
       
       //ログイン情報記録
@@ -72,12 +82,17 @@ class Login
       //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
       //   setcookie('password', $this->clean['password'], time()+60*60*24*14);
       // }
+      $pdo = null;
       header('Location: list.php');
-      } else {
-        $_SESSION['error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
-        header('Location: login.php');
+      exit();
     }
-    $pdo = NULL;
+
+    //ログイン失敗（email一致、password不一致）
+    $_SESSION['mismatch_error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
+    $_SESSION['first_visit'] = 'off';
+    header('Location: login.php');
+
+    $pdo = null;
     exit();
   }
 }

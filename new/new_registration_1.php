@@ -93,15 +93,15 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-            <label for="inputNickname">ニックネーム</label>
-            <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん" value="<?php if(isset($clean['NickName'])){echo $clean['NickName'];}?>">
+                <label for="inputNickname">ニックネーム</label>
+                <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん" value="<?php if(isset($clean['NickName'])){echo $clean['NickName'];}?>">
             </div>
             <div class="col-md-8">
-            <!-- 空白 -->
+                <!-- 空白 -->
             </div>
             <?php if(!$is_nick_name && $_SESSION['first_visit'] === 'off'): ?>
             <div class="col-md-4">
-            <p class="text-danger"><?php echo $error_msg['NickName']; ?></p>
+                <p class="text-danger"><?php echo $error_msg['NickName']; ?></p>
             </div>
             <?php endif; ?>
         </div>

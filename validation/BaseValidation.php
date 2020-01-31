@@ -1,7 +1,7 @@
 <?php
 
 class BaseValidation {
-    private $error_message;
+    private $error_message = null;
 
     public function addErrorMessage($msg) {
         $this->error_message = $msg;
