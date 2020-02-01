@@ -4,10 +4,8 @@ session_start();
 $email = $_SESSION['email'];
 $email_error = $_SESSION['email_error'];
 $password_error = $_SESSION['password_error'];
-$mismatch = $_SESSION['mismatch_error'];
+$mismatch_error = $_SESSION['mismatch_error'];
 $test = $_SESSION['test'];
-
-//エラー表示がおかしい。テスト表を作って実験すべし
 
 ?>
 
@@ -92,8 +90,8 @@ $test = $_SESSION['test'];
 
 <?php
 //sessionの初期化、破棄
-// $_SESSION = array();
-// session_destroy();
+$_SESSION = array();
+session_destroy();
 // unset($_SESSION['email_error']);
 // unset($_SESSION['password_error']);
 // unset($_SESSION['error']);
