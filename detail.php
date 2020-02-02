@@ -1,3 +1,14 @@
+<?php
+session_start();
+require_once '../Db.php';
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+
+$display = $_SESSION;
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -30,7 +41,7 @@
                 <div class="col-sm-12 col-lg-4">
                     <div class="row justify-content-center">
                         <!-- Fアイコン -->
-                        <img src="./img/azarashi.png" class="img-fluid rounded-circle" alt="アイコン">
+                        <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="未登録">
                     </div>
                     <div class="row justify-content-center">
                         <!-- G趣味 -->

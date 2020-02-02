@@ -1,3 +1,18 @@
+<?php
+session_start();
+require_once 'Db.php';
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+$members_info = $pdo->query('SELECT * FROM members_info');
+while($member_info[] = $members_info->fetch());
+
+$members_interesting = $pdo->query('SELECT * FROM members_interesting');
+while($member_interesting[] = $members_interesting->fetch());
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -28,52 +43,37 @@
         <div class="container">
             <!-- カード -->
             <div class="row">
-                <div class="col-md-12 col-lg-6">
-                    <div class="card mb-3" height="50rem">
-                        <div class="row no-gutters">
-                            <div class="col-xs-4">
-                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/azarashi.png" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                            </div>
-                            <div class="col-xs-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">ニックネーム</h5>
-                                    <p class="card-text">名前（任意）</p>
-                                    <p class="card-text">学校種類、出身県</p>
-                                    <div class="row mb-3">
-                                        <!-- G趣味 -->
-                                        <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                        <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                        <div><span class="badge badge-pill badge-primary">映画</span></div>
+                <?php
+                $i = 0;
+                while($member_info[$i]):
+                ?>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="card mb-3" height="50rem">
+                            <div class="row no-gutters">
+                                <div class="col-xs-4">
+                                    <img class="bd-placeholder-img" width="100%" height="100%" src="./img/<?php echo $member_info[$i]['icon']; ?>" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $member_info[$i]['nick_name']; ?></h5>
+                                        <p class="card-text"><?php echo $member_info[$i]['last_name']; ?> <?php echo $member_info[$i]['first_name']; ?></p>
+                                        <p class="card-text"><?php echo $member_info[$i]['school']; ?>、<?php echo $member_info[$i]['nick_name']; ?></p>
+                                        <div class="row mb-3">
+                                            <!-- G趣味 -->
+                                            <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
+                                            <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
+                                            <div><span class="badge badge-pill badge-primary">映画</span></div>
+                                        </div>
+                                        <a href="#" class="card-link">詳細ページへ</a>
                                     </div>
-                                    <a href="#" class="card-link">詳細ページへ</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12 col-lg-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-xs-4">
-                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/azarashi.png" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                            </div>
-                            <div class="col-xs-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">ニックネーム</h5>
-                                    <p class="card-text">名前（任意）</p>
-                                    <p class="card-text">学校種類、出身県</p>
-                                    <div class="row mb-3">
-                                        <!-- G趣味 -->
-                                        <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                        <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                        <div><span class="badge badge-pill badge-primary">映画</span></div>
-                                    </div>
-                                    <a href="#" class="card-link">詳細ページへ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                $i++;
+                endwhile; ?>
+
                 <div class="col-md-12 col-lg-6">
                     <div class="card mb-3">
                         <div class="row no-gutters">
@@ -97,52 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-xs-4">
-                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/azarashi.png" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                            </div>
-                            <div class="col-xs-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">ニックネーム</h5>
-                                    <p class="card-text">名前（任意）</p>
-                                    <p class="card-text">学校種類、出身県</p>
-                                    <div class="row mb-3">
-                                        <!-- G趣味 -->
-                                        <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                        <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                        <div><span class="badge badge-pill badge-primary">映画</span></div>
-                                    </div>
-                                    <a href="#" class="card-link">詳細ページへ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-xs-4">
-                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/azarashi.png" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                            </div>
-                            <div class="col-xs-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">ニックネーム</h5>
-                                    <p class="card-text">名前（任意）</p>
-                                    <p class="card-text">学校種類、出身県</p>
-                                    <div class="row mb-3">
-                                        <!-- G趣味 -->
-                                        <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                        <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                        <div><span class="badge badge-pill badge-primary">映画</span></div>
-                                    </div>
-                                    <a href="#" class="card-link">詳細ページへ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             
 

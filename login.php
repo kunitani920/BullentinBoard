@@ -4,7 +4,7 @@ session_start();
 $email = $_SESSION['email'];
 $email_error = $_SESSION['email_error'];
 $password_error = $_SESSION['password_error'];
-$mismatch_error = $_SESSION['mismatch_error'];
+$match_error = $_SESSION['match_error'];
 $test = $_SESSION['test'];
 
 ?>
@@ -29,8 +29,9 @@ $test = $_SESSION['test'];
     <p>メールアドレス、パスワードを入力してください。</p>
     <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
     <div><br></div>
-    <?php if(isset($mismatch_error) && $_SESSION['first_visit'] === 'off'): ?>
-        <p class="text-danger"><?php echo $mismatch_error; ?></p>
+
+    <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
+        <p class="text-danger"><?php echo $match_error; ?></p>
     <?php endif; ?>
 
     <form method="post" action="login_check.php">
@@ -64,20 +65,10 @@ $test = $_SESSION['test'];
             </div>
         </div>
 
-        <!-- chekcbox 未選択なのにvalueのonが送信されてしまうので、とりあえず封印
         <div class="form-group row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-9">
-            <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck1" name="save" value="on">
-            <label class="form-check-label" for="gridCheck1">パスワードを記録する</label>
-            </div>
+            <button type="submit" class="btn btn-primary">ログイン・新規登録</button>
         </div>
-        </div> -->
-    <div class="form-group row">
-      <button type="submit" class="btn btn-primary">ログイン・新規登録</button>
-    </div>
-  </form>
+    </form>
 </div>
 
 
@@ -92,8 +83,4 @@ $test = $_SESSION['test'];
 //sessionの初期化、破棄
 $_SESSION = array();
 session_destroy();
-// unset($_SESSION['email_error']);
-// unset($_SESSION['password_error']);
-// unset($_SESSION['error']);
-// unset($_SESSION['test']);
 ?>

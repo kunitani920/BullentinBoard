@@ -2,7 +2,11 @@
 session_start();
 require_once '../sanitize.php';
 require_once '../Db.php';
-require_once '../validation/interestingValidation.php';
+require_once '../validation/prefecturesValidation.php';
+
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
 
 if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
     $clean = $_SESSION;
@@ -11,16 +15,22 @@ if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
 }
 $error_msg = array();
 
-if($clean['pre'] === ''){
-  $error_msg['pre'] = '選択されていません。';
+// if($clean['pre'] === ''){
+//   $error_msg['pre'] = '選択されていません。';
+// }
+
+$prefectures_validation = new prefecturesValidation();
+$is_pre = $prefectures_validation->isSelected($clean['pre']);
+if(!$is_pre) {
+    $error_msg['pre'] = $prefectures_validation->getErrorMessage();
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
-  $_SESSION['school'] = $clean['school'];
-  $_SESSION['pre'] = $clean['pre'];
-  $_SESSION['first_visit'] = 'on';
-  header('Location: new_registration_3.php');
-  exit();
+    $_SESSION['school'] = $clean['school'];
+    $_SESSION['pre'] = $clean['pre'];
+    $_SESSION['first_visit'] = 'on';
+    header('Location: new_registration_3.php');
+    exit();
 }
 
 ?>
@@ -73,11 +83,8 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             <div class="row">
                 <label for="inputPre">●出身</label>
                 <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
-                    <option value="" <?php if(empty($clean['intere'])) { echo 'selected';} ?>>-都道府県を選択-</option>
+                    <option value="" <?php if(empty($clean['pre'])) { echo 'selected';} ?>>-都道府県を選択-</option>
                     <?php
-                        //DB接続
-                        $db = new Db();
-                        $pdo = $db->dbconnect();
                         $prefectures = $pdo->query('SELECT * FROM prefectures');
                         while($pre = $prefectures->fetch()) {
                         echo '<option value="' . $pre['id'] . '"';
@@ -86,13 +93,13 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                             }
                         echo '>' . $pre['pre_name'] . '</option>"';
                         }
-                        $pdo = NULL;
+                        $pdo = null;
                     ?>
                 </select>
             </div>
         </div>
-        <?php if(!empty($error_msg['pre'])): ?>
-        <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
+        <?php if(!$is_pre && $_SESSION["first_visit"] === "off"): ?>
+            <p class="text-danger"><?php echo $error_msg['pre']; ?></p>
         <?php endif; ?>
         <?php $_SESSION['first_visit'] = 'off'; ?>
 

@@ -61,11 +61,6 @@ class Login
             // $_SESSION['id'] = $member['id'];
             // $_SESSION['time'] = time();
             
-            //ログイン情報記録
-            // if($this->clean['save'] === 'on') {
-            //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
-            //   setcookie('password', $this->clean['password'], time()+60*60*24*14);
-            // }
             $pdo = null;
             header('Location: list.php');
             exit();
@@ -76,19 +71,14 @@ class Login
         // $_SESSION['id'] = $jinji['id'];
         //   $_SESSION['time'] = time();
         //jinji用のフラグ
-        
-        //ログイン情報記録
-        // if($this->clean['save'] === 'on') {
-        //   setcookie('email', $this->clean['email'], time()+60*60*24*14);
-        //   setcookie('password', $this->clean['password'], time()+60*60*24*14);
-        // }
+
         $pdo = null;
         header('Location: list.php');
         exit();
         }
 
         //ログイン失敗（email一致、password不一致）
-        $_SESSION['mismatch_error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
+        $_SESSION['match_error'] = 'メールアドレスとパスワードが一致しません' . PHP_EOL;
         $_SESSION['email'] = $this->clean['email'];
         $_SESSION['first_visit'] = 'off';
         $pdo = null;
