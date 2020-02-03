@@ -56,8 +56,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 <body>
 <div class="container">
     <h2 class="mt-3">内定者懇親フォーム</h2>
-    <h2 class="mt-3"><?php var_dump($is_last_name); ?></h2>
-    <h2 class="mt-3"><?php var_dump($clean['last_name']); ?></h2>
     <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
     <form method="post" action="new_registration_1.php">
         <div class="form-row mt-5">

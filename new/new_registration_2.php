@@ -15,10 +15,6 @@ if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
 }
 $error_msg = array();
 
-// if($clean['pre'] === ''){
-//   $error_msg['pre'] = '選択されていません。';
-// }
-
 $prefectures_validation = new prefecturesValidation();
 $is_pre = $prefectures_validation->isSelected($clean['pre']);
 if(!$is_pre) {

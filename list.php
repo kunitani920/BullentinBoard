@@ -10,7 +10,6 @@ while($member_info[] = $members_info->fetch());
 $members_interesting = $pdo->query('SELECT * FROM members_interesting');
 while($member_interesting[] = $members_interesting->fetch());
 
-
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +24,7 @@ while($member_interesting[] = $members_interesting->fetch());
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>詳細ページ</title>
+    <title>一覧ページ</title>
 </head>
 <body>
     <head>
@@ -44,35 +43,55 @@ while($member_interesting[] = $members_interesting->fetch());
             <!-- カード -->
             <div class="row">
                 <?php
-                $i = 0;
-                while($member_info[$i]):
+                    $i = 0;
+                    while($member_info[$i]):
                 ?>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="card mb-3" height="50rem">
-                            <div class="row no-gutters">
-                                <div class="col-xs-4">
-                                    <img class="bd-placeholder-img" width="100%" height="100%" src="./img/<?php echo $member_info[$i]['icon']; ?>" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo $member_info[$i]['nick_name']; ?></h5>
-                                        <p class="card-text"><?php echo $member_info[$i]['last_name']; ?> <?php echo $member_info[$i]['first_name']; ?></p>
-                                        <p class="card-text"><?php echo $member_info[$i]['school']; ?>、<?php echo $member_info[$i]['nick_name']; ?></p>
-                                        <div class="row mb-3">
-                                            <!-- G趣味 -->
-                                            <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                            <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                            <div><span class="badge badge-pill badge-primary">映画</span></div>
-                                        </div>
-                                        <a href="#" class="card-link">詳細ページへ</a>
+                <div class="col-12 col-lg-6">
+                    <div class="card mb-3" height="50rem">
+                        <div class="row no-gutters">
+                            <div class="col-4">
+                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/<?php echo $member_info[$i]['icon']; ?>" alt="未登録" </img>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $member_info[$i]['nick_name']; ?></h5>
+                                    <p class="card-text"><?php echo $member_info[$i]['last_name']; ?> <?php echo $member_info[$i]['first_name']; ?></p>
+                                    <p class="card-text">
+                                        <?php
+                                            echo $member_info[$i]['school'] . "／";
+                                            $pre_id = $member_info[$i]['prefectures_id'];
+                                            $prefectures = $pdo->prepare('SELECT pre_name FROM prefectures WHERE id=?');
+                                            $prefectures->execute(array($pre_id));
+                                            $pre = $prefectures->fetch();
+                                            echo $pre['pre_name'];
+                                            ?>
+                                    </p>
+                                    <div class="row mb-3">
+                                        <?php
+                                            for($j = 1; $j <= 3; $j++) {
+                                                $intere_db_name = 'interesting' . $j . '_id';
+                                                $intere_id = $member_interesting[$i][$intere_db_name];
+                                                $interesting = $pdo->prepare('SELECT intere_name FROM interesting WHERE id=?');
+                                                $interesting->execute(array($intere_id));
+                                                $intere = $interesting->fetch();
+                                                echo '<div><span class="badge badge-pill badge-primary ml-3">' . $intere['intere_name'] . '</span></div>';
+                                            }
+                                        ?>
                                     </div>
+                                    <form method="post" action="detail.php">
+                                        <input type="hidden" name="detail_id" value="<?php echo $member_info[$i]['member_id'] ?>">
+                                        <input class="btn btn-outline-info" type="submit" value="詳細ページへ">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 <?php
-                $i++;
-                endwhile; ?>
+                    $i++;
+                    endwhile;
+                ?>
+                <?php $db =null; ?>
 
                 <div class="col-md-12 col-lg-6">
                     <div class="card mb-3">

@@ -41,7 +41,7 @@ $icon = $_SESSION['icon'];
                             $interesting = $pdo->prepare('SELECT intere_name FROM interesting WHERE id=?');
                             $interesting->execute(array($display['intere'][$i]));
                             $intere = $interesting->fetch();
-                            echo '<div><span class="badge badge-pill badge-primary mr-1">' . $intere[0] . '</span></div>';
+                            echo '<div><span class="badge badge-pill badge-primary mr-1">' . $intere['intere_name'] . '</span></div>';
                         }
                     ?>
                 </div>
@@ -53,40 +53,40 @@ $icon = $_SESSION['icon'];
 
         </div>
 
-    <div class="row justify-content-center">
-        <div class="col-sm-12 col-lg-5 card border-info m-2">
-            <div class="card-body text-info">
-                <p class="card-text">ニックネーム：<?php echo $display['NickName']; ?></p>
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-lg-5 card border-info m-2">
+                <div class="card-body text-info">
+                    <p class="card-text">ニックネーム：<?php echo $display['NickName']; ?></p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-5 card border-info m-2">
+                <div class="card-body text-info">
+                    <p class="card-text">所属：<?php echo $display['school']; ?></p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-5 card border-info m-2">
+                <div class="card-body text-info">
+                    <p class="card-text">氏名（任意）：<?php echo $display['LastName'] . ' ' . $display['FirstName']; ?></p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-5 card border-info m-2">
+                <div class="card-body text-info">
+                    <?php 
+                        $prefectures = $pdo->prepare('SELECT pre_name FROM prefectures WHERE id=?');
+                        $prefectures->execute(array($display['pre']));
+                        $pre = $prefectures->fetch();
+                        echo '<p class="card-text">出身：' . $pre['pre_name'] . '</p>';
+                        $db = null;
+                    ?>
+                </div>
             </div>
         </div>
-        <div class="col-sm-12 col-lg-5 card border-info m-2">
-            <div class="card-body text-info">
-                <p class="card-text">所属：<?php echo $display['school']; ?></p>
+        <form method="post" action="new_registration_db.php">
+            <div class="row justify-content-center  mt-3">
+                <a class="btn btn-secondary mr-3" href="new_registration_1.php" role="button">やり直す</a>
+                <button class="btn btn-primary" type="submit" name="submit">登録する</button>
             </div>
-        </div>
-        <div class="col-sm-12 col-lg-5 card border-info m-2">
-            <div class="card-body text-info">
-                <p class="card-text">氏名（任意）：<?php echo $display['LastName'] . ' ' . $display['FirstName']; ?></p>
-            </div>
-        </div>
-        <div class="col-sm-12 col-lg-5 card border-info m-2">
-            <div class="card-body text-info">
-                <?php 
-                    $prefectures = $pdo->prepare('SELECT pre_name FROM prefectures WHERE id=?');
-                    $prefectures->execute(array($display['pre']));
-                    $pre = $prefectures->fetch();
-                    echo '<p class="card-text">出身：' . $pre[0] . '</p>';
-                    $db = null;
-                ?>
-            </div>
-        </div>
-    </div>
-    <form method="post" action="new_registration_db.php">
-        <div class="row justify-content-center  mt-3">
-            <a class="btn btn-secondary mr-3" href="new_registration_1.php" role="button">やり直す</a>
-            <button class="btn btn-primary" type="submit" name="submit">登録する</button>
-        </div>
-    </form>
+        </form>
     </div>
 </main>
  
