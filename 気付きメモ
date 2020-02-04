@@ -143,3 +143,16 @@ $member['pre'] = (int) $member['pre'];
 foreach($member['intere'] as $key=>$value) {
     $member[$key] = (int) $value;
 }
+
+●prev,nextが最初のアクセスでは表示される問題　＠detail
+if($order !== 0) {
+    //prevを表示 （nextも同様）
+}
+$orderが最小or最大で、prev,nextの表示を管理しているが、
+最初のアクセス時は$orderが文字列扱い、画面遷移で $order +- 1して、整数になって、表示管理が機能した。
+
+解決策
+if($order != 0) {
+    //prevを表示 （nextも同様）
+}
+型の一致を解除して解決！

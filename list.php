@@ -45,6 +45,7 @@ while($member_interesting[] = $members_interesting->fetch());
                 <?php
                     $i = 0;
                     while($member_info[$i]):
+                        $all_id[] = $member_info[$i]['member_id'];
                 ?>
                 <div class="col-12 col-lg-6">
                     <div class="card mb-3" height="50rem">
@@ -80,7 +81,8 @@ while($member_interesting[] = $members_interesting->fetch());
                                     </div>
                                     <form method="post" action="detail.php">
                                         <input type="hidden" name="detail_id" value="<?php echo $member_info[$i]['member_id'] ?>">
-                                        <input class="btn btn-outline-info" type="submit" value="詳細ページへ">
+                                        <input type="hidden" name="order" value="<?php echo $i; ?>">
+                                        <input class="btn btn-outline-info" type="submit" value="詳細ページ">
                                     </form>
                                 </div>
                             </div>
@@ -90,43 +92,18 @@ while($member_interesting[] = $members_interesting->fetch());
                 <?php
                     $i++;
                     endwhile;
+                    $db = null;
+                    $_SESSION['all_id'] = $all_id;
                 ?>
-                <?php $db =null; ?>
-
-                <div class="col-md-12 col-lg-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-xs-4">
-                                <img class="bd-placeholder-img" width="100%" height="100%" src="./img/azarashi.png" alt="アイコン無し" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image"><title>Placeholder</title><rect fill="#868e96" width="100%" height="100%"/></img>
-                            </div>
-                            <div class="col-xs-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">ニックネーム</h5>
-                                    <p class="card-text">名前（任意）</p>
-                                    <p class="card-text">学校種類、出身県</p>
-                                    <div class="row mb-3">
-                                        <!-- G趣味 -->
-                                        <div><span class="badge badge-pill badge-primary ml-3">アニメ</span></div>
-                                        <div><span class="badge badge-pill badge-primary mx-1">漫画</span></div>
-                                        <div><span class="badge badge-pill badge-primary">映画</span></div>
-                                    </div>
-                                    <a href="#" class="card-link">詳細ページへ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-            
 
-            <nav aria-label="...">
+            <!-- <nav aria-label="...">
                 <ul class="pagination justify-content-center">
                     <li class="page-item"><a class="page-link" href="#">前</a></li>
                     <li class="page-item"><a class="page-link" href="#">一覧</a></li>
                     <li class="page-item"><a class="page-link" href="#">次</a></li>
                 </ul>
-            </nav>
+            </nav> -->
             <!-- リンク先がない時、選択できないようにする。などを追加する時
             https://getbootstrap.jp/docs/4.2/components/pagination/ -->
         </div>

@@ -1,8 +1,23 @@
 <?php
 session_start();
 require_once 'Db.php';
-
-$detail_id = $_POST['detail_id'];
+require_once 'sanitize.php';
+// $clean = array();
+$clean = sanitize::clean($_POST);
+$all_id = $_SESSION['all_id'];
+$order = $clean['order'];
+$order_max = count($all_id) - 1;
+if($clean['transition'] === 'prev') {
+    $detail_id = $all_id[--$order];
+    echo $clean['transition'];
+} elseif($clean['transition'] === 'next') {
+    $detail_id = $all_id[++$order];
+    echo $clean['transition'];
+} else {
+    $detail_id = $all_id[$order];
+    echo 'transitionなし';
+}
+echo $detail_id;
 
 //DB接続
 $db = new Db();
@@ -46,7 +61,8 @@ $member_interesting = $members_interesting->fetch();
 </head>
 <main>
 <div class="container">
-    <p><?php var_dump($_POST); ?></p>
+<p><?php echo '$all_id  '; var_dump($all_id); ?></p>
+<p><?php echo '$order  '; var_dump($order); ?></p>
     <div class="row justify-content-center mt-5">         
         <div class="col-sm-12 col-lg-4">
             <div class="row justify-content-center">
@@ -108,13 +124,22 @@ $member_interesting = $members_interesting->fetch();
     </form> -->
 </div>
 
-<nav aria-label="...">
-    <ul class="pagination justify-content-center">
-        <li class="page-item"><a class="page-link" href="#">前</a></li>
-        <li class="page-item"><a class="page-link" href="list.php">一覧</a></li>
-        <li class="page-item"><a class="page-link" href="#">次</a></li>
-    </ul>
-</nav>
+<!-- <nav aria-label="..."> -->
+<form method="post" action="detail.php">
+    <div class="pagination justify-content-center">
+        <input type="hidden" name="order" value="<?php echo $order; ?>">
+        <?php if($order != 0): ?>
+            <input class="btn btn-link" name="transition" type="submit" value="prev">
+        <?php endif; ?>
+        <?php if($order != $order_max): ?>
+            <input class="btn btn-link" name="transition" type="submit" value="next">
+        <?php endif; ?>
+    </div>
+</form>
+<div class="row justify-content-center">
+    <a class="pagination justify-content-center page-link" href="list.php">一覧へ戻る</a>
+</div>
+<!-- </nav> -->
 <!-- リンク先がない時、選択できないようにする。などを追加する時
 https://getbootstrap.jp/docs/4.2/components/pagination/ -->
 
