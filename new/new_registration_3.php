@@ -4,21 +4,30 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
-$clean = sanitize::clean($_POST);
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+
+if($_SESSION['first_visit'] === 'on') {
+    $clean = $_SESSION;
+} else {
+    $clean = sanitize::clean($_POST);
+}
+
 $error_msg = array();
 
 $intere_validation = new interestingValidation();
-$selection_count = count($_POST['intere_array']);
+$selection_count = count($clean['intere_array']);
 $is_intere = $intere_validation->isSelectionCountMatched($selection_count);
 if(!$is_intere) {
-  $error_msg['intere'] = $intere_validation->getErrorMessage();
+    $error_msg['intere'] = $intere_validation->getErrorMessage();
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
-  $_SESSION['intere'] = $_POST['intere_array'];
-  $_SESSION['first_visit'] = 'on';
-  header('Location: new_registration_4.php');
-  exit();
+    $_SESSION['intere_array'] = $clean['intere_array'];
+    $_SESSION['first_visit'] = 'on';
+    header('Location: new_registration_4.php');
+    exit();
 }
 
 ?>
@@ -40,22 +49,24 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
 <body>
 <div class="container">
-  <h2 class="mt-3">内定者懇親フォーム</h2>
-  <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
-
+    <h2 class="mt-3">内定者懇親フォーム</h2>
+    <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
     <form method="post" action="new_registration_3.php">
         <div class="form-group row">
             <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
             <div class="mt-1 col-sm-12">
                 <?php
-                    //DB接続
-                    $db = new Db();
-                    $pdo = $db->dbconnect();
                     $interesting = $pdo->query('SELECT * FROM interesting');
                     while($intere = $interesting->fetch()):
                 ?>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>">
+                    <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>"
+                    <?php
+                        if(in_array($intere['id'], $clean['intere_array'], true)) { //$clean['intere_array']は配列
+                            echo 'checked';
+                        }
+                    ?>
+                    >
                     <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
                 </div>
                 <?php endwhile; ?>
@@ -66,7 +77,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         </div>
         <?php $_SESSION["first_visit"] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
     </form>
 </div>

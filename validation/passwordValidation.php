@@ -3,7 +3,7 @@ require_once 'BaseValidation.php';
 
 class passwordValidation extends BaseValidation {
     private $min_strlen = 4;
-    private $max_strlen = 13;
+    private $max_strlen = 12;
 
     public function isPassword($password) {
         if(!isset($password) || $password === '') {

@@ -156,3 +156,12 @@ if($order != 0) {
     //prevを表示 （nextも同様）
 }
 型の一致を解除して解決！
+
+●member_id認識されない問題 @list、detail
+if($member_info[$i]['member_id'] === $login_member_id) 
+が発動しない。
+新規登録で持ってくる場合の$member_idは$_SESSIONで運ばれ、int
+対して、member_infoはstring
+なので、
+if($member_info[$i]['member_id'] == $login_member_id)
+で解決

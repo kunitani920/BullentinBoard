@@ -14,11 +14,11 @@ $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
 $members_info->execute(array($login_member_id));
 $member_info = $members_info->fetch();
 
-if($_SESSION['first_visit'] === 'on') {
-    $clean = $_SESSION;
-} else {
+// if($_SESSION['first_visit'] === 'on') {
+//     $clean = $_SESSION;
+// } else {
     $clean = sanitize::clean($_POST);
-}
+// }
 
 $error_msg = array();
 

@@ -2,22 +2,21 @@
 session_start();
 require_once 'Db.php';
 require_once 'sanitize.php';
-// $clean = array();
+
+$clean = array();
 $clean = sanitize::clean($_POST);
 $all_id = $_SESSION['all_id'];
+$login_member_id = $_SESSION['login_member_id'];
+$login_member_name = $_SESSION['login_member_name'];
 $order = $clean['order'];
 $order_max = count($all_id) - 1;
 if($clean['transition'] === 'prev') {
     $detail_id = $all_id[--$order];
-    echo $clean['transition'];
 } elseif($clean['transition'] === 'next') {
     $detail_id = $all_id[++$order];
-    echo $clean['transition'];
 } else {
     $detail_id = $all_id[$order];
-    echo 'transitionなし';
 }
-echo $detail_id;
 
 //DB接続
 $db = new Db();
@@ -29,7 +28,6 @@ $member_info = $members_info->fetch();
 $members_interesting = $pdo->prepare('SELECT * FROM members_interesting WHERE member_id=?');
 $members_interesting->execute(array($detail_id));
 $member_interesting = $members_interesting->fetch();
-
 
 ?>
 
@@ -47,26 +45,28 @@ $member_interesting = $members_interesting->fetch();
 
     <title>詳細ページ</title>
 </head>
-<body>
-<head>
-    <!-- 常にバーを表示させておきたい -->
-    <ul class="nav justify-content-end">
-            <!-- <li class="nav-item">
-                <a class="nav-link active" href="#">一覧</a>
-            </li> -->
+<body style="padding-top:4.5rem;">
+<header>
+    <nav class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
+        <span class="navbar-text text-primary">
+            <?php 
+                echo sprintf('ようこそ %sさん！%d人の内定者が登録しています。', $login_member_name, $order_max + 1);
+            ?>
+        </span>
+        <ul class="nav justify-content-end">                
             <li class="nav-item">
-                <a class="nav-link" href="#">ログアウト</a>
+                <a class="nav-link" href="login.php">ログアウト</a>
+                <!-- セッション切ったりする！ -->
             </li>
-            </ul>
-</head>
+        </ul>
+    </nav>
+</header>
 <main>
-<div class="container">
-<p><?php echo '$all_id  '; var_dump($all_id); ?></p>
-<p><?php echo '$order  '; var_dump($order); ?></p>
-    <div class="row justify-content-center mt-5">         
+<div class="container"> 
+    <div class="row justify-content-center mt-5">    
         <div class="col-sm-12 col-lg-4">
             <div class="row justify-content-center">
-            <img class="bd-placeholder-img" width="50%" height="100%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
+                <img class="bd-placeholder-img" width="50%" height="100%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
             </div>
             <div class="row justify-content-center">
                 <?php
@@ -116,33 +116,45 @@ $member_interesting = $members_interesting->fetch();
             </div>
         </div>
     </div>
-    <!-- <form method="post" action="new_registration_db.php">
-        <div class="row justify-content-center  mt-3">
-            <a class="btn btn-secondary mr-3" href="new_registration_1.php" role="button">やり直す</a>
-            <button class="btn btn-primary" type="submit" name="submit">登録する</button>
-        </div>
-    </form> -->
-</div>
-
-<!-- <nav aria-label="..."> -->
-<form method="post" action="detail.php">
+    
     <div class="pagination justify-content-center">
-        <input type="hidden" name="order" value="<?php echo $order; ?>">
-        <?php if($order != 0): ?>
-            <input class="btn btn-link" name="transition" type="submit" value="prev">
-        <?php endif; ?>
-        <?php if($order != $order_max): ?>
-            <input class="btn btn-link" name="transition" type="submit" value="next">
-        <?php endif; ?>
+        <form method="post" action="detail.php">
+            <input type="hidden" name="order" value="<?php echo $order; ?>">
+            <?php if($order != 0): ?>
+                <input class="btn btn-link" name="transition" type="submit" value="prev">
+            <?php endif; ?>
+            <?php if($order != $order_max): ?>
+                <input class="btn btn-link" name="transition" type="submit" value="next">
+            <?php endif; ?>
+        </form>
     </div>
-</form>
-<div class="row justify-content-center">
-    <a class="pagination justify-content-center page-link" href="list.php">一覧へ戻る</a>
-</div>
-<!-- </nav> -->
-<!-- リンク先がない時、選択できないようにする。などを追加する時
-https://getbootstrap.jp/docs/4.2/components/pagination/ -->
+    <?php if($member_info['member_id'] == $login_member_id): ?>
+        <div class="row mt-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <form method="post" action="./edit/edit_registration_1.php">
+                    <input class="btn btn-warning btn-lg btn-block" type="submit" value="編集">
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-3 mt-1">
+                <form method="post" action=".php">
+                    <input type="hidden" name="detail_id" value="<?php echo $member_info['member_id'] ?>">
+                    <input type="hidden" name="order" value="<?php echo $i; ?>">
+                    <input class="btn btn-danger btn-lg btn-block" type="submit" value="削除">
+                </form>
+            </div>
+        </div>
+    <?php endif; ?>
 
+
+    <div class="row justify-content-center mt-3">
+        <a class="pagination justify-content-center page-link" href="list.php">一覧へ戻る</a>
+    </div>
+    <!-- </nav> -->
+    <!-- リンク先がない時、選択できないようにする。などを追加する時
+    https://getbootstrap.jp/docs/4.2/components/pagination/ -->
+    
 </main>
 <footer></footer>
 

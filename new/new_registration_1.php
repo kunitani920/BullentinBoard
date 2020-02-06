@@ -3,8 +3,8 @@ session_start();
 require_once '../sanitize.php';
 require_once '../validation/nameValidation.php';
 
-if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['NickName'])) {
-    $clean = $_SESSION;
+if($_SESSION['first_visit'] === 'on') {
+    $clean = $_SESSION; //confirmから戻ってきた時、入力値をセッティング
 } else {
     $clean = sanitize::clean($_POST);
 }
@@ -12,25 +12,26 @@ if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['NickName'])) {
 $error_msg = array();
 
 $name_validation = new nameValidation();
-$is_last_name = $name_validation->isName($clean['LastName']);
+$is_last_name = $name_validation->isName($clean['last_name']);
 if(!$is_last_name) {
-    $error_msg['LastName'] = $name_validation->getErrorMessage();
+    $error_msg['last_name'] = $name_validation->getErrorMessage();
 }
 
-$is_first_name = $name_validation->isName($clean['FirstName']);
+$is_first_name = $name_validation->isName($clean['first_name']);
 if(!$is_first_name) {
-    $error_msg['FirstName'] = $name_validation->getErrorMessage();
+    $error_msg['first_name'] = $name_validation->getErrorMessage();
 }
 
-$is_nick_name = $name_validation->isName($clean['NickName']);
+$is_nick_name = $name_validation->isName($clean['nick_name']);
 if(!$is_nick_name) {
-    $error_msg['NickName'] = $name_validation->getErrorMessage();
+    $error_msg['nick_name'] = $name_validation->getErrorMessage();
 }
 
+//error_msgなし かつ first_vistでなければ、入力値をSESSIONに保存・first_visitをセットし、次のページへ
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
-    $_SESSION['LastName'] = $clean['LastName'];
-    $_SESSION['FirstName'] = $clean['FirstName'];
-    $_SESSION['NickName'] = $clean['NickName'];
+    $_SESSION['last_name'] = $clean['last_name'];
+    $_SESSION['first_name'] = $clean['first_name'];
+    $_SESSION['nick_name'] = $clean['nick_name'];
     $_SESSION['first_visit'] = 'on';
     header('Location: new_registration_2.php');
     exit();
@@ -60,52 +61,52 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <form method="post" action="new_registration_1.php">
         <div class="form-row mt-5">
         <div class="form-group col-md-4">
-            <label for="inputLastname">氏</label>
-            <input type="text" class="form-control" id="inputLastname" name="LastName" placeholder="Last Name（山田）" value="<?php if(isset($clean['LastName'])){echo $clean['LastName'];}?>">
+            <label for="input_last_name">氏</label>
+            <input type="text" class="form-control" id="input_last_name" name="last_name" placeholder="Last Name（山田）" value="<?php if(isset($clean['last_name'])){echo $clean['last_name'];}?>">
         </div>
         <?php if(!$is_last_name && $_SESSION['first_visit'] === 'off'): ?>
-            <div class="col-md-4 d-md-none">
-            <p class="text-danger"><?php echo $error_msg['LastName']; ?></p>
+            <div class="col-md-4 d-md-none"><!--md未満、表示-->
+            <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
             </div>
         <?php endif; ?>
         <div class="form-group col-md-4">
-            <label for="inputFirstname">名</label>
-            <input type="text" class="form-control" id="inputFirstname" name="FirstName" placeholder="First Name（太郎）" value="<?php if(isset($clean['FirstName'])){echo $clean['FirstName'];}?>">
+            <label for="input_first_name">名</label>
+            <input type="text" class="form-control" id="input_first_name" name="first_name" placeholder="First Name（太郎）" value="<?php if(isset($clean['first_name'])){echo $clean['first_name'];}?>">
         </div>
         <?php if(!$is_first_name && $_SESSION['first_visit'] === 'off'): ?>
-            <div class="col-md-4 d-md-none">
-            <p class="text-danger"><?php echo $error_msg['FirstName']; ?></p>
+            <div class="col-md-4 d-md-none"><!--md未満、表示-->
+            <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
             </div>
         <?php endif; ?>
         <div class="col-md-4">
             <!-- 空白 -->
         </div>
         <?php if((!$is_last_name || !$is_first_name) && $_SESSION['first_visit'] === 'off'): ?>
-            <div class="col-md-4 d-none d-md-block">
-            <p class="text-danger"><?php echo $error_msg['LastName']; ?></p>
+            <div class="col-md-4 d-none d-md-block"><!--md以上、表示-->
+            <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
             </div>
             <div class="col-md-4 d-none d-md-block">
-            <p class="text-danger"><?php echo $error_msg['FirstName']; ?></p>
+            <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
             </div>
             <?php endif; ?>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="inputNickname">ニックネーム</label>
-                <input type="text" class="form-control" id="inputNickname" name="NickName" placeholder="ヤマちゃん" value="<?php if(isset($clean['NickName'])){echo $clean['NickName'];}?>">
+                <label for="input_nick_name">ニックネーム</label>
+                <input type="text" class="form-control" id="input_nick_name" name="nick_name" placeholder="ヤマちゃん" value="<?php if(isset($clean['nick_name'])){echo $clean['nick_name'];}?>">
             </div>
             <div class="col-md-8">
                 <!-- 空白 -->
             </div>
             <?php if(!$is_nick_name && $_SESSION['first_visit'] === 'off'): ?>
             <div class="col-md-4">
-                <p class="text-danger"><?php echo $error_msg['NickName']; ?></p>
+                <p class="text-danger"><?php echo $error_msg['nick_name']; ?></p>
             </div>
             <?php endif; ?>
         </div>
         <?php $_SESSION['first_visit'] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
     </form>
 </div>

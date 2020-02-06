@@ -5,7 +5,7 @@ require_once '../Db.php';
 $db = new Db();
 $pdo = $db->dbconnect();
 
-$display = $_SESSION;
+$display = $_SESSION;   //SESSION表示用
 $icon = $_SESSION['icon'];
 
 ?>
@@ -25,6 +25,8 @@ $icon = $_SESSION['icon'];
     <title>登録内容確認</title>
 </head>
 <body>
+<p><?php var_dump($display);?></p>
+<p><?php var_dump($icon);?></p>
 <main>
     <div class="container">
         <div class="row justify-content-center mt-5">         
@@ -39,7 +41,7 @@ $icon = $_SESSION['icon'];
                     <?php
                         for($i = 0; $i < 3; $i++) {
                             $interesting = $pdo->prepare('SELECT intere_name FROM interesting WHERE id=?');
-                            $interesting->execute(array($display['intere'][$i]));
+                            $interesting->execute(array($display['intere_array'][$i]));
                             $intere = $interesting->fetch();
                             echo '<div><span class="badge badge-pill badge-primary mr-1">' . $intere['intere_name'] . '</span></div>';
                         }
@@ -56,7 +58,7 @@ $icon = $_SESSION['icon'];
         <div class="row justify-content-center">
             <div class="col-sm-12 col-lg-5 card border-info m-2">
                 <div class="card-body text-info">
-                    <p class="card-text">ニックネーム：<?php echo $display['NickName']; ?></p>
+                    <p class="card-text">ニックネーム：<?php echo $display['nick_name']; ?></p>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
@@ -66,7 +68,7 @@ $icon = $_SESSION['icon'];
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
                 <div class="card-body text-info">
-                    <p class="card-text">氏名（任意）：<?php echo $display['LastName'] . ' ' . $display['FirstName']; ?></p>
+                    <p class="card-text">氏名（任意）：<?php echo $display['last_name'] . ' ' . $display['first_name']; ?></p>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">

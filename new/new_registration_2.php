@@ -8,7 +8,7 @@ require_once '../validation/prefecturesValidation.php';
 $db = new Db();
 $pdo = $db->dbconnect();
 
-if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['pre'])) {
+if($_SESSION['first_visit'] === 'on') {
     $clean = $_SESSION;
 } else {
     $clean = sanitize::clean($_POST);
@@ -99,7 +99,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         <?php endif; ?>
         <?php $_SESSION['first_visit'] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
     </form>
 </div>

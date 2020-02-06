@@ -1,10 +1,23 @@
 <?php
 session_start();
 require_once '../sanitize.php';
+require_once '../Db.php';
 require_once '../validation/messageValidation.php';
+
+//first
+$login_member_id = $_SESSION['login_member_id'];
+
+//DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+$members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
+$members_info->execute(array($login_member_id));
+$member_info = $members_info->fetch();
+
 
 if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['message'])) {
     $clean = $_SESSION;
+    $icon = $_SESSION['icon'];
 } else {
     $clean = sanitize::clean($_POST);
     $icon = $_FILES['icon'];
@@ -48,23 +61,23 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <form method="post" action="edit_registration_4.php" enctype="multipart/form-data">
         <div class="form-group">
         <label for="message">●内定者へ一言（120文字以内）</label>
-        <textarea class="form-control" id="message" name="message" rows="3"><?php if(isset($clean['message'])) { echo $clean['message']; } ?></textarea>
+        <textarea class="form-control" id="message" name="message" rows="3"><?php echo $member_info['message']; ?></textarea>
         <?php if(!$is_msg && $_SESSION['first_visit'] === 'off'): ?>
             <p class="text-danger"><?php echo $error_msg['msg']; ?></p>
         <?php endif; ?>
         </div>
 
     <div class="form-group">
-        <p>●アイコン登録</p>
+        <p>●アイコン登録（任意）</p>
         <div class="input-group">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="customFile" name="icon">
                 <label class="custom-file-label" for="customFile" data-browse="参照">
                     <?php
-                        if(isset($clean['icon'])) {
-                            echo $clean['icon'];
+                        if(isset($icon['name'])) {
+                            echo $icon['name'];
                         } else {
-                            echo '画像を選択してください（JPG,PNG）...';
+                            echo '画像を選択してください（JPG,PNG）...｜変更しない場合は、何も入力しないでください';
                         }
                     ?>
                 </label>

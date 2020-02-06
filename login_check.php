@@ -38,13 +38,13 @@ class Login
         $db = new Db();
         $pdo = $db->dbconnect();
         //membersテーブル参照
-        $collation = $pdo->prepare('SELECT * FROM members WHERE email=?');
-        $collation->execute(array($this->clean['email']));
-        $member = $collation->fetch();
+        $members = $pdo->prepare('SELECT * FROM members WHERE email=?');
+        $members->execute(array($this->clean['email']));
+        $member = $members->fetch();
         //jinjiテーブル参照
-        $collation = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
-        $collation->execute(array($this->clean['email']));
-        $jinji = $collation->fetch();
+        $admin = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
+        $admin->execute(array($this->clean['email']));
+        $jinji = $admin->fetch();
 
         //新規登録（登録emailなし）
         if (!$member && !$jinji) {
@@ -58,17 +58,17 @@ class Login
         
         //memberログイン成功（email,password一致）
         if ($member && $member['password'] === $this->clean['password']) {
-            // $_SESSION['id'] = $member['id'];
+            $_SESSION['login_member_id'] = $member['id'];
             // $_SESSION['time'] = time();
             
             $pdo = null;
             header('Location: list.php');
             exit();
         }
-
+        
         //jinjiログイン成功（email,password一致）
         if ($jinji && $jinji['password'] === $this->clean['password']) {
-        // $_SESSION['id'] = $jinji['id'];
+            // $_SESSION['id'] = $jinji['id'];
         //   $_SESSION['time'] = time();
         //jinji用のフラグ
 

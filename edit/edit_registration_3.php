@@ -4,9 +4,6 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
-〜checedを付けるのに、スマートな判定がないか
-newの時は、in_arrayが使えそう。
-
 //first
 $login_member_id = $_SESSION['login_member_id'];
 
@@ -16,6 +13,11 @@ $pdo = $db->dbconnect();
 $members_interesting = $pdo->prepare('SELECT * FROM members_interesting WHERE member_id=?');
 $members_interesting->execute(array($login_member_id));
 $member_interesting = $members_interesting->fetch();
+$selected_intere = array(
+    $member_interesting['interesting1_id'],
+    $member_interesting['interesting2_id'],
+    $member_interesting['interesting3_id']
+);
 
 $clean = sanitize::clean($_POST);
 $error_msg = array();
@@ -24,14 +26,14 @@ $intere_validation = new interestingValidation();
 $selection_count = count($_POST['intere_array']);
 $is_intere = $intere_validation->isSelectionCountMatched($selection_count);
 if(!$is_intere) {
-  $error_msg['intere'] = $intere_validation->getErrorMessage();
+    $error_msg['intere'] = $intere_validation->getErrorMessage();
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
-  $_SESSION['intere'] = $_POST['intere_array'];
-  $_SESSION['first_visit'] = 'on';
-  header('Location: edit_registration_4.php');
-  exit();
+    $_SESSION['intere'] = $_POST['intere_array'];
+    $_SESSION['first_visit'] = 'on';
+    header('Location: edit_registration_4.php');
+    exit();
 }
 
 ?>
@@ -66,12 +68,11 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>" 
                     <?php
-                        if($intere['id'] === $member_interesting['interesting1_id']) {
+                        if(in_array($intere['id'], $selected_intere, true)) {
                             echo 'checked';
                         }
                     ?>
                     >
-
                     <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
                 </div>
                 <?php endwhile; ?>

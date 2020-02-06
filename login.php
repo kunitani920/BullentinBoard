@@ -5,7 +5,6 @@ $email = $_SESSION['email'];
 $email_error = $_SESSION['email_error'];
 $password_error = $_SESSION['password_error'];
 $match_error = $_SESSION['match_error'];
-$test = $_SESSION['test'];
 
 ?>
 
@@ -53,7 +52,7 @@ $test = $_SESSION['test'];
         <div class="form-group row">
             <label for="password" class="col-sm-3 col-form-label">パスワード</label>
             <div class="col-sm-9">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password:4〜12文字">
                 <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
                     <div class="col-sm-2">
                         <!-- 空白 -->
