@@ -4,9 +4,6 @@ require_once '../sanitize.php';
 require_once '../validation/messageValidation.php';
 require_once '../validation/iconValidation.php';
 
-//2周目で画像の名前は入っているが、内容が拾えていない。しょうがない
-// 画像のバリデーション
-
 if($_SESSION['first_visit'] === 'on') {
     $clean = $_SESSION;
     $icon = $_SESSION['icon'];
@@ -18,15 +15,19 @@ $error_msg = array();
 
 $msg_validation = new messageValidation();
 $is_msg = $msg_validation->isMessage($clean['message']);
-// $icon_validation = new iconValidation();
-// $is_icon = $icon_validation->isIcon($icon);
+$icon_validation = new iconValidation();
+//iconは登録があった時だけ、バリデーション
+if(!empty($icon['name'])) {
+    $is_icon = $icon_validation->isIcon($icon);
+}
 
 if(!$is_msg) {
     $error_msg['msg'] = $msg_validation->getErrorMessage();
 }
-// if(!$is_icon) {
-//     $error_msg['icon'] = $icon_validation->getErrorMessage();
-// }
+//icon登録があった時だけ、エラー有無確認
+if(isset($is_icon) && !$is_icon) {
+    $error_msg['icon'] = $icon_validation->getErrorMessage();
+}
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['message'] = $clean['message'];
@@ -74,8 +75,9 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                     <input type="file" class="custom-file-input" id="customFile" name="icon">
                     <label class="custom-file-label" for="customFile" data-browse="参照">
                         <?php
-                            if(isset($icon['name'])) {  //やり直し時、再度入力してもらう必要がある
-                                echo '恐れ入りますが、再度画像を選択してください（JPG,PNG）...';
+                            //やり直し時、再度入力してもらう必要がある。エラーメッセージがある かつ 前回画像選択している場合
+                            if(!empty($error_msg) && !empty($icon['name'])) { 
+                                echo '再度画像を選択してください（JPG,PNG）...';
                             } else {
                                 echo '画像を選択してください（JPG,PNG）...';
                             }
@@ -85,10 +87,10 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                 <div class="input-group-append">
                     <button type="button" class="btn btn-outline-secondary reset">取消</button>
                 </div>
-                <?php if(!$is_icon && $_SESSION['first_visit'] === 'off'): ?>
-                    <p class="text-danger"><?php echo $error_msg['icon']; ?></p>
-                <?php endif; ?>
             </div>
+            <?php if(!$is_icon && $_SESSION['first_visit'] === 'off'): ?>
+                <p class="text-danger"><?php echo $error_msg['icon']; ?></p>
+            <?php endif; ?>
         </div>
 
         <?php $_SESSION['first_visit'] = 'off'; ?>

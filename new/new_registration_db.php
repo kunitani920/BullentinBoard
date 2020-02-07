@@ -2,6 +2,8 @@
 session_start();
 require_once '../Db.php';
 
+$_SESSION['status'] = 'new';    //完了メッセージ用
+
 $member = $_SESSION;
 //DB接続
 $db = new Db();
@@ -38,7 +40,6 @@ unset($_SESSION['pre']);
 unset($_SESSION['intere_array']);
 unset($_SESSION['message']);
 unset($_SESSION['icon']);
-unset($_SESSION['first_visit']);
 
 header('Location: ../list.php');
 exit();

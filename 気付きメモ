@@ -165,3 +165,14 @@ if($member_info[$i]['member_id'] === $login_member_id)
 なので、
 if($member_info[$i]['member_id'] == $login_member_id)
 で解決
+
+●readme作成すべし
+
+●すぐに実装するもの
+削除画面
+管理者（人事）としてログイン
+email,passwordの変更
+
+●実装を後回しにするもの
+イイね！ボタン
+個性に合わせた色変更

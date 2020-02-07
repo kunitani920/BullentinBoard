@@ -14,11 +14,12 @@ $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
 $members_info->execute(array($login_member_id));
 $member_info = $members_info->fetch();
 
-// if($_SESSION['first_visit'] === 'on') {
-//     $clean = $_SESSION;
-// } else {
+//first_visitを保持する理由は、最初エラーを表示させないこと（$cleanに値をいれることではない）と、変更ミスの時のエラー表示
+if($_SESSION['first_visit'] === 'on') {
+    $clean = $_SESSION;
+} else {
     $clean = sanitize::clean($_POST);
-// }
+}
 
 $error_msg = array();
 
@@ -116,7 +117,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         </div>
         <?php $_SESSION['first_visit'] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
     </form>
 </div>

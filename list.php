@@ -3,6 +3,7 @@ session_start();
 require_once 'Db.php';
 
 $login_member_id = $_SESSION['login_member_id'];
+$status = $_SESSION['status'];
 
 //DB接続
 $db = new Db();
@@ -45,13 +46,32 @@ while($member_interesting[] = $members_interesting->fetch());
         </span>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <a class="nav-link" href="login.php">ログアウト</a>
-                <!-- セッション切ったりする！ -->
+                <form method="post" action="login.php">
+                    <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                </form>
             </li>
         </ul>
     </nav>
 </header>
 <div class="container">
+    <?php
+        if(!empty($status)):
+    ?>
+    <div class="alert alert-success" role="alert">
+        <?php
+            switch ($status) {
+                case 'new':
+                    echo '新規登録が完了しました。';
+                break;
+
+                case 'edit':
+                    echo '編集が完了しました。';
+                break;
+            }
+        ?>
+    </div>
+    <?php endif; ?>
+    
 <main>
     <p><?php var_dump($_SESSION); ?></p>
         <!-- カード -->
@@ -144,3 +164,7 @@ while($member_interesting[] = $members_interesting->fetch());
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<?php
+    unset($_SESSION['status']);
+?>

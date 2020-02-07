@@ -1,61 +1,60 @@
 <?php
 session_start();
+require_once '../sanitize.php';
 require_once '../Db.php';
 
-$member = $_SESSION;
-//DB接続
-$db = new Db();
-$pdo = $db->dbconnect();
-//membersテーブル登録
-$sql_members = 'INSERT INTO members SET email=?, password=?, created=NOW()';
-$members = $pdo->prepare($sql_members);
-$members->execute(array($member['email'], $member['password']));
-//メンバーのID取得
-$member_id = (int) $pdo->lastInsertId();
+$login_member_id = $_SESSION['login_member_id'];
 
-//members_infoテーブル登録
-$sql_members_info = 'INSERT INTO members_info SET member_id=?, last_name=?, first_name=?, nick_name=?, school=?, prefectures_id=?, message=?, icon=?';
-$members_info = $pdo->prepare($sql_members_info);
-$members_info->execute(array($member_id, $member['last_name'], $member['first_name'], $member['nick_name'], $member['school'], $member['pre'], $member['message'], $member['icon']['name']));
+$clean = sanitize::clean($_POST);
 
-//members_interestingテーブル登録
-$sql_members_intere = 'INSERT INTO members_interesting SET member_id=?, interesting1_id=?, interesting2_id=?, interesting3_id=?';
-$members_intere = $pdo->prepare($sql_members_intere);
-$members_intere->execute(array($member_id, $member['intere'][0], $member['intere'][1],$member['intere'][2]));
+//編集する場合のみ、DB接続
+if ($clean['save'] === 'on') {
+    $_SESSION['status'] = 'edit';   //完了メッセージ用
 
-$pdo = null;
+    $member = $_SESSION;
+    //DB接続
+    $db = new Db();
+    $pdo = $db->dbconnect();
+ 
+    //members_infoテーブル登録、icon変更なし
+    $sql_members_info = 'UPDATE members_info SET last_name=?, first_name=?, nick_name=?, school=?, prefectures_id=?, message=? WHERE member_id=?';
+    $members_info = $pdo->prepare($sql_members_info);
+    $members_info->execute(array($member['last_name'], $member['first_name'], $member['nick_name'], $member['school'], $member['pre'], $member['message'], $login_member_id));
+
+    //members_infoテーブル登録、icon変更
+    if ($member['icon']) {
+        $sql_members_info = 'UPDATE members_info SET icon=? WHERE member_id=?';
+        $members_info = $pdo->prepare($sql_members_info);
+        $members_info->execute(array($member['icon']['name'], $login_member_id));
+    }
+    
+    //members_infoテーブル登録、icon削除
+    if (isset($member['icon_delete'])) {
+        $sql_members_info = 'UPDATE members_info SET icon=? WHERE member_id=?';
+        $members_info = $pdo->prepare($sql_members_info);
+        $members_info->execute(array(null, $login_member_id));
+    }
+
+    //members_interestingテーブル登録
+    $sql_members_intere = 'UPDATE members_interesting SET interesting1_id=?, interesting2_id=?, interesting3_id=? WHERE member_id=?';
+    $members_intere = $pdo->prepare($sql_members_intere);
+    $members_intere->execute(array($member['intere_array'][0], $member['intere_array'][1],$member['intere_array'][2], $login_member_id));
+
+    $pdo = null;
+}
+
+unset($_SESSION['email']);
+unset($_SESSION['password']);
+unset($_SESSION['last_name']);
+unset($_SESSION['first_name']);
+unset($_SESSION['nick_name']);
+unset($_SESSION['school']);
+unset($_SESSION['pre']);
+unset($_SESSION['intere_array']);
+unset($_SESSION['message']);
+unset($_SESSION['icon']);
 
 header('Location: ../list.php');
 exit();
 
 ?>
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./style.css">
-
-    <!-- bootstrap CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <title>新規登録</title>
-</head>
-
-<body>
-<div class="container">
-  <h2 class="mt-3">内定者懇親フォーム</h2>
-  <h4 class="mt-3"><?php var_dump($member); ?></h4>
-
-
-
-</div>
-<!-- bootstrap CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-</body>
-</html>

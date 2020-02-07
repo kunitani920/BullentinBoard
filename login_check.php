@@ -1,5 +1,4 @@
 <?php
-
 require_once 'sanitize.php';
 require_once 'Db.php';
 require_once 'validation/emailValidation.php';
@@ -59,6 +58,7 @@ class Login
         //memberログイン成功（email,password一致）
         if ($member && $member['password'] === $this->clean['password']) {
             $_SESSION['login_member_id'] = $member['id'];
+            $_SESSION['first_visit'] = 'on';
             // $_SESSION['time'] = time();
             
             $pdo = null;

@@ -15,7 +15,7 @@ $members_info->execute(array($login_member_id));
 $member_info = $members_info->fetch();
 
 
-if($_SESSION['first_visit'] === 'on' && !empty($_SESSION['message'])) {
+if($_SESSION['first_visit'] === 'on') {
     $clean = $_SESSION;
     $icon = $_SESSION['icon'];
 } else {
@@ -33,6 +33,7 @@ if(!$is_msg) {
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['message'] = $clean['message'];
     $_SESSION['icon'] = $icon;
+    $_SESSION['icon_delete'] = $clean['icon_delete'];
     $_SESSION['first_visit'] = 'on';
     header('Location: edit_confirm.php');
     exit();
@@ -52,43 +53,50 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>新規登録</title>
+    <title>編集</title>
 </head>
 
 <body>
 <div class="container">
+<p><?php var_dump($clean);?></p>
 <h4 class="mt-3">編集したい項目を、変更してください。</h4>
     <form method="post" action="edit_registration_4.php" enctype="multipart/form-data">
         <div class="form-group">
-        <label for="message">●内定者へ一言（120文字以内）</label>
-        <textarea class="form-control" id="message" name="message" rows="3"><?php echo $member_info['message']; ?></textarea>
-        <?php if(!$is_msg && $_SESSION['first_visit'] === 'off'): ?>
-            <p class="text-danger"><?php echo $error_msg['msg']; ?></p>
-        <?php endif; ?>
+            <label for="message">●内定者へ一言（120文字以内）</label>
+            <textarea class="form-control" id="message" name="message" rows="3"><?php echo $member_info['message']; ?></textarea>
+            <?php if(!$is_msg && $_SESSION['first_visit'] === 'off'): ?>
+                <p class="text-danger"><?php echo $error_msg['msg']; ?></p>
+            <?php endif; ?>
         </div>
 
-    <div class="form-group">
-        <p>●アイコン登録（任意）</p>
-        <div class="input-group">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" name="icon">
-                <label class="custom-file-label" for="customFile" data-browse="参照">
-                    <?php
-                        if(isset($icon['name'])) {
-                            echo $icon['name'];
-                        } else {
-                            echo '画像を選択してください（JPG,PNG）...｜変更しない場合は、何も入力しないでください';
-                        }
-                    ?>
-                </label>
+        <div class="form-group mt-3">
+            <h6>●アイコン登録（任意）</h6>
+            <p class="text-warning">変更しない場合は、何も入力しないでください</p>
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name="icon">
+                    <label class="custom-file-label" for="customFile" data-browse="参照">
+                        <?php
+                            //やり直し時、再度入力してもらう必要がある。エラーメッセージがある かつ 前回画像選択している場合
+                            if(!empty($error_msg) && !empty($icon['name'])) { 
+                                echo '再度画像を選択してください（JPG,PNG）...';
+                            } else {
+                                echo '画像を選択してください（JPG,PNG）...';
+                            }
+                        ?>
+                    </label>
+                </div>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary reset">取消</button>
+                </div>
             </div>
-            <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary reset">取消</button>
+            <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="icon_delete" name="icon_delete" value="on">
+                    <label class="form-check-label" for="icon_delete">アイコンを削除する</label>
             </div>
         </div>
-    </div>
-    <?php $_SESSION['first_visit'] = 'off'; ?>
-    <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <?php $_SESSION['first_visit'] = 'off'; ?>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
      </form>
 </div>

@@ -25,8 +25,6 @@ $icon = $_SESSION['icon'];
     <title>登録内容確認</title>
 </head>
 <body>
-<p><?php var_dump($display);?></p>
-<p><?php var_dump($icon);?></p>
 <main>
     <div class="container">
         <div class="row justify-content-center mt-5">         

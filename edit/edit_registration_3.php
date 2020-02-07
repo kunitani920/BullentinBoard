@@ -23,14 +23,14 @@ $clean = sanitize::clean($_POST);
 $error_msg = array();
 
 $intere_validation = new interestingValidation();
-$selection_count = count($_POST['intere_array']);
+$selection_count = count($clean['intere_array']);
 $is_intere = $intere_validation->isSelectionCountMatched($selection_count);
 if(!$is_intere) {
     $error_msg['intere'] = $intere_validation->getErrorMessage();
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
-    $_SESSION['intere'] = $_POST['intere_array'];
+    $_SESSION['intere_array'] = $clean['intere_array'];
     $_SESSION['first_visit'] = 'on';
     header('Location: edit_registration_4.php');
     exit();
@@ -83,7 +83,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         </div>
         <?php $_SESSION["first_visit"] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit" name="submit">次へ</button>
+        <button class="btn btn-primary mt-3" type="submit">次へ</button>
 
     </form>
 </div>

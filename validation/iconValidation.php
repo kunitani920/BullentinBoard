@@ -10,10 +10,8 @@ class iconValidation extends BaseValidation {
         if(!in_array($ext, $this->accept_ext, true)) {
             $msg = '「jpg」か「png」のファイルをご指定ください';
             $this->addErrorMessage($msg);
-        }
-        画像サイズ
-        if($this->max_length < mb_strlen($message)) {
-            $msg = '最大文字数を超えています。';
+        } elseif (1000000 <= $icon['size']) {
+            $msg = '容量が大き過ぎます。1MB未満のファイルをご指定ください';
             $this->addErrorMessage($msg);
         }
 

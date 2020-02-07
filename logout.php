@@ -15,14 +15,14 @@ $email = $_SESSION['email'];
     <!-- bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <title>編集</title>
+    <title>ログアウト</title>
 </head>
 
 <body>
 <div class="container">
-    <h2 class="mt-3">メール、パスか、プロフか選ぶ画面にする</h2>
+    <h2 class="mt-3">ログアウト</h2>
     <div><br></div>
-    <p>こちらのメールアドレスで登録しますが、よろしいですか？</p>
+    <p>ログアウトしますが、よろしいですか？</p>
     <p class="text-success"><strong><u><?php echo $email; ?></u></strong></p>
 
     <div><br></div>

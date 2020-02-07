@@ -55,8 +55,9 @@ $member_interesting = $members_interesting->fetch();
         </span>
         <ul class="nav justify-content-end">                
             <li class="nav-item">
-                <a class="nav-link" href="login.php">ログアウト</a>
-                <!-- セッション切ったりする！ -->
+                <form method="post" action="login.php">
+                    <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                </form>
             </li>
         </ul>
     </nav>

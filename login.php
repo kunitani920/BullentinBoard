@@ -1,6 +1,15 @@
 <?php
+require_once 'sanitize.php';
 
 session_start();
+//ログアウト、セッション破棄
+unset($_SESSION['login_member_id']);
+unset($_SESSION['login_member_name']);
+unset($_SESSION['all_id']);
+//ログアウト表示
+$clean = sanitize::clean($_POST);
+$logout = $clean['logout'];
+//ログインエラー
 $email = $_SESSION['email'];
 $email_error = $_SESSION['email_error'];
 $password_error = $_SESSION['password_error'];
@@ -24,6 +33,13 @@ $match_error = $_SESSION['match_error'];
 </head>
 <body>
 <div class="container">
+    <!-- ログアウト表示 -->
+    <?php if($logout): ?>
+        <div class="alert alert-success mt-3" role="alert">
+            <?php echo 'またのログインお待ちしています。'; ?>
+        </div>
+    <?php endif; ?>
+
     <h2 class="mt-3">内定者懇親フォーム</h2>
     <p>メールアドレス、パスワードを入力してください。</p>
     <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
@@ -68,6 +84,7 @@ $match_error = $_SESSION['match_error'];
             <button type="submit" class="btn btn-primary">ログイン・新規登録</button>
         </div>
     </form>
+    <?php var_dump($_SESSION); ?>
 </div>
 
 

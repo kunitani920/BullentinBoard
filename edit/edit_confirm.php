@@ -22,7 +22,7 @@ $icon = $_SESSION['icon'];
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>登録内容確認</title>
+    <title>編集確認</title>
 </head>
 <body>
 <main>
@@ -33,13 +33,21 @@ $icon = $_SESSION['icon'];
                     <?php
                         move_uploaded_file($icon['tmp_name'],'../img/'.$icon['name']);
                     ?>
-                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="未登録">
+                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="
+                    <?php
+                        if($display['icon_delete'] === 'on') {
+                            echo 'アイコン削除';
+                        } else {
+                            echo '変更なし';
+                        }
+                    ?>
+                    ">
                 </div>
                 <div class="row justify-content-center">
                     <?php
                         for($i = 0; $i < 3; $i++) {
                             $interesting = $pdo->prepare('SELECT intere_name FROM interesting WHERE id=?');
-                            $interesting->execute(array($display['intere'][$i]));
+                            $interesting->execute(array($display['intere_array'][$i]));
                             $intere = $interesting->fetch();
                             echo '<div><span class="badge badge-pill badge-primary mr-1">' . $intere['intere_name'] . '</span></div>';
                         }
@@ -56,7 +64,7 @@ $icon = $_SESSION['icon'];
         <div class="row justify-content-center">
             <div class="col-sm-12 col-lg-5 card border-info m-2">
                 <div class="card-body text-info">
-                    <p class="card-text">ニックネーム：<?php echo $display['NickName']; ?></p>
+                    <p class="card-text">ニックネーム：<?php echo $display['nick_name']; ?></p>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
@@ -66,7 +74,7 @@ $icon = $_SESSION['icon'];
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
                 <div class="card-body text-info">
-                    <p class="card-text">氏名（任意）：<?php echo $display['LastName'] . ' ' . $display['FirstName']; ?></p>
+                    <p class="card-text">氏名（任意）：<?php echo $display['last_name'] . ' ' . $display['first_name']; ?></p>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
@@ -83,8 +91,8 @@ $icon = $_SESSION['icon'];
         </div>
         <form method="post" action="edit_registration_db.php">
             <div class="row justify-content-center  mt-3">
-                <a class="btn btn-secondary mr-3" href="edit_registration_1.php" role="button">やり直す</a>
-                <button class="btn btn-primary" type="submit" name="submit">登録する</button>
+                <button class="btn btn-secondary mr-3" type="submit">編集を破棄して一覧画面に戻る</button>
+                <button class="btn btn-primary" type="submit" name="save" value="on">この内容で登録する</button>
             </div>
         </form>
     </div>
