@@ -4,21 +4,22 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/prefecturesValidation.php';
 
+$edit_id = $_SESSION['edit_id'];
 //first
-$login_member_id = $_SESSION['login_member_id'];
+// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
 $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
-$members_info->execute(array($login_member_id));
+$members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
-if($_SESSION['first_visit'] === 'on') {
-    $clean = $_SESSION;
-} else {
+// if($_SESSION['first_visit'] === 'on') {
+//     $clean = $_SESSION;
+// } else {
     $clean = sanitize::clean($_POST);
-}
+// }
 $error_msg = array();
 
 $prefectures_validation = new prefecturesValidation();
@@ -84,7 +85,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             <div class="row">
                 <label for="inputPre">●出身</label>
                 <select id="inputPre" name="pre" class="form-control mt-1 col-sm-12">
-                    <option value="" <?php if(empty($clean['pre'])) { echo 'selected';} ?>>-都道府県を選択-</option>
+                    <option value="">-都道府県を選択-</option>
                     <?php
                         $prefectures = $pdo->query('SELECT * FROM prefectures');
                         while($pre = $prefectures->fetch()) {

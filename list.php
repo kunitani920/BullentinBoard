@@ -3,7 +3,8 @@ session_start();
 require_once 'Db.php';
 
 $login_member_id = $_SESSION['login_member_id'];
-$status = $_SESSION['status'];
+
+$status = $_SESSION['status'];  //アラート表示用
 
 //DB接続
 $db = new Db();
@@ -19,6 +20,16 @@ while($member_info[$member_count] = $members_info->fetch()) {
 };
 $members_interesting = $pdo->query('SELECT * FROM members_interesting');
 while($member_interesting[] = $members_interesting->fetch());
+
+//管理者ログイン
+if($status === 'jinji') {
+    $login_jinji_id = $_SESSION['login_jinji_id'];
+    $jinjis = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
+    $jinjis->execute(array($login_jinji_id));
+    $jinji = $jinjis->fetch();
+    $login_jinji_name = $jinji['last_name'];
+    $_SESSION['login_jinji_name'] = $login_jinji_name;  //ページ遷移しても名前表示
+}
 
 ?>
 
@@ -36,45 +47,55 @@ while($member_interesting[] = $members_interesting->fetch());
 
     <title>一覧ページ</title>
 </head>
-<body style="padding-top:4.5rem;">
-<header>
-    <nav class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
-        <span class="navbar-text text-primary">
-            <?php 
-                echo sprintf('ようこそ %sさん！%d人の内定者が登録しています。', $login_member_name, $member_count);
-            ?>
-        </span>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <form method="post" action="login.php">
-                    <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
-<div class="container">
-    <?php
-        if(!empty($status)):
-    ?>
-    <div class="alert alert-success" role="alert">
-        <?php
-            switch ($status) {
-                case 'new':
-                    echo '新規登録が完了しました。';
-                break;
 
-                case 'edit':
-                    echo '編集が完了しました。';
-                break;
-            }
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
+            <span class="navbar-text text-primary">
+                <?php
+                    if($status === 'jinji') {
+                        echo sprintf('%sさんログイン｜%d人登録中', $login_jinji_name, $member_count);
+                    } else {
+                        echo sprintf('ようこそ %sさん！%d人の内定者が登録しています。', $login_member_name, $member_count);
+                    }
+                ?>
+            </span>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <form method="post" action="login.php">
+                        <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <?php
+            if(!empty($status)):
         ?>
-    </div>
-    <?php endif; ?>
+        <div class="alert alert-success" role="alert">
+            <?php
+                switch ($status) {
+                    case 'jinji':
+                        echo '管理者でログインしました。';
+                    break;
+                    case 'login':
+                        echo 'ログイン成功しました。';
+                    break;
+                    case 'new':
+                        echo '新規登録が完了しました。';
+                    break;
+                    case 'edit':
+                        echo '編集が完了しました。';
+                    break;
+                }
+            ?>
+        </div>
+        <?php endif; ?>
     
-<main>
-    <p><?php var_dump($_SESSION); ?></p>
-        <!-- カード -->
+    <main>
+        <h4 class="mt-3">一覧ページ</h4>
         <div class="row">
             <?php
                 $i = 0;
@@ -85,7 +106,7 @@ while($member_interesting[] = $members_interesting->fetch());
                 <div class="card mb-3" height="50rem">
                     <div class="row no-gutters">
                         <div class="col-4">
-                            <img class="bd-placeholder-img" width="100%" height="100%" src="./img/<?php echo $member_info[$i]['icon']; ?>" alt="未登録" </img>
+                            <img class="img-fluid rounded-circle bd-placeholder-img mx-auto my-3 d-block" width="80%" height="auto" src="./img/<?php echo $member_info[$i]['icon']; ?>" alt="未登録" </img>
                         </div>
                         <div class="col-8">
                             <div class="card-body">
@@ -119,15 +140,12 @@ while($member_interesting[] = $members_interesting->fetch());
                                         <input type="hidden" name="order" value="<?php echo $i; ?>">
                                         <input class="btn btn-outline-info btn-sm" type="submit" value="詳細ページ">
                                     </form>
-                                    <?php if($member_info[$i]['member_id'] == $login_member_id): ?>
+                                    <?php if($member_info[$i]['member_id'] == $login_member_id || isset($login_jinji_id)): ?>
                                         <form method="post" action="./edit/edit_registration_1.php">
-                                            <input type="hidden" name="detail_id" value="<?php echo $member_info[$i]['member_id'] ?>">
-                                            <input type="hidden" name="order" value="<?php echo $i; ?>">
+                                            <input type="hidden" name="edit_id" value="<?php echo $member_info[$i]['member_id']; ?>">
                                             <input class="btn btn-outline-warning btn-sm ml-1" type="submit" value="編集">
                                         </form>
-                                        <form method="post" action="delete.php">
-                                            <input type="hidden" name="detail_id" value="<?php echo $member_info[$i]['member_id'] ?>">
-                                            <input type="hidden" name="order" value="<?php echo $i; ?>">
+                                        <form method="post" action="./delete/delete_intention.php">
                                             <input class="btn btn-outline-danger btn-sm ml-1" type="submit" value="削除">
                                         </form>
                                     <?php endif; ?>
@@ -155,13 +173,12 @@ while($member_interesting[] = $members_interesting->fetch());
         </nav> -->
         <!-- リンク先がない時、選択できないようにする。などを追加する時
         https://getbootstrap.jp/docs/4.2/components/pagination/ -->
-    </div>
-</main>
-<footer></footer>
+        </div>
+    </main>
 
-<!-- bootstrap CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!-- bootstrap CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </body>
 </html>
 

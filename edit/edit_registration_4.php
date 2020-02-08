@@ -4,24 +4,25 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/messageValidation.php';
 
+$edit_id = $_SESSION['edit_id'];
 //first
-$login_member_id = $_SESSION['login_member_id'];
+// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
 $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
-$members_info->execute(array($login_member_id));
+$members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
 
-if($_SESSION['first_visit'] === 'on') {
-    $clean = $_SESSION;
-    $icon = $_SESSION['icon'];
-} else {
+// if($_SESSION['first_visit'] === 'on') {
+//     // $clean = $_SESSION;
+//     // $icon = $_SESSION['icon'];
+// } else {
     $clean = sanitize::clean($_POST);
     $icon = $_FILES['icon'];
-}
+// }
 $error_msg = array();
 
 $msg_validation = new messageValidation();

@@ -4,14 +4,15 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
+$edit_id = $_SESSION['edit_id'];
 //first
-$login_member_id = $_SESSION['login_member_id'];
+// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
 $members_interesting = $pdo->prepare('SELECT * FROM members_interesting WHERE member_id=?');
-$members_interesting->execute(array($login_member_id));
+$members_interesting->execute(array($edit_id));
 $member_interesting = $members_interesting->fetch();
 $selected_intere = array(
     $member_interesting['interesting1_id'],

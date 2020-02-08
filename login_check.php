@@ -57,6 +57,7 @@ class Login
         
         //memberログイン成功（email,password一致）
         if ($member && $member['password'] === $this->clean['password']) {
+            $_SESSION['status'] = 'login';
             $_SESSION['login_member_id'] = $member['id'];
             $_SESSION['first_visit'] = 'on';
             // $_SESSION['time'] = time();
@@ -68,9 +69,10 @@ class Login
         
         //jinjiログイン成功（email,password一致）
         if ($jinji && $jinji['password'] === $this->clean['password']) {
-            // $_SESSION['id'] = $jinji['id'];
+            $_SESSION['status'] = 'jinji';
+            $_SESSION['login_jinji_id'] = $jinji['id'];
+            $_SESSION['first_visit'] = 'on';
         //   $_SESSION['time'] = time();
-        //jinji用のフラグ
 
         $pdo = null;
         header('Location: list.php');

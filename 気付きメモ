@@ -169,10 +169,16 @@ if($member_info[$i]['member_id'] == $login_member_id)
 ●readme作成すべし
 
 ●すぐに実装するもの
-削除画面
 管理者（人事）としてログイン
-email,passwordの変更
+編集：名前、学校、メッセージ変更はできたが、アイコンが変更なしのハズが消えてしまった。一覧画面に戻ると、管理者権限が消えた
+一覧、詳細｜ログインしてない人排除
+email,passwordの変更とpasswordハッシュ化
 
 ●実装を後回しにするもの
+任意表示（氏名）の有無
 イイね！ボタン
 個性に合わせた色変更
+
+●避難
+edit_registration_2
+<?php if(empty($clean['pre'])) { echo 'selected';} ?>

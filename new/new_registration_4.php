@@ -58,7 +58,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 <div class="container">
     <h2 class="mt-3">内定者懇親フォーム</h2>
     <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
-    <p><?php var_dump($icon); ?></p>
     <form method="post" action="new_registration_4.php" enctype="multipart/form-data">
         <div class="form-group">
             <label for="message">●内定者へ一言（120文字以内）</label>

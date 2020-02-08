@@ -64,10 +64,11 @@ $member_interesting = $members_interesting->fetch();
 </header>
 <main>
 <div class="container"> 
+<h4 class="mt-3">詳細ページ</h4>
     <div class="row justify-content-center mt-5">    
         <div class="col-sm-12 col-lg-4">
             <div class="row justify-content-center">
-                <img class="bd-placeholder-img" width="50%" height="100%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
+                <img class="img-fluid rounded-circle bd-placeholder-img" width="50%" height="100%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
             </div>
             <div class="row justify-content-center">
                 <?php
@@ -139,9 +140,7 @@ $member_interesting = $members_interesting->fetch();
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-3 mt-1">
-                <form method="post" action=".php">
-                    <input type="hidden" name="detail_id" value="<?php echo $member_info['member_id'] ?>">
-                    <input type="hidden" name="order" value="<?php echo $i; ?>">
+                <form method="post" action="./delete/delete_intention.php">
                     <input class="btn btn-danger btn-lg btn-block" type="submit" value="削除">
                 </form>
             </div>
