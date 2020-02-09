@@ -135,6 +135,7 @@ $member_interesting = $members_interesting->fetch();
             <div class="col-md-2"></div>
             <div class="col-md-3">
                 <form method="post" action="./edit/edit_registration_1.php">
+                    <input type="hidden" name="edit_id" value="<?php echo $member_info['member_id']; ?>">
                     <input class="btn btn-warning btn-lg btn-block" type="submit" value="編集">
                 </form>
             </div>

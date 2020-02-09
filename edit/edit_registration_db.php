@@ -18,13 +18,13 @@ if ($clean['save'] === 'on') {
     $db = new Db();
     $pdo = $db->dbconnect();
  
-    //members_infoテーブル登録、icon変更なし
+    //members_infoテーブル登録
     $sql_members_info = 'UPDATE members_info SET last_name=?, first_name=?, nick_name=?, school=?, prefectures_id=?, message=? WHERE member_id=?';
     $members_info = $pdo->prepare($sql_members_info);
     $members_info->execute(array($member['last_name'], $member['first_name'], $member['nick_name'], $member['school'], $member['pre'], $member['message'], $edit_id));
 
     //members_infoテーブル登録、icon変更
-    if ($member['icon']) {
+    if (!empty($member['icon']['name'])) {
         $sql_members_info = 'UPDATE members_info SET icon=? WHERE member_id=?';
         $members_info = $pdo->prepare($sql_members_info);
         $members_info->execute(array($member['icon']['name'], $edit_id));

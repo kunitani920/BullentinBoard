@@ -27,6 +27,7 @@ $icon = $_SESSION['icon'];
 <body>
 <main>
     <div class="container">
+    <p><?php var_dump($_SESSION); ?></p>
         <div class="row justify-content-center mt-5">         
             <div class="col-sm-12 col-lg-4">
                 <div class="row justify-content-center">
