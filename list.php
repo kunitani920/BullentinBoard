@@ -3,6 +3,15 @@ session_start();
 require_once 'Db.php';
 
 $login_member_id = $_SESSION['login_member_id'];
+//管理者ログイン
+$login_jinji_id = $_SESSION['login_jinji_id'];
+
+//不正ログイン
+if(empty($_SESSION['login_member_id']) && empty($_SESSION['login_jinji_id'])) {
+    $_SESSION['status'] = 'not_logged_in';
+    header('Location: login.php');
+    exit();
+}
 
 $status = $_SESSION['status'];  //アラート表示用
 
@@ -18,15 +27,16 @@ while($member_info[$member_count] = $members_info->fetch()) {
     }
     $member_count++;
 };
+$_SESSION['member_count'] = $member_count;
+
 $members_interesting = $pdo->query('SELECT * FROM members_interesting');
 while($member_interesting[] = $members_interesting->fetch());
 
-//管理者ログイン
-if($status === 'jinji') {
-    $login_jinji_id = $_SESSION['login_jinji_id'];
-    $jinjis = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
-    $jinjis->execute(array($login_jinji_id));
-    $jinji = $jinjis->fetch();
+//管理者ログイン時
+if(isset($login_jinji_id)) {
+    $jinjies = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
+    $jinjies->execute(array($login_jinji_id));
+    $jinji = $jinjies->fetch();
     $login_jinji_name = $jinji['last_name'];
     $_SESSION['login_jinji_name'] = $login_jinji_name;  //ページ遷移しても名前表示
 }
@@ -50,17 +60,20 @@ if($status === 'jinji') {
 
 <body style="padding-top:4.5rem;">
     <header>
-        <nav class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
-            <span class="navbar-text text-primary">
-                <?php
-                    if($status === 'jinji') {
-                        echo sprintf('%sさんログイン｜%d人登録中', $login_jinji_name, $member_count);
-                    } else {
-                        echo sprintf('ようこそ %sさん！%d人の内定者が登録しています。', $login_member_name, $member_count);
-                    }
-                ?>
+        <nav class="fixed-top navbar navbar-
+            <?php
+                if(isset($login_jinji_id)) {
+                    echo 'dark bg-dark">';
+                    echo '<span class="navbar-text text-white">';
+                    echo sprintf('%sさんログイン｜%d人登録中', $login_jinji_name, $member_count);
+                } else {
+                    echo 'light" style="background-color: #e3f2fd;">';
+                    echo '<span class="navbar-text text-primary">';
+                    echo sprintf('ようこそ %sさん！%d人の内定者が登録しています', $login_member_name, $member_count);
+                }
+            ?>
             </span>
-            <ul class="nav justify-content-end">
+            <ul class="nav justify-content-end">                
                 <li class="nav-item">
                     <form method="post" action="login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
@@ -94,7 +107,6 @@ if($status === 'jinji') {
         </div>
         <?php endif; ?>
     
-    <main>
         <h4 class="mt-3">一覧ページ</h4>
         <div class="row">
             <?php
@@ -163,19 +175,8 @@ if($status === 'jinji') {
                 $_SESSION['all_id'] = $all_id;
             ?>
         </div>
-
-        <!-- <nav aria-label="...">
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">前</a></li>
-                <li class="page-item"><a class="page-link" href="#">一覧</a></li>
-                <li class="page-item"><a class="page-link" href="#">次</a></li>
-            </ul>
-        </nav> -->
-        <!-- リンク先がない時、選択できないようにする。などを追加する時
-        https://getbootstrap.jp/docs/4.2/components/pagination/ -->
-        </div>
-    </main>
-
+    </div>
+    
     <!-- bootstrap CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

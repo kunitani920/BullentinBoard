@@ -41,9 +41,9 @@ class Login
         $members->execute(array($this->clean['email']));
         $member = $members->fetch();
         //jinjiテーブル参照
-        $admin = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
-        $admin->execute(array($this->clean['email']));
-        $jinji = $admin->fetch();
+        $jinjies = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
+        $jinjies->execute(array($this->clean['email']));
+        $jinji = $jinjies->fetch();
 
         //新規登録（登録emailなし）
         if (!$member && !$jinji) {

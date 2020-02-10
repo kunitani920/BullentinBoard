@@ -12,6 +12,8 @@ $clean = sanitize::clean($_POST);
 $status = $clean['logout'];
 if($_SESSION['status'] === 'delete') {
     $status = $_SESSION['status'];
+} elseif($_SESSION['status'] === 'not_logged_in') {
+    $status = $_SESSION['status'];
 }
 //ログインエラー
 $email = $_SESSION['email'];
@@ -51,6 +53,10 @@ $match_error = $_SESSION['match_error'];
                     case 'delete':
                         echo '削除完了。またの登録お待ちしています。';
                     break;
+                    
+                    case 'not_logged_in':
+                        echo 'メンバー確認出来ませんでした。こちらのページからログインしてください。';
+                    break;
                 }
             ?>
         </div>
@@ -60,7 +66,7 @@ $match_error = $_SESSION['match_error'];
         <?php var_dump($_SESSION); ?>
         <?php var_dump($status); ?>
         <p>メールアドレス、パスワードを入力してください。</p>
-        <p>登録済みの方は、閲覧画面へ。<br/>初めての方は登録フォームへ進みます。</p>
+        <p>登録済みの方は、ログイン。<br/>初めての方は登録フォームへ進みます。</p>
         <div><br></div>
 
         <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>

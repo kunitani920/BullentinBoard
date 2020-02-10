@@ -5,6 +5,14 @@ require_once '../Db.php';
 $_SESSION['status'] = 'new';    //完了メッセージ用
 
 $member = $_SESSION;
+
+//不正ログイン
+if(empty($member['email'])) {
+    $_SESSION['status'] = 'not_logged_in';
+    header('Location: ../login.php');
+    exit();
+}
+
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();

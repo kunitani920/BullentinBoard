@@ -1,0 +1,3 @@
+●ID確認
+list,detail,new_registration_db
+editページは、edit_idがなければDBアクセスされず、listページに入って弾かれるので問題なし。

@@ -1,3 +1,18 @@
+<?php
+require_once '../sanitize.php';
+
+session_start();
+//ログインエラー
+$email = $_SESSION['email'];
+$last_name = $_SESSION['last_name'];
+$first_name = $_SESSION['first_name'];
+$email_error = $_SESSION['email_error'];
+$password_error = $_SESSION['password_error'];
+$last_name_error = $_SESSION['last_name_error'];
+$first_name_error = $_SESSION['first_name_error'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,52 +25,100 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>人事 新規登録</title>
+    <title>新規登録（管理者）</title>
 </head>
 
-<body>
-<div class="container">
-  <h3 class="mt-3">管理者として登録します。<br>情報を入力してください。</h3>
-  <div><br><br></div>
-  <form method="post" action="entry_check.php">
-  <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-3 col-form-label">メールアドレス</label>
-      <div class="col-sm-9">
-        <input type="email" class="form-control" id="inputEmail3" name="emil" placeholder="Email">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword3" class="col-sm-3 col-form-label">パスワード</label>
-      <div class="col-sm-9">
-        <input type="password" class="form-control" id="inputPassword3" name='password' placeholder="Password">
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-9">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck1">
-          <label class="form-check-label" for="gridCheck1">パスワードを記録する</label>
-        </div>
-      </div>
-    </div>
-    <div class="form-row mt-5">
-      <div class="form-group col-md-6">
-        <label for="inputLastname">氏</label>
-        <input type="text" class="form-control" id="inputLastname" placeholder="Last Name（山田）">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="inputFirstname">名</label>
-        <input type="text" class="form-control" id="inputFirstname" placeholder="First Name（太郎）">
-      </div>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-dark bg-dark">
+            <span class="navbar-text text-white">ログインしていません</span>
+        </nav>
+    </header>
+
+    <div class="container">
+        <?php var_dump($_SESSION); ?>
+        <?php var_dump($status); ?>
+        <h4>管理者として、新規登録します。</h4>
+        <h4>必要な情報を入力してください。</h4>
+        <div><br></div>
+        <!-- 編集すれば使えそう -->
+        <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
+            <p class="text-danger"><?php echo $match_error; ?></p>
+        <?php endif; ?>
+
+        <form method="post" action="new_jinji_check.php">
+            <div class="form-group row">
+                <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php if(isset($email)){echo $email;} ?>">
+                    <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-sm-2">
+                            <!-- 空白 -->
+                        </div>
+                        <div class="col-sm-10">
+                            <p class="text-danger"><?php echo $email_error; ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="password" class="col-sm-3 col-form-label">パスワード</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password:4〜12文字">
+                    <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-sm-2">
+                            <!-- 空白 -->
+                        </div>
+                        <div class="col-sm-10">
+                            <p class="text-danger"><?php echo $password_error; ?></p>
+                        </div>
+                        <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="form-row mt-5">
+                <div class="form-group col-md-4">
+                    <label for="input_last_name">氏</label>
+                    <input type="text" class="form-control" id="input_last_name" name="last_name" placeholder="Last Name（山田）" value="<?php if(isset($last_name)){echo $last_name;}?>">
+                </div>
+                <?php if(isset($last_name_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-md-none"><!--md未満、表示-->
+                        <p class="text-danger"><?php echo $last_name_error; ?></p>
+                    </div>
+                <?php endif; ?>
+                <div class="form-group col-md-4">
+                    <label for="input_first_name">名</label>
+                    <input type="text" class="form-control" id="input_first_name" name="first_name" placeholder="First Name（太郎）" value="<?php if(isset($first_name)){echo $first_name;}?>">
+                </div>
+                <?php if(isset($first_name_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-md-none"><!--md未満、表示-->
+                        <p class="text-danger"><?php echo $first_name_error; ?></p>
+                    </div>
+                <?php endif; ?>
+                <div class="col-md-4">
+                    <!-- 空白 -->
+                </div>
+                <?php if(isset($last_name_error) || isset($first_name_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-none d-md-block"><!--md以上、表示-->
+                        <p class="text-danger"><?php echo $last_name_error; ?></p>
+                    </div>
+                    <div class="col-md-4 d-none d-md-block">
+                        <p class="text-danger"><?php echo $first_name_error; ?></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <button type="submit" class="btn btn-primary">新規登録</button>
+
+            <!-- <div class="form-group row">
+            </div> -->
+        </form>
+        <h4>登録済みの方は、ログインページからログインしてください。</h4>
+        <button class="btn btn-primary mt-3" type="submit" name="submit">確認画面へ</button>
     </div>
 
-    <button class="btn btn-primary mt-3" type="submit" name="submit">確認画面へ</button>
-
-  </form>
-</div>
-<!-- bootstrap CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!-- bootstrap CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </body>
 </html>
