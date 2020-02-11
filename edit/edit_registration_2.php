@@ -5,8 +5,6 @@ require_once '../Db.php';
 require_once '../validation/prefecturesValidation.php';
 
 $edit_id = $_SESSION['edit_id'];
-//first
-// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();
@@ -15,11 +13,8 @@ $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
 $members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
-// if($_SESSION['first_visit'] === 'on') {
-//     $clean = $_SESSION;
-// } else {
-    $clean = sanitize::clean($_POST);
-// }
+$clean = sanitize::clean($_POST);
+
 $error_msg = array();
 
 $prefectures_validation = new prefecturesValidation();

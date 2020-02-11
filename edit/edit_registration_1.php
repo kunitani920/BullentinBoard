@@ -5,17 +5,7 @@ require_once '../sanitize.php';
 require_once '../validation/nameValidation.php';
 
 $clean = sanitize::clean($_POST);
-if($_SESSION['first_visit'] === 'on') {
-    $edit_id = $clean['edit_id'];
-    $_SESSION['edit_id'] = $edit_id;
-}
-// $login_member_id = $_SESSION['login_member_id'];
-
-//管理者で編集
-// $login_jinji_id = $_SESSION['login_jinji_id'];
-// if(isset($login_jinji_id)) {
-//     $login_member_id = $clean['jinji_edit'];
-// }
+$edit_id = $_SESSION['edit_id'];
 
 //DB接続
 $db = new Db();
@@ -25,13 +15,6 @@ $members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
 $pdo = null;
-
-//first_visitを保持する理由は、最初エラーを表示させないこと（$cleanに値をいれることではない）と、変更ミスの時のエラー表示
-// if($_SESSION['first_visit'] === 'on') {
-//     // $clean = $_SESSION;
-// } else {
-//     $clean = sanitize::clean($_POST);
-// }
 
 $error_msg = array();
 

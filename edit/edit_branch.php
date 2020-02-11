@@ -1,7 +1,11 @@
 <?php
+require_once '../sanitize.php';
 
 session_start();
-$email = $_SESSION['email'];
+
+$clean = sanitize::clean($_POST);
+$edit_id = $clean['edit_id'];
+$_SESSION['edit_id'] = $edit_id;
 
 ?>
 
@@ -20,14 +24,11 @@ $email = $_SESSION['email'];
 
 <body>
 <div class="container">
-    <h2 class="mt-3">メール、パスか、プロフか選ぶ画面にする</h2>
+    <h4 class="mt-3">編集する項目を選択してください</h4>
     <div><br></div>
-    <p>こちらのメールアドレスで登録しますが、よろしいですか？</p>
-    <p class="text-success"><strong><u><?php echo $email; ?></u></strong></p>
-
-    <div><br></div>
-    <a class="btn btn-secondary" href="../login.php" role="button">戻る</a>
-    <a class="btn btn-primary" href="new_registration_1.php" role="button">このアドレスで登録する</a>
+    <a class="btn btn-secondary" href="../list.php" role="button">戻る</a>
+    <a class="btn btn-success" href="edit_registration_0.php" role="button">メールアドレス、パスワード</a>
+    <a class="btn btn-info" href="edit_registration_1.php" role="button">プロフィール</a>
 </div>
 
 <!-- bootstrap CDN -->

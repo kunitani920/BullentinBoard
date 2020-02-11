@@ -31,7 +31,7 @@ if ($clean['save'] === 'on') {
     }
     
     //members_infoテーブル登録、icon削除
-    if (isset($member['icon_delete'])) {
+    if ($member['icon_delete'] === 'on') {
         $sql_members_info = 'UPDATE members_info SET icon=? WHERE member_id=?';
         $members_info = $pdo->prepare($sql_members_info);
         $members_info->execute(array(null, $edit_id));

@@ -5,8 +5,6 @@ require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
 $edit_id = $_SESSION['edit_id'];
-//first
-// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();

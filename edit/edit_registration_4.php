@@ -3,10 +3,9 @@ session_start();
 require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/messageValidation.php';
+require_once '../validation/iconValidation.php';
 
 $edit_id = $_SESSION['edit_id'];
-//first
-// $login_member_id = $_SESSION['login_member_id'];
 
 //DB接続
 $db = new Db();
@@ -15,20 +14,25 @@ $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
 $members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
+$clean = sanitize::clean($_POST);
+$icon = $_FILES['icon'];
 
-// if($_SESSION['first_visit'] === 'on') {
-//     // $clean = $_SESSION;
-//     // $icon = $_SESSION['icon'];
-// } else {
-    $clean = sanitize::clean($_POST);
-    $icon = $_FILES['icon'];
-// }
 $error_msg = array();
 
 $msg_validation = new messageValidation();
 $is_msg = $msg_validation->isMessage($clean['message']);
+//iconは登録があった時だけ、バリデーション
+if (!empty($icon['name'])) {
+    $icon_validation = new iconValidation();
+    $is_icon = $icon_validation->isIcon($icon, $clean['icon_delete']);
+}
+
 if(!$is_msg) {
     $error_msg['msg'] = $msg_validation->getErrorMessage();
+}
+//icon登録があった時だけ、エラー有無確認
+if(isset($is_icon) && !$is_icon) {
+    $error_msg['icon'] = $icon_validation->getErrorMessage();
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
@@ -36,7 +40,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['icon'] = $icon;
     $_SESSION['icon_delete'] = $clean['icon_delete'];
     $_SESSION['first_visit'] = 'on';
-    header('Location: edit_confirm.php');
+    header('Location: edit_confirm_2.php');
     exit();
 }
 
@@ -60,6 +64,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 <body>
 <div class="container">
 <p><?php var_dump($clean);?></p>
+<p><?php var_dump($is_icon);?></p>
 <h4 class="mt-3">編集したい項目を、変更してください。</h4>
     <form method="post" action="edit_registration_4.php" enctype="multipart/form-data">
         <div class="form-group">
@@ -92,9 +97,13 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                 </div>
             </div>
             <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="icon_delete" name="icon_delete" value="on">
-                    <label class="form-check-label" for="icon_delete">アイコンを削除する</label>
+                <input type="hidden" name="icon_delete" value="off">
+                <input class="form-check-input" type="checkbox" id="icon_delete" name="icon_delete" value="on">
+                <label class="form-check-label" for="icon_delete">アイコンを削除する</label>
             </div>
+            <?php if(!$is_icon && $_SESSION['first_visit'] === 'off'): ?>
+                <p class="text-danger"><?php echo $error_msg['icon']; ?></p>
+            <?php endif; ?>
         </div>
         <?php $_SESSION['first_visit'] = 'off'; ?>
         <button class="btn btn-primary mt-3" type="submit">次へ</button>
