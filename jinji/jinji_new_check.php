@@ -32,17 +32,18 @@ class Login
         if (!$is_first_name) {
             $error_msg['first_name'] = $name_validation->getErrorMessage();
         }
-
+        //入力情報保持（password以外）
+        $_SESSION['email'] = $this->clean['email'];
+        $_SESSION['last_name'] = $this->clean['last_name'];
+        $_SESSION['first_name'] = $this->clean['first_name'];
+        //first_visit設定
+        $_SESSION['first_visit'] = 'off';
         //validationエラー
         if (!$is_email || !$is_password || !$is_last_name || !$is_first_name) {
             $_SESSION['email_error'] = $email_validation->getErrorMessage();
             $_SESSION['password_error'] = $password_validation->getErrorMessage();
             $_SESSION['last_name_error'] = $error_msg['last_name'];
             $_SESSION['first_name_error'] = $error_msg['first_name'];
-            $_SESSION['email'] = $this->clean['email'];
-            $_SESSION['last_name'] = $this->clean['last_name'];
-            $_SESSION['first_name'] = $this->clean['first_name'];
-            $_SESSION['first_visit'] = 'off';
             header('Location: jinji_new.php');
             exit();
         }
@@ -64,7 +65,6 @@ class Login
 
         //新規登録（登録emailなし）
         if (!$jinji && !$member) {
-            $_SESSION['email'] = $this->clean['email'];
             $_SESSION['password'] = $this->clean['password'];
             $_SESSION['first_visit'] = 'on';
             $pdo = null;
@@ -79,7 +79,7 @@ class Login
             $_SESSION['status'] = 'member';
         }
         $pdo = null;
-        header('Location: list.php');
+        header('Location: ../login.php');
         exit();
     }
 }

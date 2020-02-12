@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once '../Db.php';
+
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
+
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
@@ -25,9 +29,33 @@ $icon = $_SESSION['icon'];
     <title>編集確認</title>
 </head>
 <body>
-<main>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-
+            <?php
+                if(isset($login_jinji_name)) {
+                    echo 'dark bg-dark">';
+                    echo '<span class="navbar-text text-white">';
+                    echo $login_jinji_name . 'さんログイン｜メンバープロフィール編集中';
+                } else {
+                    echo 'light" style="background-color: #e3f2fd;">';
+                    echo '<span class="navbar-text text-primary">';
+                    echo 'プロフィール編集中';
+                }
+            ?>
+            </span>
+            <ul class="nav justify-content-end">                
+                <li class="nav-item">
+                    <form method="post" action="login.php">
+                        <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
-    <p><?php var_dump($_SESSION); ?></p>
+        <h4 class="mt-3">プロフィール内容確認</h4>
         <div class="row justify-content-center mt-5">         
             <div class="col-sm-12 col-lg-4">
                 <div class="row justify-content-center">

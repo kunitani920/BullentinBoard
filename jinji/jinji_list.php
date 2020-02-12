@@ -1,45 +1,26 @@
 <?php
 session_start();
-require_once 'Db.php';
+require_once '../Db.php';
 
-$login_member_id = $_SESSION['login_member_id'];
 //管理者ログイン
 $login_jinji_id = $_SESSION['login_jinji_id'];
-
+$login_jinji_name = $_SESSION['login_jinji_name'];
 //不正ログイン
-if(empty($login_member_id) && empty($login_jinji_id)) {
+if(empty($login_jinji_id)) {
     $_SESSION['status'] = 'not_logged_in';
     header('Location: login.php');
     exit();
 }
 
-$status = $_SESSION['status'];  //アラート表示用
+// $status = $_SESSION['status'];  //アラート表示用
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
-$members_info = $pdo->query('SELECT * FROM members_info');
-$member_count = 0;
-while($member_info[$member_count] = $members_info->fetch()) {
-    if($member_info[$member_count]['member_id'] == $login_member_id) {
-        $login_member_name = $member_info[$member_count]['last_name'];
-        $_SESSION['login_member_name'] = $login_member_name;
-    }
-    $member_count++;
-};
-$_SESSION['member_count'] = $member_count;
+$jinjies = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
+$jinjies->execute(array($login_jinji_id));
+$jinji = $jinjies->fetch();
 
-$members_interesting = $pdo->query('SELECT * FROM members_interesting');
-while($member_interesting[] = $members_interesting->fetch());
-
-//管理者ログイン時
-if(isset($login_jinji_id)) {
-    $jinjies = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
-    $jinjies->execute(array($login_jinji_id));
-    $jinji = $jinjies->fetch();
-    $login_jinji_name = $jinji['last_name'];
-    $_SESSION['login_jinji_name'] = $login_jinji_name;  //ページ遷移しても名前表示
-}
 
 ?>
 
@@ -60,28 +41,11 @@ if(isset($login_jinji_id)) {
 
 <body style="padding-top:4.5rem;">
     <header>
-        <nav class="fixed-top navbar navbar-
-            <?php
-                if(isset($login_jinji_id)) {
-                    echo 'dark bg-dark">';
-                    echo '<span class="navbar-text text-white">';
-                    echo sprintf('%sさんログイン｜%d人登録中', $login_jinji_name, $member_count);
-                } else {
-                    echo 'light" style="background-color: #e3f2fd;">';
-                    echo '<span class="navbar-text text-primary">';
-                    echo sprintf('ようこそ %sさん！%d人の内定者が登録しています', $login_member_name, $member_count);
-                }
-            ?>
+        <nav class="fixed-top navbar navbar-dark bg-dark">
+            <span class="navbar-text text-white">
+                <?php echo sprintf('%sさんログイン', $login_jinji_name); ?>
             </span>
-            <ul class="nav justify-content-end">
-                <?php if(isset($login_jinji_id)): ?>
-                    <li class="nav-item">
-                        <!-- <a href="../jinji/jinji_list.php">管理者一覧</a> -->
-                        <form method="post" action="../jinji/jiji_list.php">
-                            <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
-                        </form>
-                    </li>
-                <?php endif; ?>
+            <ul class="nav justify-content-end">                
                 <li class="nav-item">
                     <form method="post" action="login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
@@ -115,7 +79,26 @@ if(isset($login_jinji_id)) {
         </div>
         <?php endif; ?>
     
-        <h4 class="mt-3">一覧ページ</h4>
+        <h4 class="mt-3">管理者専用ページ</h4>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            名前
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">email</p>
+                            <a href="#" class="btn btn-primary">編集</a>
+                            <a href="#" class="btn btn-primary">削除</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
         <div class="row">
             <?php
                 $i = 0;

@@ -19,7 +19,9 @@ $pdo = $db->dbconnect();
 //membersテーブル登録
 $sql_members = 'INSERT INTO members SET email=?, password=?, created=NOW()';
 $members = $pdo->prepare($sql_members);
-$members->execute(array($member['email'], $member['password']));
+$hash_password = password_hash($member['password'], PASSWORD_DEFAULT);  //hash化
+$members->execute(array($member['email'], $hash_password));
+
 //メンバーのID取得
 $member_id = (int) $pdo->lastInsertId();
 
@@ -34,7 +36,7 @@ $members_info->execute(array($member_id, $member['last_name'], $member['first_na
 //members_interestingテーブル登録
 $sql_members_intere = 'INSERT INTO members_interesting SET member_id=?, interesting1_id=?, interesting2_id=?, interesting3_id=?';
 $members_intere = $pdo->prepare($sql_members_intere);
-$members_intere->execute(array($member_id, $member['intere'][0], $member['intere'][1],$member['intere'][2]));
+$members_intere->execute(array($member_id, $member['intere_array'][0], $member['intere_array'][1],$member['intere_array'][2]));
 
 $pdo = null;
 

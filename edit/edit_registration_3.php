@@ -4,6 +4,9 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
+
 $edit_id = $_SESSION['edit_id'];
 
 //DB接続
@@ -52,43 +55,66 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <title>編集</title>
 </head>
 
-<body>
-<div class="container">
-<h4 class="mt-3">編集したい項目を、変更してください。</h4>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-
+            <?php
+                if(isset($login_jinji_name)) {
+                    echo 'dark bg-dark">';
+                    echo '<span class="navbar-text text-white">';
+                    echo $login_jinji_name . 'さんログイン｜メンバープロフィール編集中';
+                } else {
+                    echo 'light" style="background-color: #e3f2fd;">';
+                    echo '<span class="navbar-text text-primary">';
+                    echo 'プロフィール編集中';
+                }
+            ?>
+            </span>
+            <ul class="nav justify-content-end">                
+                <li class="nav-item">
+                    <form method="post" action="login.php">
+                        <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <form method="post" action="edit_registration_3.php">
-        <div class="form-group row">
-            <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
-            <div class="mt-1 col-sm-12">
-                <?php
-                    $interesting = $pdo->query('SELECT * FROM interesting');
-                    while($intere = $interesting->fetch()):
-                ?>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>" 
+    <div class="container">
+        <h4 class="mt-3">プロフィール編集 ：３／４</h4>
+
+        <form method="post" action="edit_registration_3.php">
+            <div class="form-group row">
+                <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>
+                <div class="mt-1 col-sm-12">
                     <?php
-                        if(in_array($intere['id'], $selected_intere, true)) {
-                            echo 'checked';
-                        }
+                        $interesting = $pdo->query('SELECT * FROM interesting');
+                        while($intere = $interesting->fetch()):
                     ?>
-                    >
-                    <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="intere<?php echo $intere['id']; ?>" name="intere_array[]" value="<?php echo $intere['id']; ?>" 
+                        <?php
+                            if(in_array($intere['id'], $selected_intere, true)) {
+                                echo 'checked';
+                            }
+                        ?>
+                        >
+                        <label class="form-check-label" for="intere<?php echo $intere['id'] . '">' . $intere["intere_name"]; ?></label>
+                    </div>
+                    <?php endwhile; ?>
+                    <?php if(!$is_intere && $_SESSION["first_visit"] === "off"): ?>
+                        <p class="text-danger"><?php echo $error_msg["intere"]; ?></p>
+                    <?php endif; ?>
                 </div>
-                <?php endwhile; ?>
-                <?php if(!$is_intere && $_SESSION["first_visit"] === "off"): ?>
-                    <p class="text-danger"><?php echo $error_msg["intere"]; ?></p>
-                <?php endif; ?>
             </div>
-        </div>
-        <?php $_SESSION["first_visit"] = 'off'; ?>
+            <?php $_SESSION["first_visit"] = 'off'; ?>
 
-        <button class="btn btn-primary mt-3" type="submit">次へ</button>
-
-    </form>
-</div>
-<!-- bootstrap CDN -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <button class="btn btn-primary mt-3" type="submit">次へ</button>
+        </form>
+    </div>
+    <!-- bootstrap CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -7,14 +7,15 @@ unset($_SESSION['login_member_id']);
 unset($_SESSION['login_jinji_id']);
 unset($_SESSION['login_member_name']);
 unset($_SESSION['all_id']);
-//ログアウト、削除ステータス設定
+
 $clean = sanitize::clean($_POST);
-$status = $clean['logout'];
-if($_SESSION['status'] === 'delete') {
-    $status = $_SESSION['status'];
-} elseif($_SESSION['status'] === 'not_logged_in') {
-    $status = $_SESSION['status'];
+
+//アラート表示。ログアウトだけはPOST経由
+$status = $_SESSION['status'];
+if($clean['logout']) {
+    $status = $clean['logout'];
 }
+
 //ログインエラー
 $email = $_SESSION['email'];
 $email_error = $_SESSION['email_error'];
@@ -37,7 +38,13 @@ $match_error = $_SESSION['match_error'];
 
     <title>ログイン・新規登録</title>
 </head>
-<body>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text text-primary">ログインしていません</span>
+        </nav>
+    </header>
+
     <div class="container">
         <!-- ログアウト・削除表示 -->
         <?php
@@ -57,16 +64,24 @@ $match_error = $_SESSION['match_error'];
                     case 'not_logged_in':
                         echo 'メンバー確認出来ませんでした。こちらのページからログインしてください。';
                     break;
+                    
+                    case 'jinji':
+                        echo 'メールアドレスが、管理者として登録済みです。こちらのページからログインしてください。';
+                    break;
+                    
+                    case 'member':
+                        echo 'メールアドレスが、メンバーとして登録済みです。こちらのページからログインしてください。';
+                    break;
                 }
             ?>
         </div>
         <?php endif; ?>
 
-        <h2 class="mt-3">内定者懇親フォーム</h2>
         <?php var_dump($_SESSION); ?>
         <?php var_dump($status); ?>
-        <p>メールアドレス、パスワードを入力してください。</p>
-        <p>登録済みの方は、ログイン。<br/>初めての方は登録フォームへ進みます。</p>
+        <h3 class="mt-3">内定者懇親サイトへようこそ！</h3>
+        <h4 class="mt-3">ログイン・新規登録ページ</h4>
+        <p class="mt-4">メールアドレス・パスワードを入力し、ログインしてください。<br>未登録の方は登録フォームへ進みます。</p>
         <div><br></div>
 
         <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
@@ -75,37 +90,35 @@ $match_error = $_SESSION['match_error'];
 
         <form method="post" action="login_check.php">
             <div class="form-group row">
-                <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
-                <div class="col-sm-9">
+                <label for="inputEmail" class="col-lg-2 col-form-label">メールアドレス</label>
+                <div class="col-lg-5">
                     <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php if(isset($email)){echo $email;} ?>">
-                    <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $email_error; ?></p>
-                        </div>
-                    <?php endif; ?>
                 </div>
+                <div class="col-lg-5"></div>
+                <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <p class="text-danger"><?php echo $email_error; ?></p>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="form-group row">
-                <label for="password" class="col-sm-3 col-form-label">パスワード</label>
-                <div class="col-sm-9">
+                <label for="password" class="col-lg-2 col-form-label">パスワード</label>
+                <div class="col-lg-5">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password:4〜12文字">
-                    <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $password_error; ?></p>
-                        </div>
-                        <?php endif; ?>
                 </div>
+                <div class="col-lg-5"></div>
+                <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-9">
+                        <p class="text-danger"><?php echo $password_error; ?></p>
+                    </div>
+                    <?php endif; ?>
             </div>
 
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary">ログイン・新規登録</button>
+            <div class="row">
+                <button type="submit" class="btn btn-primary mt-3">ログイン・新規登録</button>
             </div>
         </form>
     </div>

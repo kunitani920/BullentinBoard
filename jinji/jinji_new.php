@@ -31,50 +31,44 @@ $first_name_error = $_SESSION['first_name_error'];
 <body style="padding-top:4.5rem;">
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
-            <span class="navbar-text text-white">ログインしていません</span>
+            <span class="navbar-text text-white">ログインしていません｜管理者を新規登録中</span>
         </nav>
     </header>
 
     <div class="container">
-        <?php var_dump($_SESSION); ?>
-        <?php var_dump($status); ?>
-        <h4>管理者として、新規登録します。</h4>
-        <h4>必要な情報を入力してください。</h4>
+        <h5>管理者として、新規登録します。</h5>
+        <h5>必要な情報を入力してください。</h5>
         <div><br></div>
-        <!-- 編集すれば使えそう -->
-        <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
-            <p class="text-danger"><?php echo $match_error; ?></p>
-        <?php endif; ?>
 
-        <form method="post" action="new_jinji_check.php">
+        <form method="post" action="jinji_new_check.php">
             <div class="form-group row">
-                <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
-                <div class="col-sm-9">
+                <label for="inputEmail" class="col-lg-2 col-form-label">メールアドレス</label>
+                <div class="col-lg-5">
                     <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php if(isset($email)){echo $email;} ?>">
-                    <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $email_error; ?></p>
-                        </div>
-                    <?php endif; ?>
                 </div>
+                <div class="col-lg-5"></div>
+                <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <p class="text-danger"><?php echo $email_error; ?></p>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="form-group row">
-                <label for="password" class="col-sm-3 col-form-label">パスワード</label>
-                <div class="col-sm-9">
+                <label for="password" class="col-lg-2 col-form-label">パスワード</label>
+                <div class="col-lg-5">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password:4〜12文字">
-                    <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $password_error; ?></p>
-                        </div>
-                        <?php endif; ?>
                 </div>
+                <div class="col-lg-5"></div>
+                <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-2">
+                        <!-- 空白 -->
+                    </div>
+                    <div class="col-lg-5">
+                        <p class="text-danger"><?php echo $password_error; ?></p>
+                    </div>
+                    <?php endif; ?>
             </div>
 
             <div class="form-row mt-5">
@@ -96,9 +90,6 @@ $first_name_error = $_SESSION['first_name_error'];
                         <p class="text-danger"><?php echo $first_name_error; ?></p>
                     </div>
                 <?php endif; ?>
-                <div class="col-md-4">
-                    <!-- 空白 -->
-                </div>
                 <?php if(isset($last_name_error) || isset($first_name_error) && $_SESSION['first_visit'] === 'off'): ?>
                     <div class="col-md-4 d-none d-md-block"><!--md以上、表示-->
                         <p class="text-danger"><?php echo $last_name_error; ?></p>
@@ -108,13 +99,13 @@ $first_name_error = $_SESSION['first_name_error'];
                     </div>
                 <?php endif; ?>
             </div>
-            <button type="submit" class="btn btn-primary">新規登録</button>
-
-            <!-- <div class="form-group row">
-            </div> -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">新規登録</button>
+            </div>
         </form>
-        <h4>登録済みの方は、ログインページからログインしてください。</h4>
-        <button class="btn btn-primary mt-3" type="submit" name="submit">確認画面へ</button>
+        <div class="row mt-5 ml-1">
+            <h5>登録済みの方は、<a href="../login.php" class="alert-link">こちら</a>からログインしてください。</h5>
+        </div>
     </div>
 
     <!-- bootstrap CDN -->

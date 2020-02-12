@@ -51,16 +51,15 @@ class Login
             $_SESSION['password'] = $this->clean['password'];
             $_SESSION['first_visit'] = 'on';
             $pdo = null;
-            header('Location: ./new/new_intention.php');
+            header('Location: ./new/new_confirm_1.php');
             exit();
         } 
         
         //memberログイン成功（email,password一致）
-        if ($member && $member['password'] === $this->clean['password']) {
+        if ($member && password_verify($this->clean['password'], $member['password'])) {
             $_SESSION['status'] = 'login';
             $_SESSION['login_member_id'] = $member['id'];
             $_SESSION['first_visit'] = 'on';
-            // $_SESSION['time'] = time();
             
             $pdo = null;
             header('Location: list.php');
@@ -68,11 +67,10 @@ class Login
         }
         
         //jinjiログイン成功（email,password一致）
-        if ($jinji && $jinji['password'] === $this->clean['password']) {
+        if ($jinji && password_verify($this->clean['password'], $jinji['password'])) {
             $_SESSION['status'] = 'jinji';
             $_SESSION['login_jinji_id'] = $jinji['id'];
             $_SESSION['first_visit'] = 'on';
-        //   $_SESSION['time'] = time();
 
         $pdo = null;
         header('Location: list.php');

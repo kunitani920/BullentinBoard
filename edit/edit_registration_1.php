@@ -4,6 +4,9 @@ require_once '../Db.php';
 require_once '../sanitize.php';
 require_once '../validation/nameValidation.php';
 
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
+
 $clean = sanitize::clean($_POST);
 $edit_id = $_SESSION['edit_id'];
 
@@ -60,60 +63,78 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
         <title>編集</title>
     </head>
 
-<body>
-    <div class="container">
-        <p><?php var_dump($_SESSION); ?></p>
-        <h4 class="mt-3">編集したい項目を、変更してください。</h4>
-        <form method="post" action="edit_registration_1.php">
-            <div class="form-row mt-5">
-            <div class="form-group col-md-4">
-                <label for="input_last_name">氏</label>
-                <input type="text" class="form-control" id="input_last_name" name="last_name" value="<?php echo $member_info['last_name']; ?>">
-            </div>
-            <?php if(!$is_last_name && $_SESSION['first_visit'] === 'off'): ?>
-                <div class="col-md-4 d-md-none">
-                <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
-                </div>
-            <?php endif; ?>
-            <div class="form-group col-md-4">
-                <label for="input_first_name">名</label>
-                <input type="text" class="form-control" id="input_first_name" name="first_name" value="<?php echo $member_info['first_name']; ?>">
-            </div>
-            <?php if(!$is_first_name && $_SESSION['first_visit'] === 'off'): ?>
-                <div class="col-md-4 d-md-none">
-                <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
-                </div>
-            <?php endif; ?>
-            <div class="col-md-4">
-                <!-- 空白 -->
-            </div>
-            <?php if((!$is_last_name || !$is_first_name) && $_SESSION['first_visit'] === 'off'): ?>
-                <div class="col-md-4 d-none d-md-block">
-                <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
-                </div>
-                <div class="col-md-4 d-none d-md-block">
-                <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="input_nick_name">ニックネーム</label>
-                    <input type="text" class="form-control" id="input_nick_name" name="nick_name" value="<?php echo $member_info['nick_name']; ?>">
-                </div>
-                <div class="col-md-8">
-                    <!-- 空白 -->
-                </div>
-                <?php if(!$is_nick_name && $_SESSION['first_visit'] === 'off'): ?>
-                <div class="col-md-4">
-                    <p class="text-danger"><?php echo $error_msg['nick_name']; ?></p>
-                </div>
-                <?php endif; ?>
-            </div>
-            <?php $_SESSION['first_visit'] = 'off'; ?>
+    <body style="padding-top:4.5rem;">
+        <header>
+            <nav class="fixed-top navbar navbar-
+                <?php
+                    if(isset($login_jinji_name)) {
+                        echo 'dark bg-dark">';
+                        echo '<span class="navbar-text text-white">';
+                        echo $login_jinji_name . 'さんログイン｜メンバープロフィール編集中';
+                    } else {
+                        echo 'light" style="background-color: #e3f2fd;">';
+                        echo '<span class="navbar-text text-primary">';
+                        echo 'プロフィール編集中';
+                    }
+                ?>
+                </span>
+                <ul class="nav justify-content-end">                
+                    <li class="nav-item">
+                        <form method="post" action="login.php">
+                            <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
+        <div class="container">
+            <h4 class="mt-3">プロフィール編集 ：１／４</h4>
+            <form method="post" action="edit_registration_1.php">
+                <div class="form-row mt-5">
+                    <div class="form-group col-md-4">
+                        <label for="input_last_name">氏</label>
+                        <input type="text" class="form-control" id="input_last_name" name="last_name" value="<?php echo $member_info['last_name']; ?>">
+                    </div>
+                    <?php if(!$is_last_name && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-md-4 d-md-none">
+                            <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
+                        </div>
+                    <?php endif; ?>
+                    <div class="form-group col-md-4">
+                        <label for="input_first_name">名</label>
+                        <input type="text" class="form-control" id="input_first_name" name="first_name" value="<?php echo $member_info['first_name']; ?>">
+                    </div>
+                    <?php if(!$is_first_name && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-md-4 d-md-none">
+                            <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
+                        </div>
+                    <?php endif; ?>
+                    <div class="col-md-4"></div>
+                    <?php if((!$is_last_name || !$is_first_name) && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-md-4 d-none d-md-block">
+                            <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
+                        </div>
+                        <div class="col-md-4 d-none d-md-block">
+                            <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="input_nick_name">ニックネーム</label>
+                        <input type="text" class="form-control" id="input_nick_name" name="nick_name" value="<?php echo $member_info['nick_name']; ?>">
+                    </div>
+                    <div class="col-md-8"></div>
+                    <?php if(!$is_nick_name && $_SESSION['first_visit'] === 'off'): ?>
+                        <div class="col-md-4">
+                            <p class="text-danger"><?php echo $error_msg['nick_name']; ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <?php $_SESSION['first_visit'] = 'off'; ?>
+                
             <button class="btn btn-primary mt-3" type="submit">次へ</button>
-
         </form>
     </div>
     <!-- bootstrap CDN -->

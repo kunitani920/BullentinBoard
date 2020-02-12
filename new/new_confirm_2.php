@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once '../Db.php';
+
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
+
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
@@ -22,10 +26,17 @@ $icon = $_SESSION['icon'];
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>登録内容確認</title>
+    <title>新規登録</title>
 </head>
-<body>
-<main>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text text-primary">新規登録中</span>
+        </nav>
+    </header>
+    <div class="container">
+        <h4 class="mt-3">プロフィール内容確認</h4>
+
     <div class="container">
         <div class="row justify-content-center mt-5">         
             <div class="col-sm-12 col-lg-4">
@@ -82,7 +93,7 @@ $icon = $_SESSION['icon'];
             </div>
         </div>
         <form method="post" action="new_registration_db.php">
-            <div class="row justify-content-center  mt-3">
+            <div class="row justify-content-center  my-3">
                 <a class="btn btn-secondary mr-3" href="new_registration_1.php" role="button">やり直す</a>
                 <button class="btn btn-primary" type="submit" name="submit">登録する</button>
             </div>

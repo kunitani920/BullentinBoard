@@ -3,6 +3,9 @@ require_once '../sanitize.php';
 
 session_start();
 
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
+
 $clean = sanitize::clean($_POST);
 $edit_id = $clean['edit_id'];
 $_SESSION['edit_id'] = $edit_id;
@@ -22,13 +25,37 @@ $_SESSION['edit_id'] = $edit_id;
     <title>編集</title>
 </head>
 
-<body>
+<body style="padding-top:4.5rem;">
+        <header>
+            <nav class="fixed-top navbar navbar-
+                <?php
+                    if(isset($login_jinji_name)) {
+                        echo 'dark bg-dark">';
+                        echo '<span class="navbar-text text-white">';
+                        echo $login_jinji_name . 'さんログイン｜編集選択';
+                    } else {
+                        echo 'light" style="background-color: #e3f2fd;">';
+                        echo '<span class="navbar-text text-primary">';
+                        echo '編集選択';
+                    }
+                ?>
+            </span>
+            <ul class="nav justify-content-end">                
+                <li class="nav-item">
+                    <form method="post" action="login.php">
+                        <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
 <div class="container">
-    <h4 class="mt-3">編集する項目を選択してください</h4>
-    <div><br></div>
-    <a class="btn btn-secondary" href="../list.php" role="button">戻る</a>
-    <a class="btn btn-success" href="edit_registration_0.php" role="button">メールアドレス、パスワード</a>
-    <a class="btn btn-info" href="edit_registration_1.php" role="button">プロフィール</a>
+    <h4 class="my-3">編集する項目を選択してください。</h4>
+    <div class="row">
+        <a class="btn btn-success mx-3" href="edit_registration_0.php" role="button">メールアドレス、パスワード</a>
+        <a class="btn btn-info" href="edit_registration_1.php" role="button">プロフィール</a>
+    </div>
+    <a class="btn btn-secondary mt-2" href="../list.php" role="button">戻る</a>
 </div>
 
 <!-- bootstrap CDN -->

@@ -23,6 +23,21 @@ class passwordValidation extends BaseValidation {
         }
         return true;
     }
+
+    public function reenterPassword($password, $password2) {
+        if(!isset($password2) || $password2 === '') {
+            $msg = 'パスワードが入力されていません。';
+            $this->addErrorMessage($msg);
+        } elseif($password !== $password2) {
+            $msg = 'パスワードが一致しません。';
+            $this->addErrorMessage($msg);
+        }
+        
+        if($msg) {
+            return false;
+        }
+        return true;
+    }
 }
 
 ?>

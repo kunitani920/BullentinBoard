@@ -47,10 +47,14 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <title>新規登録</title>
 </head>
 
-<body>
-<div class="container">
-    <h2 class="mt-3">内定者懇親フォーム</h2>
-    <h4 class="mt-3">ご登録、ありとうございます。<br>あなたのプロフィールを入力してください。</h4>
+<body style="padding-top:4.5rem;">
+    <header>
+        <nav class="fixed-top navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text text-primary">新規登録中</span>
+        </nav>
+    </header>
+    <div class="container">
+        <h4 class="mt-3">プロフィール登録 ：３／４</h4>
     <form method="post" action="new_registration_3.php">
         <div class="form-group row">
             <div class="mt-3 col-sm-12">●興味があること（３つ選んでください）</div>

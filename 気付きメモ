@@ -177,7 +177,14 @@ if($member_info[$i]['member_id'] == $login_member_id)
 人事登録画面
 →アドレス、パス、名前一気に登録→チェック画面で、アドレス被りを確認。バリデーションし、エラーあれば、戻す。
 バリデーションエラー対応、登録アドレス有り対応、確認画面作成
-email,passwordの変更とpasswordハッシュ化
+
+画像変更＋削除チェック、をバリデーション追加
+passwordハッシュ化
+
+password２回入力
+email,passwordの変更→ブランチを挟む
+
+管理者の編集画面
 
 ●実装を後回しにするもの
 任意表示（氏名）の有無
@@ -185,5 +192,6 @@ email,passwordの変更とpasswordハッシュ化
 個性に合わせた色変更
 
 ●避難
-edit_registration_2
-<?php if(empty($clean['pre'])) { echo 'selected';} ?>
+マイケルさんに聞きたいこと
+・データベースのトライ＆エラー、SQL分もtryの中に入れるべき？
+・クッキー実装すべき？

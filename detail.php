@@ -12,7 +12,7 @@ $login_jinji_id = $_SESSION['login_jinji_id'];
 $login_jinji_name = $_SESSION['login_jinji_name'];
 
 //不正ログイン
-if(empty($_SESSION['login_member_id']) && empty($_SESSION['login_jinji_id'])) {
+if(empty($login_member_id) && empty($login_jinji_id)) {
     $_SESSION['status'] = 'not_logged_in';
     header('Location: login.php');
     exit();
@@ -155,7 +155,7 @@ $member_interesting = $members_interesting->fetch();
             <div class="row mt-2">
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
-                    <form method="post" action="./edit/edit_registration_1.php">
+                    <form method="post" action="./edit/edit_branch.php">
                         <input type="hidden" name="edit_id" value="<?php echo $member_info['member_id']; ?>">
                         <input class="btn btn-warning btn-lg btn-block" type="submit" value="編集">
                     </form>

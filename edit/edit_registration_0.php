@@ -1,16 +1,45 @@
 <?php
+require_once '../Db.php';
 require_once '../sanitize.php';
+require_once '../validation/emailValidation.php';
+require_once '../validation/passwordValidation.php';
 
 session_start();
-先にパスワード２回入力を作成する
+
+//header表示用
+$login_jinji_name = $_SESSION['login_jinji_name'];
 
 $clean = sanitize::clean($_POST);
+$edit_id = $_SESSION['edit_id'];
 
-//ログインエラー
-$email = $_SESSION['email'];
-$email_error = $_SESSION['email_error'];
-$password_error = $_SESSION['password_error'];
-$match_error = $_SESSION['match_error'];
+// DB接続
+$db = new Db();
+$pdo = $db->dbconnect();
+$members = $pdo->prepare('SELECT * FROM members WHERE id=?');
+$members->execute(array($edit_id));
+$member = $members->fetch();
+
+$pdo = null;
+
+$error_msg = array();
+
+//email変更があったら、バリデーション
+if($member['email'] !== $clean['email']) {
+    $email_validation = new emailValidation();
+    $is_email = $email_validation->isEmail($clean['email']);
+    if(!$is_email) {
+        $error_msg['email'] = $email_validation->getErrorMessage();
+    }
+}
+
+//password
+//password_chabge = on + 入力ある＝新しい入力をバリデーション
+//password_change = on + 入力なし＝入力なしをバリデーション＝何も入力されてない、が返ってくる
+//password_change = off + 入力ある＝オフなら入力しないで！と返す
+//password_change = off + 入力なし＝変更なしで受入
+
+
+<input type="hidden" name="password_change" value="on">
 
 ?>
 
@@ -26,62 +55,75 @@ $match_error = $_SESSION['match_error'];
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <title>ログイン・新規登録</title>
-</head>
-<body style="padding-top:4.5rem;">
-    <header>
-        <nav class="fixed-top navbar navbar-light" style="background-color: #e3f2fd;">
-            <span class="navbar-text text-primary">要検討</span>
-        </nav>
-    </header>
+    <title>編集</title>
+    </head>
 
-    <div class="container">
-        <h4 class="mt-3">編集したい項目を、変更してください。</h4>
-        <?php var_dump($_SESSION); ?>
-        <?php var_dump($status); ?>
-        <p>メールアドレス、パスワードを入力してください。</p>
-        <p>登録済みの方は、ログイン。<br/>初めての方は登録フォームへ進みます。</p>
+    <body style="padding-top:4.5rem;">
+        <header>
+            <nav class="fixed-top navbar navbar-
+                <?php
+                    if(isset($login_jinji_name)) {
+                        echo 'dark bg-dark">';
+                        echo '<span class="navbar-text text-white">';
+                        echo $login_jinji_name . 'さんログイン｜メールアドレス、パスワード編集中';
+                    } else {
+                        echo 'light" style="background-color: #e3f2fd;">';
+                        echo '<span class="navbar-text text-primary">';
+                        echo 'メールアドレス、パスワード編集中';
+                    }
+                ?>
+                </span>
+                <ul class="nav justify-content-end">                
+                    <li class="nav-item">
+                        <form method="post" action="login.php">
+                            <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="container">
+            <h4 class="mt-3">メールアドレス、パスワード編集</h4>
         <div><br></div>
 
         <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
             <p class="text-danger"><?php echo $match_error; ?></p>
         <?php endif; ?>
 
-        <form method="post" action="login_check.php">
+        <form method="post" action="edit_registration_0.php">
             <div class="form-group row">
-                <p>メールアドレス</p>
-                <label for="inputEmail" class="col-sm-3 col-form-label">メールアドレス</label>
-                <div class="col-sm-9">
-                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php if(isset($email)){echo $email;} ?>">
-                    <?php if(isset($email_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $email_error; ?></p>
-                        </div>
-                    <?php endif; ?>
+                <label for="inputEmail" class="col-lg-10 col-form-label">メールアドレス</label>
+                <div class="col-lg-5">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php echo $member['email']; ?>">
                 </div>
+                <?php if(!$is_email && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-10">
+                        <p class="text-danger"><?php echo $error_msg['email']; ?></p>
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="form-group row">
-                <label for="password" class="col-sm-3 col-form-label">パスワード</label>
-                <div class="col-sm-9">
+            <div class="form-group row mt-5">
+                <label for="password" class="col-lg-10 col-form-label">パスワード：変更しない場合は、何も入力せずチェックを入れてください。</label>
+                <div class="col-lg-5">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password:4〜12文字">
-                    <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
-                        <div class="col-sm-2">
-                            <!-- 空白 -->
-                        </div>
-                        <div class="col-sm-10">
-                            <p class="text-danger"><?php echo $password_error; ?></p>
-                        </div>
-                        <?php endif; ?>
+                </div>
+                <?php if(isset($password_error) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-lg-10">
+                        <p class="text-danger"><?php echo $password_error; ?></p>
+                    </div>
+                <?php endif; ?>
+                <div class="form-check form-check-inline col-lg-10">
+                    <input type="hidden" name="password_change" value="on">
+                    <input class="form-check-input ml-3" type="checkbox" id="password_change" name="password_change" value="off">
+                    <label class="form-check-label" for="password_change">変更しない</label>
                 </div>
             </div>
-
-            <div class="row">
-                <button type="submit" class="btn btn-primary mt-3">ログイン・新規登録</button>
-            </div>
+            <?php $_SESSION['first_visit'] = 'off'; ?>
+            
+            <a class="btn btn-secondary mt-5" href="../list.php" role="button">編集しないで戻る</a>
+            <button type="submit" class="btn btn-primary mt-5">次へ</button>
         </form>
     </div>
 
@@ -90,9 +132,3 @@ $match_error = $_SESSION['match_error'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </body>
 </html>
-
-<?php
-//sessionの初期化、破棄
-$_SESSION = array();
-session_destroy();
-?>
