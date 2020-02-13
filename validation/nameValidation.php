@@ -5,7 +5,7 @@ class nameValidation extends BaseValidation {
     private $max_strlen = 10;
 
     public function isName($name) {
-        if(!isset($name) || $name === '') {
+        if($name === '') {
             $msg = '入力されていません。';
             $this->addErrorMessage($msg);
         }

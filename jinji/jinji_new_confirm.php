@@ -1,8 +1,7 @@
 <?php
+session_start();
 require_once '../sanitize.php';
 require_once '../validation/passwordValidation.php';
-
-session_start();
 
 $email = $_SESSION['email'];
 $password = $_SESSION['password'];

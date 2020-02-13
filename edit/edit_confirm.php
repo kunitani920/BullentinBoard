@@ -46,7 +46,7 @@ $icon = $_SESSION['icon'];
             </span>
             <ul class="nav justify-content-end">                
                 <li class="nav-item">
-                    <form method="post" action="login.php">
+                    <form method="post" action="../login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
                     </form>
                 </li>
@@ -121,7 +121,7 @@ $icon = $_SESSION['icon'];
         <form method="post" action="edit_registration_db.php">
             <div class="row justify-content-center  mt-3">
                 <button class="btn btn-secondary mr-3" type="submit">編集を破棄して一覧画面に戻る</button>
-                <button class="btn btn-primary" type="submit" name="save" value="on">この内容で登録する</button>
+                <button class="btn btn-primary" type="submit" name="prof" value="on">この内容で登録する</button>
             </div>
         </form>
     </div>

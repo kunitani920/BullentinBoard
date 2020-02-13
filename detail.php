@@ -20,6 +20,8 @@ if(empty($login_member_id) && empty($login_jinji_id)) {
 
 $clean = array();
 $clean = sanitize::clean($_POST);
+
+//prev,nextボタン用
 $all_id = $_SESSION['all_id'];
 $order = $clean['order'];
 $order_max = count($all_id) - 1;
@@ -163,6 +165,7 @@ $member_interesting = $members_interesting->fetch();
                 <div class="col-md-2"></div>
                 <div class="col-md-3 mt-1">
                     <form method="post" action="./delete/delete_intention.php">
+                        <input type="hidden" name="delete_id" value="<?php echo $member_info['member_id']; ?>">
                         <input class="btn btn-danger btn-lg btn-block" type="submit" value="削除">
                     </form>
                 </div>

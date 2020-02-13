@@ -110,12 +110,16 @@ if(isset($login_jinji_id)) {
                     case 'edit':
                         echo '編集が完了しました。';
                     break;
+                    case 'delete':
+                        echo '削除が完了しました。';
+                    break;
                 }
             ?>
         </div>
         <?php endif; ?>
     
         <h4 class="mt-3">一覧ページ</h4>
+        <p><?php var_dump($_SESSION); ?></p>
         <div class="row">
             <?php
                 $i = 0;
@@ -166,6 +170,7 @@ if(isset($login_jinji_id)) {
                                             <input class="btn btn-outline-warning btn-sm ml-1" type="submit" value="編集">
                                         </form>
                                         <form method="post" action="./delete/delete_intention.php">
+                                            <input type="hidden" name="delete_id" value="<?php echo $member_info[$i]['member_id']; ?>">
                                             <input class="btn btn-outline-danger btn-sm ml-1" type="submit" value="削除">
                                         </form>
                                     <?php endif; ?>

@@ -4,13 +4,49 @@ require_once '../sanitize.php';
 require_once '../Db.php';
 
 $edit_id = $_SESSION['edit_id'];
-
-// $login_member_id = $_SESSION['login_member_id'];
+$edit_flag = $_SESSION['edit_flag'];
+$_SESSION['first_visit'] = 'on';
 
 $clean = sanitize::clean($_POST);
 
 //編集する場合のみ、DB接続
-if ($clean['save'] === 'on') {
+//ID（メール、パスワード）編集
+if ($edit_flag) {
+    $_SESSION['status'] = 'edit';   //完了メッセージ用
+
+    $member = $_SESSION;
+    //DB接続
+    $db = new Db();
+    $pdo = $db->dbconnect();
+ 
+    //membersテーブル登録、email・password変更
+    if($member['edit_email'] === 'on' && $member['edit_password'] === 'on') {
+        $sql_members = 'UPDATE members SET email=?, password=? WHERE id=?';
+        $members = $pdo->prepare($sql_members);
+        $hash_password = password_hash($member['password'], PASSWORD_DEFAULT);  //hash化
+        $members->execute(array($member['email'], $hash_password, $edit_id));
+    }
+
+    //membersテーブル登録、emailのみ変更
+    if($member['edit_email'] === 'on' && $member['edit_password'] === 'off') {
+        $sql_members = 'UPDATE members SET email=? WHERE id=?';
+        $members = $pdo->prepare($sql_members);
+        $members->execute(array($member['email'], $edit_id));
+    }
+
+    //membersテーブル登録、passwordのみ変更
+    if($member['edit_email'] === 'off' && $member['edit_password'] === 'on') {
+        $sql_members = 'UPDATE members SET password=? WHERE id=?';
+        $members = $pdo->prepare($sql_members);
+        $hash_password = password_hash($member['password'], PASSWORD_DEFAULT);  //hash化
+        $members->execute(array($hash_password, $edit_id));
+    }
+
+    $pdo = null;
+}
+
+//プロフィール編集
+if ($clean['prof'] === 'on') {
     $_SESSION['status'] = 'edit';   //完了メッセージ用
 
     $member = $_SESSION;
@@ -45,6 +81,11 @@ if ($clean['save'] === 'on') {
     $pdo = null;
 }
 
+unset($_SESSION['email']);
+unset($_SESSION['password']);
+unset($_SESSION['edit_email']);
+unset($_SESSION['edit_password']);
+unset($_SESSION['edit_flag']);
 unset($_SESSION['edit_id']);
 unset($_SESSION['last_name']);
 unset($_SESSION['first_name']);

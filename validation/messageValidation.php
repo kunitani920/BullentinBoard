@@ -5,7 +5,7 @@ class messageValidation extends BaseValidation {
     private $max_length = 120;
 
     public function isMessage($message) {
-        if(!isset($message) || $message === '') {
+        if($message === '') {
             $msg = 'メッセージが入力されていません。';
             $this->addErrorMessage($msg);
         }

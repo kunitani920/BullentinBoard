@@ -43,7 +43,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['icon'] = $icon;
     $_SESSION['icon_delete'] = $clean['icon_delete'];
     $_SESSION['first_visit'] = 'on';
-    header('Location: edit_confirm_2.php');
+    header('Location: edit_confirm.php');
     exit();
 }
 
@@ -82,7 +82,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             <ul class="nav justify-content-end">                
                 <li class="nav-item">
                     <form method="post" action="login.php">
-                        <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
+                        <input class="btn btn-link" type="submit" name="../logout" value="ログアウト">
                     </form>
                 </li>
             </ul>

@@ -1,11 +1,10 @@
 <?php
+session_start();
 require_once '../sanitize.php';
 require_once '../Db.php';
 require_once '../validation/emailValidation.php';
 require_once '../validation/passwordValidation.php';
 require_once '../validation/nameValidation.php';
-
-session_start();
 
 class Login
 {

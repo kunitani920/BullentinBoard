@@ -1,7 +1,7 @@
 <?php
+session_start();
 require_once '../sanitize.php';
 
-session_start();
 //ログインエラー
 $email = $_SESSION['email'];
 $last_name = $_SESSION['last_name'];

@@ -6,7 +6,7 @@ class passwordValidation extends BaseValidation {
     private $max_strlen = 12;
 
     public function isPassword($password) {
-        if(!isset($password) || $password === '') {
+        if($password === '') {
             $msg = 'パスワードが入力されていません。';
             $this->addErrorMessage($msg);
         } elseif(mb_strlen($password) < $this->min_strlen) {
@@ -25,7 +25,7 @@ class passwordValidation extends BaseValidation {
     }
 
     public function reenterPassword($password, $password2) {
-        if(!isset($password2) || $password2 === '') {
+        if($password2 === '') {
             $msg = 'パスワードが入力されていません。';
             $this->addErrorMessage($msg);
         } elseif($password !== $password2) {
@@ -33,6 +33,23 @@ class passwordValidation extends BaseValidation {
             $this->addErrorMessage($msg);
         }
         
+        if($msg) {
+            return false;
+        }
+        return true;
+    }
+
+    public function editPassword($password, $edit_password) {
+        if($edit_password === 'on') {
+            //通常バリデーションへ。変更前と同じかは考慮しない
+            return $this->isPassword($password);
+        }
+
+        if ($password !== '' && $edit_password === 'off') {
+            $msg = '変更する場合は、チェックを入れないでください。';
+            $this->addErrorMessage($msg); 
+        }
+            
         if($msg) {
             return false;
         }

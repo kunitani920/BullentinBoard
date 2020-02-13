@@ -5,7 +5,7 @@ require_once 'BaseValidation.php';
 class prefecturesValidation extends BaseValidation {
 
     public function isSelected($pre) {
-        if(!isset($pre) || $pre === '') {
+        if($pre === '') {
             $msg = '選択されていません。';
             $this->addErrorMessage($msg);
         }

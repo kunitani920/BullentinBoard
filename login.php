@@ -1,7 +1,7 @@
 <?php
+session_start();
 require_once 'sanitize.php';
 
-session_start();
 //ログアウト、セッション破棄
 unset($_SESSION['login_member_id']);
 unset($_SESSION['login_jinji_id']);
