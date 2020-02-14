@@ -22,7 +22,7 @@ if (!$reenter_password) {
 //error_msgなし かつ first_vistでなければ、入力値をSESSIONに保存・first_visitをセットし、登録
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['first_visit'] = 'on';
-    header('Location: jinji_new_registration_db.php');
+    header('Location: jinji_new_db.php');
     exit();
 }
 

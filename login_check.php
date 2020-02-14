@@ -40,7 +40,7 @@ class Login
         $members->execute(array($this->clean['email']));
         $member = $members->fetch();
         //jinjiテーブル参照
-        $jinjies = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
+        $jinjies = $pdo->prepare('SELECT * FROM jinjies WHERE email=?');
         $jinjies->execute(array($this->clean['email']));
         $jinji = $jinjies->fetch();
 
@@ -58,7 +58,7 @@ class Login
         if ($member && password_verify($this->clean['password'], $member['password'])) {
             $_SESSION['status'] = 'login';
             $_SESSION['login_member_id'] = $member['id'];
-            $_SESSION['first_visit'] = 'on';
+            // $_SESSION['first_visit'] = 'on';
             
             $pdo = null;
             header('Location: list.php');
@@ -67,12 +67,12 @@ class Login
         
         //jinjiログイン成功（email,password一致）
         if ($jinji && password_verify($this->clean['password'], $jinji['password'])) {
-            $_SESSION['status'] = 'jinji';
+            $_SESSION['status'] = 'login';
             $_SESSION['login_jinji_id'] = $jinji['id'];
-            $_SESSION['first_visit'] = 'on';
+            // $_SESSION['first_visit'] = 'on';
 
         $pdo = null;
-        header('Location: list.php');
+        header('Location: ./jinji/jinji_list.php');
         exit();
         }
 

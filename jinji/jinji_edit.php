@@ -4,26 +4,33 @@ require_once '../Db.php';
 require_once '../sanitize.php';
 require_once '../validation/emailValidation.php';
 require_once '../validation/passwordValidation.php';
+require_once '../validation/nameValidation.php';
 
 //header表示用
 $login_jinji_name = $_SESSION['login_jinji_name'];
 
 $clean = sanitize::clean($_POST);
-$edit_id = $_SESSION['edit_id'];
+
+if($_SESSION['first_visit'] == 'on') {
+    $edit_id = $clean['edit_id'];
+    $_SESSION['edit_id'] = $edit_id;
+} else {
+    $edit_id = $_SESSION['edit_id'];
+}
 
 // DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
-$members = $pdo->prepare('SELECT * FROM members WHERE id=?');
-$members->execute(array($edit_id));
-$member = $members->fetch();
+$jinjies = $pdo->prepare('SELECT * FROM jinjies WHERE id=?');
+$jinjies->execute(array($edit_id));
+$jinji = $jinjies->fetch();
 
 $pdo = null;
 
 $error_msg = array();
 
 //email変更あり
-if($member['email'] !== $clean['email']) {
+if($jinji['email'] !== $clean['email']) {
     $email_validation = new emailValidation();
     $is_email = $email_validation->isEmail($clean['email']);
     if(!$is_email) {
@@ -32,6 +39,30 @@ if($member['email'] !== $clean['email']) {
     $_SESSION['edit_email'] = 'on';
 } else {
     $_SESSION['edit_email'] = 'off';
+}
+
+//last_name変更あり
+if($jinji['last_name'] !== $clean['last_name']) {
+    $name_validation = new nameValidation();
+    $is_last_name = $name_validation->isName($clean['last_name']);
+    if(!$is_last_name) {
+        $error_msg['last_name'] = $name_validation->getErrorMessage();
+    }
+    $_SESSION['edit_last_name'] = 'on';
+} else {
+    $_SESSION['edit_last_name'] = 'off';
+}
+
+//first_name変更あり
+if($jinji['first_name'] !== $clean['first_name']) {
+    $name_validation = new nameValidation();
+    $is_first_name = $name_validation->isName($clean['first_name']);
+    if(!$is_first_name) {
+        $error_msg['first_name'] = $name_validation->getErrorMessage();
+    }
+    $_SESSION['edit_first_name'] = 'on';
+} else {
+    $_SESSION['edit_first_name'] = 'off';
 }
 
 //password変更あり
@@ -43,17 +74,19 @@ if($clean['edit_password'] === 'on') {
     }
 }
 
-//どちらも変更なし
-if($_SESSION['edit_email'] === 'off' && $clean['edit_password'] === 'off') {
+//変更なし
+if($_SESSION['edit_email'] === 'off' && $_SESSION['edit_last_name'] === 'off' && $_SESSION['edit_first_name'] === 'off' && $clean['edit_password'] === 'off') {
     $error_msg['unedit'] = '変更がありません。「変更しない」ボタンで戻ることができます。';
 }
 
 if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     $_SESSION['email'] = $clean['email'];
     $_SESSION['password'] = $clean['password'];
+    $_SESSION['last_name'] = $clean['last_name'];
+    $_SESSION['first_name'] = $clean['first_name'];
     $_SESSION['edit_password'] = $clean['edit_password'];
     $_SESSION['first_visit'] = 'on';
-    header('Location: edit_confirm_id.php');
+    header('Location: jinji_edit_confirm.php');
     exit();
 }
 
@@ -76,18 +109,9 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
 <body style="padding-top:4.5rem;">
     <header>
-        <nav class="fixed-top navbar navbar-
-            <?php
-                if(isset($login_jinji_name)) {
-                    echo 'dark bg-dark">';
-                    echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . 'さんログイン｜メールアドレス、パスワード編集中';
-                } else {
-                    echo 'light" style="background-color: #e3f2fd;">';
-                    echo '<span class="navbar-text text-primary">';
-                    echo 'メールアドレス、パスワード編集中';
-                }
-            ?>
+        <nav class="fixed-top navbar navbar-dark bg-dark">
+            <span class="navbar-text text-white">
+                <?php echo sprintf('%sさんログイン｜編集中', $login_jinji_name); ?>
             </span>
             <ul class="nav justify-content-end">                
                 <li class="nav-item">
@@ -100,22 +124,51 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     </header>
 
     <div class="container">
-        <h4 class="mt-3">メールアドレス、パスワード編集</h4>
-        <p><?php var_dump($_SESSION); ?></p>
+        <h4 class="mt-3">編集</h4>
 
         <?php if(isset($error_msg['unedit']) && $_SESSION['first_visit'] === 'off'): ?>
             <p class="text-danger"><?php echo $error_msg['unedit']; ?></p>
         <?php endif; ?>
 
-        <form method="post" action="edit_registration_id.php">
+        <form method="post" action="jinji_edit.php">
             <div class="form-group row">
                 <label for="inputEmail" class="col-lg-10 col-form-label">メールアドレス</label>
                 <div class="col-lg-5">
-                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php echo $member['email']; ?>">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<?php echo $jinji['email']; ?>">
                 </div>
                 <?php if(!$is_email && $_SESSION['first_visit'] === 'off'): ?>
                     <div class="col-lg-10">
                         <p class="text-danger"><?php echo $error_msg['email']; ?></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-row mt-5">
+                <div class="form-group col-md-4">
+                    <label for="input_last_name">氏</label>
+                    <input type="text" class="form-control" id="input_last_name" name="last_name" value="<?php echo $jinji['last_name']; ?>">
+                </div>
+                <?php if(!$is_last_name && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-md-none">
+                        <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
+                    </div>
+                <?php endif; ?>
+                <div class="form-group col-md-4">
+                    <label for="input_first_name">名</label>
+                    <input type="text" class="form-control" id="input_first_name" name="first_name" value="<?php echo $jinji['first_name']; ?>">
+                </div>
+                <?php if(!$is_first_name && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-md-none">
+                        <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
+                    </div>
+                <?php endif; ?>
+                <div class="col-md-4"></div>
+                <?php if((!$is_last_name || !$is_first_name) && $_SESSION['first_visit'] === 'off'): ?>
+                    <div class="col-md-4 d-none d-md-block">
+                        <p class="text-danger"><?php echo $error_msg['last_name']; ?></p>
+                    </div>
+                    <div class="col-md-4 d-none d-md-block">
+                        <p class="text-danger"><?php echo $error_msg['first_name']; ?></p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -138,7 +191,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             </div>
             <?php $_SESSION['first_visit'] = 'off'; ?>
             
-            <a class="btn btn-secondary mt-4" href="edit_registration_db.php" role="button">編集しないで戻る</a>
+            <a class="btn btn-secondary mt-4" href="jinji_list.php" role="button">編集しないで戻る</a>
             <button type="submit" class="btn btn-primary mt-4">次へ</button>
         </form>
     </div>

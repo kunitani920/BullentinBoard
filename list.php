@@ -3,8 +3,10 @@ session_start();
 require_once 'Db.php';
 
 $login_member_id = $_SESSION['login_member_id'];
+
 //管理者ログイン
 $login_jinji_id = $_SESSION['login_jinji_id'];
+$login_jinji_name = $_SESSION['login_jinji_name'];
 
 //不正ログイン
 if(empty($login_member_id) && empty($login_jinji_id)) {
@@ -14,6 +16,9 @@ if(empty($login_member_id) && empty($login_jinji_id)) {
 }
 
 $status = $_SESSION['status'];  //アラート表示用
+
+//別ページに行く時必要。（編集破棄で戻った時など）
+$_SESSION['first_visit'] = 'on';
 
 //DB接続
 $db = new Db();
@@ -31,15 +36,6 @@ $_SESSION['member_count'] = $member_count;
 
 $members_interesting = $pdo->query('SELECT * FROM members_interesting');
 while($member_interesting[] = $members_interesting->fetch());
-
-//管理者ログイン時
-if(isset($login_jinji_id)) {
-    $jinjies = $pdo->prepare('SELECT last_name FROM jinji WHERE id=?');
-    $jinjies->execute(array($login_jinji_id));
-    $jinji = $jinjies->fetch();
-    $login_jinji_name = $jinji['last_name'];
-    $_SESSION['login_jinji_name'] = $login_jinji_name;  //ページ遷移しても名前表示
-}
 
 ?>
 
@@ -65,7 +61,7 @@ if(isset($login_jinji_id)) {
                 if(isset($login_jinji_id)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo sprintf('%sさんログイン｜%d人登録中', $login_jinji_name, $member_count);
+                    echo sprintf('%sさんログイン｜メンバー %d人', $login_jinji_name, $member_count);
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
@@ -77,7 +73,7 @@ if(isset($login_jinji_id)) {
                 <?php if(isset($login_jinji_id)): ?>
                     <li class="nav-item">
                         <!-- <a href="../jinji/jinji_list.php">管理者一覧</a> -->
-                        <form method="post" action="../jinji/jiji_list.php">
+                        <form method="post" action="./jinji/jinji_list.php">
                             <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
                         </form>
                     </li>
@@ -98,9 +94,6 @@ if(isset($login_jinji_id)) {
         <div class="alert alert-success" role="alert">
             <?php
                 switch ($status) {
-                    case 'jinji':
-                        echo '管理者でログインしました。';
-                    break;
                     case 'login':
                         echo 'ログイン成功しました。';
                     break;

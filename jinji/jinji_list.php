@@ -4,21 +4,34 @@ require_once '../Db.php';
 
 //管理者
 $login_jinji_id = $_SESSION['login_jinji_id'];
-$login_jinji_name = $_SESSION['login_jinji_name'];
+
 //不正ログイン
 if(empty($login_jinji_id)) {
     $_SESSION['status'] = 'not_logged_in';
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit();
 }
 
-// $status = $_SESSION['status'];  //アラート表示用
+$status = $_SESSION['status'];  //アラート表示用
+
+//jinji4でjinji1のパスワード変更したら、ログイン画面に戻った。しかもパスワード変わってない・・
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
-$jinjies = $pdo->query('SELECT * FROM jinji');
-$jinji = $jinjies->fetch();
+$jinjies = $pdo->query('SELECT * FROM jinjies');
+$jinji_count = 0;
+while($jinji[$jinji_count] = $jinjies->fetch()) {
+    if($jinji[$jinji_count]['id'] == $login_jinji_id) {
+        $login_jinji_name = $jinji[$jinji_count]['last_name'];
+        $_SESSION['login_jinji_name'] = $login_jinji_name;
+    }
+    $jinji_count++;
+}
+$_SESSION['jinji_count'] = $jinji_count;
+
+//別ページに行く時必要。（編集破棄で戻った時など）
+$_SESSION['first_visit'] = 'on';
 
 ?>
 
@@ -29,8 +42,6 @@ $jinji = $jinjies->fetch();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./style.css">
-
-    <!-- bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
@@ -41,9 +52,14 @@ $jinji = $jinjies->fetch();
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
             <span class="navbar-text text-white">
-                <?php echo sprintf('%sさんログイン｜管理者一覧', $login_jinji_name); ?>
+                <?php echo sprintf('%sさんログイン｜管理者 %d人', $login_jinji_name, $jinji_count); ?>
             </span>
             <ul class="nav justify-content-end">                
+                <li class="nav-item">
+                    <form method="post" action="../list.php">
+                        <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
+                    </form>
+                </li>
                 <li class="nav-item">
                     <form method="post" action="../login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
@@ -60,9 +76,6 @@ $jinji = $jinjies->fetch();
         <div class="alert alert-success" role="alert">
             <?php
                 switch ($status) {
-                    case 'jinji':
-                        echo '管理者でログインしました。';
-                    break;
                     case 'login':
                         echo 'ログイン成功しました。';
                     break;
@@ -72,55 +85,45 @@ $jinji = $jinjies->fetch();
                     case 'edit':
                         echo '編集が完了しました。';
                     break;
+                    case 'delete':
+                        echo '削除が完了しました。';
+                    break;
                 }
             ?>
         </div>
         <?php endif; ?>
     
         <h4 class="mt-3">管理者専用ページ</h4>
-
-            <div class="row">
+        <p><?php var_dump($_SESSION); ?></p>
+        <div class="row">
             <?php
                 $i = 0;
                 while($jinji[$i]):
-                    // $all_id[] = $member_info[$i]['member_id'];
             ?>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <?php echo sprintf('氏名：%s %s', $jinji[$i]['last_name'], $jinji[$i]['first_name']); ?>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"><?php echo sprintf('メールアドレス：%s', $jinji[$i]['email']); ?></p>
-                            <a href="#" class="btn btn-primary">編集</a>
-                            <a href="#" class="btn btn-primary">削除</a>
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <div class="card-header">
+                        <?php echo sprintf('氏名：%s %s', $jinji[$i]['last_name'], $jinji[$i]['first_name']); ?>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><?php echo sprintf('メールアドレス：%s', $jinji[$i]['email']); ?></p>
+                        <div class="row ml-1">
+                            <form method="post" action="jinji_edit.php">
+                                <input type="hidden" name="edit_id" value="<?php echo $jinji[$i]['id']; ?>">
+                                <input class="btn btn-outline-warning btn-sm" type="submit" value="編集">
+                            </form>
+                            <form method="post" action="jinji_delete_intention.php">
+                                <input type="hidden" name="delete_id" value="<?php echo $jinji[$i]['id']; ?>">
+                                <input class="btn btn-outline-danger btn-sm ml-3" type="submit" value="削除">
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-編集ボタン、削除ボタンの実装
-                        <?php if($member_info[$i]['member_id'] == $login_member_id || isset($login_jinji_id)): ?>
-                            <form method="post" action="./edit/edit_branch.php">
-                                <input type="hidden" name="edit_id" value="<?php echo $member_info[$i]['member_id']; ?>">
-                                <input class="btn btn-outline-warning btn-sm ml-1" type="submit" value="編集">
-                            </form>
-                            <form method="post" action="./delete/delete_intention.php">
-                                <input class="btn btn-outline-danger btn-sm ml-1" type="submit" value="削除">
-                            </form>
-                        <?php endif; ?>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
             <?php
                 $i++;
                 endwhile;
                 $db = null;
-                $_SESSION['all_id'] = $all_id;
             ?>
         </div>
     </div>

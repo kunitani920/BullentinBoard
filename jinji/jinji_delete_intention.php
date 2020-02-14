@@ -7,24 +7,19 @@ $clean = sanitize::clean($_POST);
 $delete_id = $clean['delete_id'];
 $_SESSION['delete_id'] = $delete_id;
 
-//管理者
 $login_jinji_id = $_SESSION['login_jinji_id'];
 $login_jinji_name = $_SESSION['login_jinji_name'];
 
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
-$members = $pdo->prepare('SELECT email FROM members WHERE id=?');
-$members->execute(array($delete_id));
-$member = $members->fetch();
-$email = $member['email'];
-
-$members_info = $pdo->prepare('SELECT last_name,first_name FROM members_info WHERE member_id=?');
-$members_info->execute(array($delete_id));
-$member_info = $members_info->fetch();
-$last_name = $member_info['last_name'];
-$first_name = $member_info['first_name'];
-
+$jinjies = $pdo->prepare('SELECT * FROM jinjies WHERE id=?');
+$jinjies->execute(array($delete_id));
+$jinji = $jinjies->fetch();
+$email = $jinji['email'];
+$last_name = $jinji['last_name'];
+$first_name = $jinji['first_name'];
+//DB準備オッケー画面整える
 $pdo = null;
 
 ?>
@@ -44,20 +39,16 @@ $pdo = null;
 
 <body style="padding-top:4.5rem;">
     <header>
-        <nav class="fixed-top navbar navbar-
-            <?php
-                if(isset($login_jinji_id)) {
-                    echo 'dark bg-dark">';
-                    echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . 'さんログイン｜削除確認';
-                } else {
-                    echo 'light" style="background-color: #e3f2fd;">';
-                    echo '<span class="navbar-text text-primary">';
-                    echo '削除確認';
-                }
-            ?>
+        <nav class="fixed-top navbar navbar-dark bg-dark">
+            <span class="navbar-text text-white">
+                <?php echo sprintf('%sさんログイン｜削除確認', $login_jinji_name, $jinji_count); ?>
             </span>
             <ul class="nav justify-content-end">                
+                <li class="nav-item">
+                    <form method="post" action="../list.php">
+                        <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
+                    </form>
+                </li>
                 <li class="nav-item">
                     <form method="post" action="../login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
@@ -70,9 +61,9 @@ $pdo = null;
     <div class="container">
         <h4 class="text-danger mt-3"><strong>本当に削除して、よろしいですか？</strong></h4>
         <h5 class="text-secondary my-5"><u><?php echo sprintf('%s %s : %s', $last_name, $first_name, $email); ?></u></h5>
-
-        <form action="delete_db.php" method="post">
-            <a class="btn btn-secondary" href="delete_db.php" role="button">一覧に戻る</a>
+        
+        <form action="jinji_delete_db.php" method="post">
+            <a class="btn btn-secondary" href="jinji_delete_db.php" role="button">一覧に戻る</a>
             <button class="btn btn-danger" type="submit" name="delete_flag" value="on">削除する</button>
         </form>
     </div>

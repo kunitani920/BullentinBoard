@@ -54,7 +54,7 @@ class Login
         $db = new Db();
         $pdo = $db->dbconnect();
         //jinjiテーブル参照
-        $jinjies = $pdo->prepare('SELECT * FROM jinji WHERE email=?');
+        $jinjies = $pdo->prepare('SELECT * FROM jinjies WHERE email=?');
         $jinjies->execute(array($this->clean['email']));
         $jinji = $jinjies->fetch();
         //membersテーブル参照

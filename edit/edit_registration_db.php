@@ -5,11 +5,10 @@ require_once '../Db.php';
 
 $edit_id = $_SESSION['edit_id'];
 $edit_flag = $_SESSION['edit_flag'];
-$_SESSION['first_visit'] = 'on';
 
 $clean = sanitize::clean($_POST);
 
-//編集する場合のみ、DB接続
+//編集する場合のみ、DB接続（編集しない時も、セッション破棄でこのページにくる為）
 //ID（メール、パスワード）編集
 if ($edit_flag) {
     $_SESSION['status'] = 'edit';   //完了メッセージ用
@@ -19,27 +18,19 @@ if ($edit_flag) {
     $db = new Db();
     $pdo = $db->dbconnect();
  
-    //membersテーブル登録、email・password変更
-    if($member['edit_email'] === 'on' && $member['edit_password'] === 'on') {
+    //membersテーブル登録、password変更あり
+    if($member['edit_password'] === 'on') {
         $sql_members = 'UPDATE members SET email=?, password=? WHERE id=?';
         $members = $pdo->prepare($sql_members);
         $hash_password = password_hash($member['password'], PASSWORD_DEFAULT);  //hash化
         $members->execute(array($member['email'], $hash_password, $edit_id));
     }
 
-    //membersテーブル登録、emailのみ変更
-    if($member['edit_email'] === 'on' && $member['edit_password'] === 'off') {
+    //membersテーブル登録、password変更なし
+    if($member['edit_password'] === 'off') {
         $sql_members = 'UPDATE members SET email=? WHERE id=?';
         $members = $pdo->prepare($sql_members);
         $members->execute(array($member['email'], $edit_id));
-    }
-
-    //membersテーブル登録、passwordのみ変更
-    if($member['edit_email'] === 'off' && $member['edit_password'] === 'on') {
-        $sql_members = 'UPDATE members SET password=? WHERE id=?';
-        $members = $pdo->prepare($sql_members);
-        $hash_password = password_hash($member['password'], PASSWORD_DEFAULT);  //hash化
-        $members->execute(array($hash_password, $edit_id));
     }
 
     $pdo = null;

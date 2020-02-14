@@ -17,7 +17,7 @@ if(empty($jinji['email'])) {
 $db = new Db();
 $pdo = $db->dbconnect();
 //jinjiテーブル登録
-$sql_jinjies = 'INSERT INTO jinji SET email=?, password=?, last_name=?, first_name=?, created=NOW()';
+$sql_jinjies = 'INSERT INTO jinjies SET email=?, password=?, last_name=?, first_name=?, created=NOW()';
 $jinjies = $pdo->prepare($sql_jinjies);
 $hash_password = password_hash($jinji['password'], PASSWORD_DEFAULT);  //hash化
 $jinjies->execute(array($jinji['email'], $hash_password, $jinji['last_name'], $jinji['first_name']));
@@ -35,7 +35,7 @@ unset($_SESSION['password']);
 unset($_SESSION['last_name']);
 unset($_SESSION['first_name']);
 
-header('Location: ../list.php');
+header('Location: jinji_list.php');
 exit();
 
 ?>
