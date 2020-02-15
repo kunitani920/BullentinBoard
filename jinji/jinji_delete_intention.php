@@ -63,7 +63,7 @@ $pdo = null;
         <h5 class="text-secondary my-5"><u><?php echo sprintf('%s %s : %s', $last_name, $first_name, $email); ?></u></h5>
         
         <form action="jinji_delete_db.php" method="post">
-            <a class="btn btn-secondary" href="jinji_delete_db.php" role="button">一覧に戻る</a>
+            <a class="btn btn-secondary mr-3" href="jinji_delete_db.php" role="button">一覧に戻る</a>
             <button class="btn btn-danger" type="submit" name="delete_flag" value="on">削除する</button>
         </form>
     </div>

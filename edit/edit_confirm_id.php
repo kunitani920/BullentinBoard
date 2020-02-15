@@ -100,7 +100,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                 </div>
             <?php endif; ?>
             <div class="mt-5 ">
-                <a class="btn btn-secondary mr-2" href="edit_registration_db.php" role="button">編集を破棄して一覧画面に戻る</a>
+                <a class="btn btn-secondary mr-3" href="edit_registration_db.php" role="button">編集を破棄して一覧画面に戻る</a>
                 <button class="btn btn-primary" type="submit" name="edit_flag" value="on">この内容で登録する</button>
             </div>
         </form>

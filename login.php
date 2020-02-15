@@ -2,10 +2,9 @@
 session_start();
 require_once 'sanitize.php';
 
-//ログアウト、セッション破棄
+//ログアウト、すぐに破棄すべきセッション
 unset($_SESSION['login_member_id']);
 unset($_SESSION['login_jinji_id']);
-unset($_SESSION['login_member_name']);
 unset($_SESSION['all_id']);
 
 $clean = sanitize::clean($_POST);

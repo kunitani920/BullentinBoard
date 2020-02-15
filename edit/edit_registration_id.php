@@ -138,7 +138,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             </div>
             <?php $_SESSION['first_visit'] = 'off'; ?>
             
-            <a class="btn btn-secondary mt-4" href="edit_registration_db.php" role="button">編集しないで戻る</a>
+            <a class="btn btn-secondary mt-4 mr-3" href="edit_registration_db.php" role="button">編集しないで戻る</a>
             <button type="submit" class="btn btn-primary mt-4">次へ</button>
         </form>
     </div>

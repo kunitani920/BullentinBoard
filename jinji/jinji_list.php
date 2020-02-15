@@ -94,7 +94,6 @@ $_SESSION['first_visit'] = 'on';
         <?php endif; ?>
     
         <h4 class="mt-3">管理者専用ページ</h4>
-        <p><?php var_dump($_SESSION); ?></p>
         <div class="row">
             <?php
                 $i = 0;
@@ -126,6 +125,8 @@ $_SESSION['first_visit'] = 'on';
                 $db = null;
             ?>
         </div>
+        <a class="btn btn-success mt-3" href="jinji_new.php" role="button">管理者 新規登録（ログアウトします）</a>
+
     </div>
     
     <!-- bootstrap CDN -->

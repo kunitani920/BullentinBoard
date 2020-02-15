@@ -125,7 +125,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
     <div class="container">
         <h4 class="mt-3">編集</h4>
-
+        
         <?php if(isset($error_msg['unedit']) && $_SESSION['first_visit'] === 'off'): ?>
             <p class="text-danger"><?php echo $error_msg['unedit']; ?></p>
         <?php endif; ?>
@@ -191,7 +191,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             </div>
             <?php $_SESSION['first_visit'] = 'off'; ?>
             
-            <a class="btn btn-secondary mt-4" href="jinji_list.php" role="button">編集しないで戻る</a>
+            <a class="btn btn-secondary mt-4 mr-2" href="jinji_list.php" role="button">編集しないで戻る</a>
             <button type="submit" class="btn btn-primary mt-4">次へ</button>
         </form>
     </div>

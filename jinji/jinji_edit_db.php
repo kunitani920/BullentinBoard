@@ -5,13 +5,6 @@ require_once '../Db.php';
 $edit_id = $_SESSION['edit_id'];
 $edit_flag = $_SESSION['edit_flag'];
 
-//不正ログイン
-if(empty($jinji['email'])) {
-    $_SESSION['status'] = 'not_logged_in';
-    header('Location: ../login.php');
-    exit();
-}
-
 //編集する場合のみ、DB接続（編集しない時も、セッション破棄でこのページにくる為）
 if($edit_flag) {
     $_SESSION['status'] = 'edit';    //完了メッセージ用

@@ -71,7 +71,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
     <div class="container">
         <h4 class="mt-3">編集内容確認</h4>
-        <p><?php var_dump($_SESSION); ?></p>
 
         <p class="mt-3 text-success">メールアドレス：<?php echo $email; ?></p>
         <p class="mt-3 text-success">氏名：<?php echo sprintf('%s %s', $last_name, $first_name); ?></p>
