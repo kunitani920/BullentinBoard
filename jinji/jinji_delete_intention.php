@@ -45,11 +45,6 @@ $pdo = null;
             </span>
             <ul class="nav justify-content-end">                
                 <li class="nav-item">
-                    <form method="post" action="../list.php">
-                        <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
-                    </form>
-                </li>
-                <li class="nav-item">
                     <form method="post" action="../login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
                     </form>

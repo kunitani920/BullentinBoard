@@ -50,7 +50,7 @@ $_SESSION['edit_id'] = $edit_id;
     </header>
     <div class="container">
         <h4 class="my-3">編集する項目を選択してください。</h4>
-        <p><?php var_dump($_SESSION); ?></p>
+
         <div class="row">
             <a class="btn btn-success mx-3" href="edit_registration_id.php" role="button">メールアドレス、パスワード</a>
             <a class="btn btn-info" href="edit_registration_1.php" role="button">プロフィール</a>

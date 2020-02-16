@@ -24,18 +24,18 @@ if($delete_flag) {
     $jinjies->execute(array($delete_id));
     
     $pdo = null;
+
+    //自身の削除
+    if($delete_id === $login_jinji_id) {
+        header('Location: ../login.php');
+        exit();
+    }
+
 }
 
-//自身の時
-if($delete_id === $login_jinji_id) {
-    header('Location: ../login.php');
-    exit();
-} else {
-    //他の管理者の時
-    unset($_SESSION['delete_id']);
-    header('Location: jinji_list.php');
-    exit();
-}
-
+//他の管理者の削除 or 削除なし
+unset($_SESSION['delete_id']);
+header('Location: jinji_list.php');
+exit();
 
 ?>

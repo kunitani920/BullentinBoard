@@ -107,7 +107,7 @@ $member_interesting = $members_interesting->fetch();
                 </div>
             </div> 
 
-            <div class="col-sm-12 col-lg-6 border bg-info rounded m-2 p-3">
+            <div class="col-sm-12 col-lg-6 border bg-info text-white rounded m-2 p-3">
                 <?php echo $member_info['message']; ?>
             </div>
 

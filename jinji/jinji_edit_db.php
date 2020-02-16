@@ -2,7 +2,6 @@
 session_start();
 require_once '../Db.php';
 
-$edit_id = $_SESSION['edit_id'];
 $edit_flag = $_SESSION['edit_flag'];
 
 //編集する場合のみ、DB接続（編集しない時も、セッション破棄でこのページにくる為）
@@ -15,17 +14,17 @@ if($edit_flag) {
 
     //password変更あり
     if($jinji['edit_password'] === 'on') {
-        $sql_jinjies = 'UPDATE jinji SET email=?, passsord=?, last_name=?, first_name=? WHERE id=?';
+        $sql_jinjies = 'UPDATE jinjies SET email=?, password=?, last_name=?, first_name=? WHERE id=?';
         $jinjies = $pdo->prepare($sql_jinjies);
         $hash_password = password_hash($jinji['password'], PASSWORD_DEFAULT);  //hash化
-        $jinjies->execute(array($jinji['email'], $hash_password, $jinji['last_name'], $jinji['first_name'], $edit_id));
+        $jinjies->execute(array($jinji['email'], $hash_password, $jinji['last_name'], $jinji['first_name'], $jinji['edit_id']));
     }
 
     //password変更なし
     if($jinji['edit_password'] === 'off') {
-        $sql_jinjies = 'UPDATE jinji SET email=?, last_name=?, first_name=? WHERE id=?';
+        $sql_jinjies = 'UPDATE jinjies SET email=?, last_name=?, first_name=? WHERE id=?';
         $jinjies = $pdo->prepare($sql_jinjies);
-        $jinjies->execute(array($jinji['email'], $jinji['last_name'], $jinji['first_name'], $edit_id));
+        $jinjies->execute(array($jinji['email'], $jinji['last_name'], $jinji['first_name'], $jinji['edit_id']));
     }
 
     $pdo = null;

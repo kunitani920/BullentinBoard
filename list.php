@@ -112,7 +112,7 @@ while($member_interesting[] = $members_interesting->fetch());
         <?php endif; ?>
     
         <h4 class="mt-3">一覧ページ</h4>
-        <p><?php var_dump($_SESSION); ?></p>
+
         <div class="row">
             <?php
                 $i = 0;

@@ -101,8 +101,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
     <div class="container">
         <h4 class="mt-3">メールアドレス、パスワード編集</h4>
-        <p><?php var_dump($_SESSION); ?></p>
-
+ 
         <?php if(isset($error_msg['unedit']) && $_SESSION['first_visit'] === 'off'): ?>
             <p class="text-danger"><?php echo $error_msg['unedit']; ?></p>
         <?php endif; ?>

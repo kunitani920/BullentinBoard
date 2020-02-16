@@ -58,7 +58,7 @@ $icon = $_SESSION['icon'];
                 </div>
             </div> 
 
-            <div class="col-sm-12 col-lg-6 border bg-info rounded m-2 p-3">
+            <div class="col-sm-12 col-lg-6 border bg-info rounded text-white m-2 p-3">
                 <?php echo $display['message']; ?>
             </div>
 
