@@ -71,7 +71,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                 if(isset($login_jinji_name)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . '｜メンバープロフィール編集中';
+                    echo $login_jinji_name . '｜メンバープロフィール';
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
@@ -110,9 +110,10 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                             <?php
                                 //やり直し時、再度入力してもらう必要がある。
                                 if(!empty($error_msg) && !empty($icon['name'])) { 
-                                    echo '再度画像を選択してください（JPG,PNG）...';
+                                    echo '再度選択してください（JPG,PNG）';
+                        
                                 } else {
-                                    echo '画像を選択してください（JPG,PNG）...';
+                                    echo '画像を選択（JPG,PNG）';
                                 }
                             ?>
                         </label>

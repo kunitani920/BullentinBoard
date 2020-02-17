@@ -36,7 +36,7 @@ $icon = $_SESSION['icon'];
                 if(isset($login_jinji_name)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . '｜メンバープロフィール編集中';
+                    echo $login_jinji_name . '｜メンバープロフィール';
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
@@ -62,7 +62,7 @@ $icon = $_SESSION['icon'];
                     <?php
                         move_uploaded_file($icon['tmp_name'],'../img/'.$icon['name']);
                     ?>
-                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="
+                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="40%" height="auto" alt="
                     <?php
                         if($display['icon_delete'] === 'on') {
                             echo 'アイコン削除';

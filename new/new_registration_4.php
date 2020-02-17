@@ -80,9 +80,9 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                         <?php
                             //やり直し時、再度入力してもらう必要がある。エラーメッセージがある かつ 前回画像選択している場合
                             if(!empty($icon['name'])) { 
-                                echo '再度画像を選択してください（JPG,PNG）...';
+                                echo '再度選択してください（JPG,PNG）';
                             } else {
-                                echo '画像を選択してください（JPG,PNG）...';
+                                echo '画像を選択（JPG,PNG）';
                             }
                         ?>
                     </label>

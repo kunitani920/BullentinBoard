@@ -2,6 +2,14 @@
 
 class Db
 {
+    // private $dsn = 'mysql:dbname=naiteisya;host=127.0.0.1;charset=utf8';
+    // private $dbuser = ''; localで実験する時用
+    // private $dbpassword = '';    localで実験する時用
+
+    public function dbconnect() {
+        try {
+            $pdo = new PDO($this->dsn, $this->dbuser, $this->dbpassword);
+
     private $dsn = 'mysql:dbname=naiteisya;host=127.0.0.1;charset=utf8';
     private $dbuser = 'root';
     private $dbpassword = 'root';

@@ -38,13 +38,13 @@ $icon = $_SESSION['icon'];
         <h4 class="mt-3">プロフィール内容確認</h4>
 
     <div class="container">
-        <div class="row justify-content-center mt-5">         
+        <div class="row justify-content-center mt-5">
             <div class="col-sm-12 col-lg-4">
                 <div class="row justify-content-center">
                     <?php
                         move_uploaded_file($icon['tmp_name'],'../img/'.$icon['name']);
                     ?>
-                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="50%" alt="未登録">
+                    <img src="../img/<?php echo $icon['name']; ?>" class="img-fluid rounded-circle" width="40%" height="auto" alt="未登録">
                 </div>
                 <div class="row justify-content-center">
                     <?php
