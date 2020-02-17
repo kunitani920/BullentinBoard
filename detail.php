@@ -72,7 +72,7 @@ $member_interesting = $members_interesting->fetch();
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
-                    echo sprintf('ようこそ %sさん！%d人の内定者が登録しています。', $login_member_name, $member_count);
+                    echo sprintf('ようこそ %sさん！%d人の内定者が登録しています', $login_member_name, $member_count);
                 }
             ?>
             </span>
@@ -173,12 +173,9 @@ $member_interesting = $members_interesting->fetch();
         <?php endif; ?>
 
 
-        <div class="row justify-content-center mt-3">
+        <div class="row justify-content-center my-3">
             <a class="pagination justify-content-center page-link" href="list.php">一覧へ戻る</a>
         </div>
-        <!-- </nav> -->
-        <!-- リンク先がない時、選択できないようにする。などを追加する時
-        https://getbootstrap.jp/docs/4.2/components/pagination/ -->
     </div>    
 
     <!-- bootstrap CDN -->

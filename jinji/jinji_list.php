@@ -14,8 +14,6 @@ if(empty($login_jinji_id)) {
 
 $status = $_SESSION['status'];  //アラート表示用
 
-//jinji4でjinji1のパスワード変更したら、ログイン画面に戻った。しかもパスワード変わってない・・
-
 //DB接続
 $db = new Db();
 $pdo = $db->dbconnect();
@@ -52,9 +50,9 @@ $_SESSION['first_visit'] = 'on';
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
             <span class="navbar-text text-white">
-                <?php echo sprintf('%sさんログイン｜管理者 %d人', $login_jinji_name, $jinji_count); ?>
+                <?php echo sprintf('%s｜管理者 %d人', $login_jinji_name, $jinji_count); ?>
             </span>
-            <ul class="nav justify-content-end">                
+            <ul class="nav justify-content-end navbar-expand-lg">                
                 <li class="nav-item">
                     <form method="post" action="../list.php">
                         <input class="btn btn-link" type="submit" name="list" value="メンバーページ">

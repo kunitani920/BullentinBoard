@@ -61,7 +61,7 @@ while($member_interesting[] = $members_interesting->fetch());
                 if(isset($login_jinji_id)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo sprintf('%sさんログイン｜メンバー %d人', $login_jinji_name, $member_count);
+                    echo sprintf('%s｜メンバー %d人', $login_jinji_name, $member_count);
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';

@@ -31,7 +31,7 @@ $_SESSION['edit_id'] = $edit_id;
                 if(isset($login_jinji_name)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . 'さんログイン｜編集選択';
+                    echo $login_jinji_name . '｜編集選択';
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';

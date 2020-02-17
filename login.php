@@ -76,7 +76,7 @@ $match_error = $_SESSION['match_error'];
         </div>
         <?php endif; ?>
 
-        <h3 class="mt-3">内定者懇親サイトへようこそ！test</h3>
+        <h3 class="mt-3">内定者懇親サイトへようこそ！</h3>
         <h4 class="mt-3">ログイン・新規登録ページ</h4>
         <p class="mt-4">メールアドレス・パスワードを入力し、ログインしてください。<br>未登録の方は登録フォームへ進みます。</p>
         <div><br></div>
@@ -115,7 +115,7 @@ $match_error = $_SESSION['match_error'];
             </div>
 
             <div class="row">
-                <button type="submit" class="btn btn-primary mt-3">ログイン・新規登録</button>
+                <button type="submit" class="btn btn-primary mt-3 ml-3">ログイン・新規登録</button>
             </div>
         </form>
     </div>

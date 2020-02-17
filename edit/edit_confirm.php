@@ -36,7 +36,7 @@ $icon = $_SESSION['icon'];
                 if(isset($login_jinji_name)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . 'さんログイン｜メンバープロフィール編集中';
+                    echo $login_jinji_name . '｜メンバープロフィール編集中';
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
@@ -119,7 +119,7 @@ $icon = $_SESSION['icon'];
             </div>
         </div>
         <form method="post" action="edit_registration_db.php">
-            <div class="row justify-content-center  mt-3">
+            <div class="row justify-content-center  my-3">
                 <button class="btn btn-secondary mr-3" type="submit">編集を破棄して一覧画面に戻る</button>
                 <button class="btn btn-primary" type="submit" name="prof" value="on">この内容で登録する</button>
             </div>

@@ -49,7 +49,7 @@ $pdo = null;
                 if(isset($login_jinji_id)) {
                     echo 'dark bg-dark">';
                     echo '<span class="navbar-text text-white">';
-                    echo $login_jinji_name . 'さんログイン｜削除確認';
+                    echo $login_jinji_name . '｜削除確認';
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';

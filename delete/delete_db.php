@@ -4,6 +4,7 @@ require_once '../Db.php';
 require_once '../sanitize.php';
 
 $delete_id = $_SESSION['delete_id'];
+$login_jinji_id = $_SESSION['login_jinji_id'];
 
 $clean = sanitize::clean($_POST);
 $delete_flag = $clean['delete_flag'];
@@ -33,16 +34,17 @@ if($delete_flag) {
     $members_intere->execute(array($delete_id));
     
     $pdo = null;
+    
+    if(!isset($login_jinji_id)) {
+        header('Location: ../login.php');
+        exit();
+    }
+    
 }
 
-if($_SESSION['login_jinji_id']) {
-    header('Location: ../list.php');
-    exit();
-} else {
-    //member
-    unset($_SESSION['delete_id']);
-    header('Location: ../login.php');
-    exit();
-}
+unset($_SESSION['delete_id']);
+
+header('Location: ../list.php');
+exit();
 
 ?>

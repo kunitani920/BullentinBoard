@@ -191,8 +191,8 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
             </div>
             <?php $_SESSION['first_visit'] = 'off'; ?>
             
-            <a class="btn btn-secondary mt-4 mr-2" href="jinji_list.php" role="button">編集しないで戻る</a>
-            <button type="submit" class="btn btn-primary mt-4">次へ</button>
+            <a class="btn btn-secondary my-3 mr-2" href="jinji_list.php" role="button">編集しないで戻る</a>
+            <button type="submit" class="btn btn-primary my-3">次へ</button>
         </form>
     </div>
 
