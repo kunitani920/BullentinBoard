@@ -65,7 +65,7 @@ while($member_interesting[] = $members_interesting->fetch());
                 } else {
                     echo 'light" style="background-color: #e3f2fd;">';
                     echo '<span class="navbar-text text-primary">';
-                    echo sprintf('ようこそ %sさん！%d人の内定者が登録しています', $login_member_name, $member_count);
+                    echo sprintf('%sさん含め、%d人登録中', $login_member_name, $member_count);
                 }
             ?>
             </span>
@@ -103,7 +103,7 @@ while($member_interesting[] = $members_interesting->fetch());
         </div>
         <?php endif; ?>
 
-        <div class="row mt-3">
+        <div class="row mt-3 ml-1">
             <h4>一覧ページ</h4>
             <?php if(isset($login_jinji_id)): ?>
                 <form method="post" action="./jinji/jinji_list.php">

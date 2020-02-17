@@ -86,7 +86,7 @@ $_SESSION['first_visit'] = 'on';
         </div>
         <?php endif; ?>
 
-        <div class="row mt-3">
+        <div class="row mt-3 ml-1">
             <h4>管理者専用ページ</h4>
             <form method="post" action="../list.php">
                 <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
