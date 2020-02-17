@@ -70,14 +70,6 @@ while($member_interesting[] = $members_interesting->fetch());
             ?>
             </span>
             <ul class="nav justify-content-end">
-                <?php if(isset($login_jinji_id)): ?>
-                    <li class="nav-item">
-                        <!-- <a href="../jinji/jinji_list.php">管理者一覧</a> -->
-                        <form method="post" action="./jinji/jinji_list.php">
-                            <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
-                        </form>
-                    </li>
-                <?php endif; ?>
                 <li class="nav-item">
                     <form method="post" action="login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
@@ -112,6 +104,11 @@ while($member_interesting[] = $members_interesting->fetch());
         <?php endif; ?>
     
         <h4 class="mt-3">一覧ページ</h4>
+        <?php if(isset($login_jinji_id)): ?>
+            <form method="post" action="./jinji/jinji_list.php">
+                <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
+            </form>
+        <?php endif; ?>
 
         <div class="row">
             <?php

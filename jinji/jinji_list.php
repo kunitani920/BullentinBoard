@@ -54,11 +54,6 @@ $_SESSION['first_visit'] = 'on';
             </span>
             <ul class="nav justify-content-end navbar-expand-lg">                
                 <li class="nav-item">
-                    <form method="post" action="../list.php">
-                        <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
-                    </form>
-                </li>
-                <li class="nav-item">
                     <form method="post" action="../login.php">
                         <input class="btn btn-link" type="submit" name="logout" value="ログアウト">
                     </form>
@@ -92,6 +87,9 @@ $_SESSION['first_visit'] = 'on';
         <?php endif; ?>
     
         <h4 class="mt-3">管理者専用ページ</h4>
+        <form method="post" action="../list.php">
+            <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
+        </form>
         <div class="row">
             <?php
                 $i = 0;
