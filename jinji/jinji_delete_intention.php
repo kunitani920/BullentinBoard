@@ -41,7 +41,7 @@ $pdo = null;
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
             <span class="navbar-text text-white">
-                <?php echo sprintf('%sさんログイン｜削除確認', $login_jinji_name, $jinji_count); ?>
+                <?php echo sprintf('%s｜削除確認', $login_jinji_name, $jinji_count); ?>
             </span>
             <ul class="nav justify-content-end">                
                 <li class="nav-item">

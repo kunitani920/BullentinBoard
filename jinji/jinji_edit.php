@@ -111,7 +111,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
             <span class="navbar-text text-white">
-                <?php echo sprintf('%sさんログイン｜編集中', $login_jinji_name); ?>
+                <?php echo sprintf('%s｜編集中', $login_jinji_name); ?>
             </span>
             <ul class="nav justify-content-end">                
                 <li class="nav-item">

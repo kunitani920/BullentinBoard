@@ -34,7 +34,7 @@ $first_name_error = $_SESSION['first_name_error'];
 <body style="padding-top:4.5rem;">
     <header>
         <nav class="fixed-top navbar navbar-dark bg-dark">
-            <span class="navbar-text text-white">ログインしていません｜管理者を新規登録中</span>
+            <span class="navbar-text text-white">ログインしていません</span>
         </nav>
     </header>
 
