@@ -102,13 +102,15 @@ while($member_interesting[] = $members_interesting->fetch());
             ?>
         </div>
         <?php endif; ?>
-    
-        <h4 class="mt-3">一覧ページ</h4>
-        <?php if(isset($login_jinji_id)): ?>
-            <form method="post" action="./jinji/jinji_list.php">
-                <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
-            </form>
-        <?php endif; ?>
+
+        <div class="row mt-3">
+            <h4>一覧ページ</h4>
+            <?php if(isset($login_jinji_id)): ?>
+                <form method="post" action="./jinji/jinji_list.php">
+                    <input class="btn btn-link" type="submit" name="list" value="管理者専用ページ">
+                </form>
+            <?php endif; ?>
+        </div>
 
         <div class="row">
             <?php

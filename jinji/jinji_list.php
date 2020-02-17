@@ -85,11 +85,13 @@ $_SESSION['first_visit'] = 'on';
             ?>
         </div>
         <?php endif; ?>
-    
-        <h4 class="mt-3">管理者専用ページ</h4>
-        <form method="post" action="../list.php">
-            <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
-        </form>
+
+        <div class="row mt-3">
+            <h4>管理者専用ページ</h4>
+            <form method="post" action="../list.php">
+                <input class="btn btn-link" type="submit" name="list" value="メンバーページ">
+            </form>
+        </div>
         <div class="row">
             <?php
                 $i = 0;
@@ -121,7 +123,7 @@ $_SESSION['first_visit'] = 'on';
                 $db = null;
             ?>
         </div>
-        <a class="btn btn-success mt-3" href="jinji_new.php" role="button">管理者 新規登録（ログアウトします）</a>
+        <a class="btn btn-success my-3" href="jinji_new.php" role="button">管理者 新規登録（ログアウトします）</a>
 
     </div>
     

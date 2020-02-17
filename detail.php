@@ -91,7 +91,7 @@ $member_interesting = $members_interesting->fetch();
         <div class="row justify-content-center mt-5">    
             <div class="col-sm-12 col-lg-4">
                 <div class="row justify-content-center">
-                    <img class="img-fluid rounded-circle bd-placeholder-img" width="50%" height="100%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
+                    <img class="img-fluid rounded-circle bd-placeholder-img" width="50%" height="50%" src="./img/<?php echo $member_info['icon']; ?>" alt="未登録" </img>
                 </div>
                 <div class="row justify-content-center">
                     <?php

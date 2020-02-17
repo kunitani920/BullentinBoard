@@ -115,7 +115,7 @@ $match_error = $_SESSION['match_error'];
             </div>
 
             <div class="row">
-                <button type="submit" class="btn btn-primary mt-3 ml-3">ログイン・新規登録</button>
+                <button type="submit" class="btn btn-primary my-3 ml-3">ログイン・新規登録</button>
             </div>
         </form>
     </div>
