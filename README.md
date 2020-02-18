@@ -23,5 +23,5 @@ https://bullentinboard-tani.herokuapp.com/login.php
 
 ## 補足 
 PHPの基礎力のアウトプットとして  
-**「ログイン、CRUDをフレームワークなしでコーディングする！」**  
+**「ログイン、CRUDをフレームワークなしで、スクラッチ開発する！」**  
 ことを主旨にしています。  
