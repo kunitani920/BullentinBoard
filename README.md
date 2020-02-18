@@ -18,7 +18,7 @@ https://bullentinboard-tani.herokuapp.com/login.php
 こちらのサンプルユーザーにてログインが可能です。  
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
 ### 使用言語、フレームワーク  
-・PHP 7.3.11 
+・PHP 7.3.11  
 ・HTML/CSS、Bootstrap4    
 
 ## 補足 
