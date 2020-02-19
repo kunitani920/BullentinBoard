@@ -19,9 +19,11 @@ https://bullentinboard-tani.herokuapp.com/login.php
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
 ### 使用言語、フレームワーク  
 ・PHP 7.3.11  
-・HTML/CSS、Bootstrap4    
+・HTML/CSS、Bootstrap4
+・MySQL 5.7.26
 
-## 補足 
-PHPの基礎力のアウトプットとして  
-**「ログイン、CRUDをフレームワークなしで、スクラッチ開発する！」**  
-ことを主旨にしています。  
+## 補足   
+設計図や、気を付けた点などQiitaに投稿しています。
+こちら参照いただけれると幸いです。
+【PHP】就職活動の為の、webアプリ（ポートフォリオ）設計図公開！｜未経験からエンジニアへ
+https://qiita.com/tani35web1/items/4bcc36cc2ba96065f788
