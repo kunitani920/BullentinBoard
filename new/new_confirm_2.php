@@ -77,7 +77,7 @@ $icon = $_SESSION['icon'];
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
                 <div class="card-body text-info">
-                    <p class="card-text">氏名（任意）：<?php echo $display['last_name'] . ' ' . $display['first_name']; ?></p>
+                    <p class="card-text">氏名：<?php echo $display['last_name'] . ' ' . $display['first_name']; ?></p>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 card border-info m-2">
