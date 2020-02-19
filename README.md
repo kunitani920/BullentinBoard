@@ -23,7 +23,7 @@ https://bullentinboard-tani.herokuapp.com/login.php
 ・MySQL 5.7.26
 
 ## 補足   
-設計図や、気を付けた点などQiitaに投稿しています。
-こちら参照いただけれると幸いです。
-【PHP】就職活動の為の、webアプリ（ポートフォリオ）設計図公開！｜未経験からエンジニアへ
+設計図や、気を付けた点などQiitaに投稿しています。  
+こちら参照いただけれると幸いです。  
+【PHP】就職活動の為の、webアプリ（ポートフォリオ）設計図公開！｜未経験からエンジニアへ  
 https://qiita.com/tani35web1/items/4bcc36cc2ba96065f788
