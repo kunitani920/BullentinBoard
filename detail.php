@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'Db.php';
-require_once 'sanitize.php';
+require_once 'hsc.php';
 
 $login_member_id = $_SESSION['login_member_id'];
 $login_member_name = $_SESSION['login_member_name'];
@@ -19,7 +19,7 @@ if(empty($login_member_id) && empty($login_jinji_id)) {
 }
 
 $clean = array();
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 
 //prev,nextボタン用
 $all_id = $_SESSION['all_id'];

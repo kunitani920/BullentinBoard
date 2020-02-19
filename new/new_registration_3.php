@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../sanitize.php';
 require_once '../Db.php';
+require_once '../hsc.php';
 require_once '../validation/interestingValidation.php';
 
 //DB接続
@@ -11,7 +11,7 @@ $pdo = $db->dbconnect();
 if($_SESSION['first_visit'] === 'on') {
     $clean = $_SESSION;
 } else {
-    $clean = sanitize::clean($_POST);
+    $clean = Hsc::clean($_POST);
 }
 
 $error_msg = array();

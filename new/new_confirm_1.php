@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../validation/passwordValidation.php';
 $email = $_SESSION['email'];
 $password = $_SESSION['password'];
@@ -9,7 +9,7 @@ $password = $_SESSION['password'];
 //     $clean = $_SESSION; //confirmから戻ってきた時、入力値をセッティング
 // } else {
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 // }
 
 $error_msg = array();

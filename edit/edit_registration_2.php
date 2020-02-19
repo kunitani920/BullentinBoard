@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../Db.php';
 require_once '../validation/prefecturesValidation.php';
 
@@ -16,7 +16,7 @@ $members_info = $pdo->prepare('SELECT * FROM members_info WHERE member_id=?');
 $members_info->execute(array($edit_id));
 $member_info = $members_info->fetch();
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 
 $error_msg = array();
 

@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../Db.php';
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 $delete_id = $clean['delete_id'];
 $_SESSION['delete_id'] = $delete_id;
 

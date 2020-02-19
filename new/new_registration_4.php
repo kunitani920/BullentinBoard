@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../validation/messageValidation.php';
 require_once '../validation/iconValidation.php';
 
@@ -8,7 +8,7 @@ if($_SESSION['first_visit'] === 'on') {
     $clean = $_SESSION;
     $icon = $_SESSION['icon'];
 } else {
-    $clean = sanitize::clean($_POST);
+    $clean = Hsc::clean($_POST);
     $icon = $_FILES['icon'];
 }
 $error_msg = array();

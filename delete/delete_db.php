@@ -1,12 +1,12 @@
 <?php
 session_start();
 require_once '../Db.php';
-require_once '../sanitize.php';
+require_once '../hsc.php';
 
 $delete_id = $_SESSION['delete_id'];
 $login_jinji_id = $_SESSION['login_jinji_id'];
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 $delete_flag = $clean['delete_flag'];
 
 //削除する場合のみ、DB接続（削除しない時も、セッション破棄でこのページにくる為）

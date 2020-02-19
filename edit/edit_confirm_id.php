@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../validation/passwordValidation.php';
 
 //header表示用
@@ -11,7 +11,7 @@ $password = $_SESSION['password'];
 $edit_email = $_SESSION['edit_email'];
 $edit_password = $_SESSION['edit_password'];
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 
 $error_msg = array();
 

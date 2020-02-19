@@ -1,14 +1,14 @@
 <?php
 session_start();
 require_once '../Db.php';
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../validation/emailValidation.php';
 require_once '../validation/passwordValidation.php';
 
 //header表示用
 $login_jinji_name = $_SESSION['login_jinji_name'];
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 $edit_id = $_SESSION['edit_id'];
 
 // DB接続

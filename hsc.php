@@ -1,7 +1,7 @@
 <?php
 
 //サニタイズ
-class sanitize
+class Hsc
 {
     public static function clean($posts)
     {

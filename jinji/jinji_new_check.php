@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../sanitize.php';
 require_once '../Db.php';
+require_once '../hsc.php';
 require_once '../validation/emailValidation.php';
 require_once '../validation/passwordValidation.php';
 require_once '../validation/nameValidation.php';
@@ -12,7 +12,7 @@ class Login
 
     public function __construct()
     {
-        $this->clean = sanitize::clean($_POST);
+        $this->clean = Hsc::clean($_POST);
 
         //validation
         $email_validation = new emailValidation();

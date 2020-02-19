@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once 'sanitize.php';
+require_once 'hsc.php';
 
 //ログアウト、すぐに破棄すべきセッション
 unset($_SESSION['login_member_id']);
 unset($_SESSION['login_jinji_id']);
 unset($_SESSION['all_id']);
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 
 //アラート表示。ログアウトだけはPOST経由
 $status = $_SESSION['status'];

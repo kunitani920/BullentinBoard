@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../Db.php';
 require_once '../validation/interestingValidation.php';
 
@@ -21,7 +21,7 @@ $selected_intere = array(
     $member_interesting['interesting3_id']
 );
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 $error_msg = array();
 
 $intere_validation = new interestingValidation();

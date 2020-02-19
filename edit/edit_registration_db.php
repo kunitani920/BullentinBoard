@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once '../sanitize.php';
+require_once '../hsc.php';
 require_once '../Db.php';
 
 $edit_id = $_SESSION['edit_id'];
 $edit_flag = $_SESSION['edit_flag'];
 
-$clean = sanitize::clean($_POST);
+$clean = Hsc::clean($_POST);
 
 //編集する場合のみ、DB接続（編集しない時も、セッション破棄でこのページにくる為）
 //ID（メール、パスワード）編集

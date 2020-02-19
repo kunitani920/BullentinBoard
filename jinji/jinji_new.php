@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../sanitize.php';
 
 //管理者一覧画面からきた場合。すぐに破棄すべきセッション
 unset($_SESSION['login_jinji_id']);
