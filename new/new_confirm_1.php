@@ -5,12 +5,7 @@ require_once '../validation/passwordValidation.php';
 $email = $_SESSION['email'];
 $password = $_SESSION['password'];
 
-// if($_SESSION['first_visit'] === 'on') {
-//     $clean = $_SESSION; //confirmから戻ってきた時、入力値をセッティング
-// } else {
-
 $clean = sanitize::clean($_POST);
-// }
 
 $error_msg = array();
 
@@ -52,7 +47,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 
     <div class="container">
         <h4>新規登録ページ</h4>
-        <p><?php var_dump($clean['password']); ?></p>
         <p class="mt-4">こちらのメールアドレスは、登録がありません。<br>新規登録しますが、よろしいですか？</p>
         <p class="text-success"><u><?php echo $email; ?></u></p>
         <p class="mt-5">よろしければ、再度パスワードを入力してください。</p>
@@ -64,7 +58,7 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
                     <p class="text-danger"><?php echo $error_msg['password']; ?></p>
                 <?php endif; ?>
             </div>
-            <a class="btn btn-secondary" href="../login.php" role="button">戻る</a>
+            <a class="btn btn-secondary mr-3" href="../login.php" role="button">戻る</a>
             <input class="btn btn-primary" type="submit" value="このアドレスで登録する">
         </form>
         <?php $_SESSION['first_visit'] = 'off'; ?>
