@@ -3,7 +3,12 @@
 「他の内定者は何人位？年齢は？どんな人？」  
 「内定式で会う前に知って欲しい・知っておきたい、話のネタを仕込んでおきたい。」  
 そんな願いを叶える、簡易的な懇親サイト。    
-https://bullentinboard-tani.herokuapp.com/login.php
+https://bullentinboard-tani.herokuapp.com/login.php  
+  
+## 設計図や、気を付けた点などQiitaに投稿しています。  
+こちら参照いただけれると幸いです。  
+[【PHP】就職活動の為の、webアプリ（ポートフォリオ）設計図公開！｜未経験からエンジニアへ](https://qiita.com/tani35web1/items/4bcc36cc2ba96065f788)  
+  
 ## 概要  
 ### ユーザー種類  
 ・管理者  
@@ -19,11 +24,5 @@ https://bullentinboard-tani.herokuapp.com/login.php
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
 ### 使用言語、フレームワーク  
 ・PHP 7.3.11  
-・HTML/CSS、Bootstrap4
+・HTML/CSS、Bootstrap4  
 ・MySQL 5.7.26
-
-## 補足   
-設計図や、気を付けた点などQiitaに投稿しています。  
-こちら参照いただけれると幸いです。  
-[【PHP】就職活動の為の、webアプリ（ポートフォリオ）設計図公開！｜未経験からエンジニアへ](https://qiita.com/tani35web1/items/4bcc36cc2ba96065f788)  
-
