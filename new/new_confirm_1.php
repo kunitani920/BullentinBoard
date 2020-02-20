@@ -5,16 +5,7 @@ require_once '../validation/passwordValidation.php';
 $email = $_SESSION['email'];
 $password = $_SESSION['password'];
 
-<<<<<<< HEAD
-// if($_SESSION['first_visit'] === 'on') {
-//     $clean = $_SESSION; //confirmから戻ってきた時、入力値をセッティング
-// } else {
-
 $clean = Hsc::clean($_POST);
-// }
-=======
-$clean = sanitize::clean($_POST);
->>>>>>> 02b208103120c457cc703296788c9d7d8a667da9
 
 $error_msg = array();
 
