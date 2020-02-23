@@ -13,7 +13,6 @@ $display = $_SESSION;   //SESSION表示用
 $icon = $_SESSION['icon'];
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

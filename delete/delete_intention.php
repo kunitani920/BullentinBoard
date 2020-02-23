@@ -28,7 +28,6 @@ $first_name = $member_info['first_name'];
 $pdo = null;
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

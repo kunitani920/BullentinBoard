@@ -11,7 +11,7 @@ class Db
     //         $pdo = new PDO($this->dsn, $this->dbuser, $this->dbpassword);
 
     public function dbconnect() {
-        try {
+        try {            
             $db = parse_url($_SERVER['CLEARDB_DATABASE_URL']);
             $db['dbname'] = ltrim($db['path'], '/');
             $dsn = "mysql:host={$db['host']};dbname={$db['dbname']};charset=utf8";
@@ -22,12 +22,37 @@ class Db
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::MYSQL_ATTR_USE_BUFFERED_QUERY =>true,
             );
-            $pdo = new PDO($dsn,$user,$password,$options);
+            $dbh = new PDO($dsn,$user,$password,$options);
         } catch(PDOException $e) {
             echo 'DB接続エラー：' . $e->getMessage();
         }
-        return $pdo;
+        return $dbh;
     }
 }
+
+//     // トランザクション開始
+//     $dbh->beginTransaction();
+// 	// UPDATE
+// 	$sql = "UPDATE user_list SET age = 24 WHERE id = 4";
+
+// 	// クエリ実行
+// 	$res = $dbh->query($sql);
+
+// 	// コミット
+// 	$dbh->commit();
+
+// } catch(PDOException $e) {
+	
+// 	// ロールバック
+// 	$dbh->rollBack();
+
+// 	// エラーメッセージ出力
+// 	echo $e->getMessage();
+// 	die();
+// }
+
+// // 接続を閉じる
+// $dbh = null;
+
 
 ?>

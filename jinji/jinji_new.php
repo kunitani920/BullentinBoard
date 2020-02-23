@@ -14,7 +14,6 @@ $last_name_error = $_SESSION['last_name_error'];
 $first_name_error = $_SESSION['first_name_error'];
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

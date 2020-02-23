@@ -37,7 +37,6 @@ if(empty($error_msg) && $_SESSION['first_visit'] === 'off') {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

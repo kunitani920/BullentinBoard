@@ -45,7 +45,6 @@ $members_interesting->execute(array($detail_id));
 $member_interesting = $members_interesting->fetch();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

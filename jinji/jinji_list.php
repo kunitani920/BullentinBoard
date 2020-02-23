@@ -32,7 +32,6 @@ $_SESSION['jinji_count'] = $jinji_count;
 $_SESSION['first_visit'] = 'on';
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

@@ -38,7 +38,6 @@ $members_interesting = $pdo->query('SELECT * FROM members_interesting');
 while($member_interesting[] = $members_interesting->fetch());
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

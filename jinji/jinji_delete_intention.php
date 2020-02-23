@@ -23,7 +23,6 @@ $first_name = $jinji['first_name'];
 $pdo = null;
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

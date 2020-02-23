@@ -10,7 +10,6 @@ $edit_id = $clean['edit_id'];
 $_SESSION['edit_id'] = $edit_id;
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

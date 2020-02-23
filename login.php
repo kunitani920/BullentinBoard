@@ -22,7 +22,6 @@ $password_error = $_SESSION['password_error'];
 $match_error = $_SESSION['match_error'];
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

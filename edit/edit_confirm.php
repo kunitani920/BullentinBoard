@@ -13,7 +13,6 @@ $display = $_SESSION;
 $icon = $_SESSION['icon'];
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
