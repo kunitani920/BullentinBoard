@@ -11,17 +11,30 @@ https://bullentinboard-tani.herokuapp.com/login.php
   
 ## 概要  
 ### ユーザー種類  
-・管理者  
-・メンバー  
+- 管理者  
+- メンバー  
 ### 機能  
-・管理者｜メンバー全員の編集、削除。他の管理者の新規登録、編集、削除  
-・メンバー｜自身の登録、編集、削除。他のメンバー 一覧、詳細の閲覧  
+- 管理者｜メンバー全員の編集、削除。他の管理者の新規登録、編集、削除  
+- メンバー｜自身の登録、編集、削除。他のメンバー 一覧、詳細の閲覧  
 ### サンプルユーザー（メールアドレス、パスワード）  
-・管理者｜jinji@jinji、word  
-・メンバー｜ishida@ishida、ishida  
+- 管理者｜jinji@jinji、word  
+- メンバー｜ishida@ishida、ishida  
 架空のメールアドレスでメンバー登録も出来ますが、  
 こちらのサンプルユーザーにてログインが可能です。  
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
+### DB定義  
+- jinjies
++------------+--------------+------+-----+-------------------+-----------------------------+
+| Field      | Type         | Null | Key | Default           | Extra                       |
++------------+--------------+------+-----+-------------------+-----------------------------+
+| id         | int(11)      | NO   | PRI | NULL              | auto_increment              |
+| email      | varchar(100) | NO   |     | NULL              |                             |
+| password   | varchar(255) | NO   |     | NULL              |                             |
+| last_name  | varchar(100) | NO   |     | NULL              |                             |
+| first_name | varchar(100) | NO   |     | NULL              |                             |
+| created    | datetime     | NO   |     | NULL              |                             |
+| modified   | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++------------+--------------+------+-----+-------------------+-----------------------------+  
 ### 使用言語、フレームワーク  
 ・PHP 7.3.11  
 ・HTML/CSS、Bootstrap4  
