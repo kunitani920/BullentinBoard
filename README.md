@@ -23,7 +23,8 @@ https://bullentinboard-tani.herokuapp.com/login.php
 こちらのサンプルユーザーにてログインが可能です。  
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
 ### DB定義  
-- jinjies
+- jinjies  
+```
 +------------+--------------+------+-----+-------------------+-----------------------------+  
 | Field      | Type         | Null | Key | Default           | Extra                       |  
 +------------+--------------+------+-----+-------------------+-----------------------------+  
@@ -35,6 +36,67 @@ https://bullentinboard-tani.herokuapp.com/login.php
 | created    | datetime     | NO   |     | NULL              |                             |  
 | modified   | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |  
 +------------+--------------+------+-----+-------------------+-----------------------------+  
+```  
+- memberes
+```
++----------+--------------+------+-----+-------------------+-----------------------------+
+| Field    | Type         | Null | Key | Default           | Extra                       |
++----------+--------------+------+-----+-------------------+-----------------------------+
+| id       | int(11)      | NO   | PRI | NULL              | auto_increment              |
+| email    | varchar(100) | NO   |     | NULL              |                             |
+| password | varchar(255) | NO   |     | NULL              |                             |
+| created  | datetime     | NO   |     | NULL              |                             |
+| modified | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------+--------------+------+-----+-------------------+-----------------------------+
+```
+- members_info
+```
++----------------+--------------+------+-----+-------------------+-----------------------------+
+| Field          | Type         | Null | Key | Default           | Extra                       |
++----------------+--------------+------+-----+-------------------+-----------------------------+
+| id             | int(11)      | NO   | PRI | NULL              | auto_increment              |
+| member_id      | int(10)      | NO   |     | NULL              |                             |
+| last_name      | varchar(100) | NO   |     | NULL              |                             |
+| first_name     | varchar(100) | NO   |     | NULL              |                             |
+| nick_name      | varchar(100) | NO   |     | NULL              |                             |
+| school         | char(10)     | NO   |     | NULL              |                             |
+| prefectures_id | int(10)      | NO   |     | NULL              |                             |
+| message        | varchar(240) | NO   |     | NULL              |                             |
+| icon           | varchar(120) | YES  |     | NULL              |                             |
+| modified       | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++----------------+--------------+------+-----+-------------------+-----------------------------+
+```
+- prefectures
+```
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| id       | int(11)  | NO   | PRI | NULL    | auto_increment |
+| pre_name | char(10) | NO   |     | NULL    |                |
++----------+----------+------+-----+---------+----------------+
+```
+- members_interesting
+```
++-----------------+-----------+------+-----+-------------------+-----------------------------+
+| Field           | Type      | Null | Key | Default           | Extra                       |
++-----------------+-----------+------+-----+-------------------+-----------------------------+
+| id              | int(11)   | NO   | PRI | NULL              | auto_increment              |
+| member_id       | int(11)   | NO   |     | NULL              |                             |
+| interesting1_id | int(11)   | NO   |     | NULL              |                             |
+| interesting2_id | int(11)   | NO   |     | NULL              |                             |
+| interesting3_id | int(11)   | NO   |     | NULL              |                             |
+| modified        | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------------+-----------+------+-----+-------------------+-----------------------------+
+```
+- interesting
+```
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| id          | int(11)  | NO   | PRI | NULL    | auto_increment |
+| intere_name | char(20) | NO   |     | NULL    |                |
++-------------+----------+------+-----+---------+----------------+
+```
 ### 使用言語、フレームワーク  
 ・PHP 7.3.11  
 ・HTML/CSS、Bootstrap4  
