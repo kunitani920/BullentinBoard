@@ -24,16 +24,16 @@ https://bullentinboard-tani.herokuapp.com/login.php
 *IDに関わる部分（メールアドレス、パスワード）は変更しないでください*  
 ### DB定義  
 - jinjies
-+------------+--------------+------+-----+-------------------+-----------------------------+
-| Field      | Type         | Null | Key | Default           | Extra                       |
-+------------+--------------+------+-----+-------------------+-----------------------------+
-| id         | int(11)      | NO   | PRI | NULL              | auto_increment              |
-| email      | varchar(100) | NO   |     | NULL              |                             |
-| password   | varchar(255) | NO   |     | NULL              |                             |
-| last_name  | varchar(100) | NO   |     | NULL              |                             |
-| first_name | varchar(100) | NO   |     | NULL              |                             |
-| created    | datetime     | NO   |     | NULL              |                             |
-| modified   | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++------------+--------------+------+-----+-------------------+-----------------------------+  
+| Field      | Type         | Null | Key | Default           | Extra                       |  
++------------+--------------+------+-----+-------------------+-----------------------------+  
+| id         | int(11)      | NO   | PRI | NULL              | auto_increment              |  
+| email      | varchar(100) | NO   |     | NULL              |                             |  
+| password   | varchar(255) | NO   |     | NULL              |                             |  
+| last_name  | varchar(100) | NO   |     | NULL              |                             |  
+| first_name | varchar(100) | NO   |     | NULL              |                             |  
+| created    | datetime     | NO   |     | NULL              |                             |  
+| modified   | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |  
 +------------+--------------+------+-----+-------------------+-----------------------------+  
 ### 使用言語、フレームワーク  
 ・PHP 7.3.11  
