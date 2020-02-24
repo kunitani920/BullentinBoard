@@ -2,14 +2,6 @@
 
 class Db
 {
-    // private $dsn = 'mysql:dbname=naiteisya;host=127.0.0.1;charset=utf8';
-    // private $dbuser = ''; localで実験する時用
-    // private $dbpassword = '';    localで実験する時用
-
-    // public function dbconnect() {
-    //     try {
-    //         $pdo = new PDO($this->dsn, $this->dbuser, $this->dbpassword);
-
     public function dbconnect() {
         try {            
             $db = parse_url($_SERVER['CLEARDB_DATABASE_URL']);
@@ -53,6 +45,15 @@ class Db
 
 // // 接続を閉じる
 // $dbh = null;
+
+
+    // private $dsn = 'mysql:dbname=naiteisya;host=127.0.0.1;charset=utf8';
+    // private $dbuser = ''; localで実験する時用
+    // private $dbpassword = '';    localで実験する時用
+
+    // public function dbconnect() {
+    //     try {
+    //         $pdo = new PDO($this->dsn, $this->dbuser, $this->dbpassword);
 
 
 ?>

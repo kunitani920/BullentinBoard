@@ -214,3 +214,63 @@ https://www.php.net/manual/ja/function.password-hash.php
 マイケルさんに聞きたいこと
 ・データベースのトライ＆エラー、SQL分もtryの中に入れるべき？
 ・クッキー実装すべき？
+
+localhost/naiteisya/interesting/		http://localhost/phpMyAdmin/tbl_sql.php?db=naiteisya&table=interesting
+SQL は正常に実行されました。
+
+SHOW FULL COLUMNS FROM members
+
+
+
+id	int(11)	
+    NULL
+	NO	PRI	
+    NULL
+	auto_increment	select,insert,update,references		
+email	varchar(100)	utf8mb4_general_ci	NO		
+    NULL
+		select,insert,update,references		
+password	varchar(255)	utf8mb4_general_ci	NO		
+    NULL
+		select,insert,update,references		
+created	datetime	
+    NULL
+	NO		
+    NULL
+		select,insert,update,references		
+modified	timestamp	
+    NULL
+	NO		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP	select,insert,update,references		
+
+
+localhost/naiteisya/interesting/		http://localhost/phpMyAdmin/tbl_sql.php?db=naiteisya&table=interesting
+SQL は正常に実行されました。
+
+DESC members
+
+
+
+id	int(11)	NO	PRI	
+    NULL
+	auto_increment	
+email	varchar(100)	NO		
+    NULL
+		
+password	varchar(255)	NO		
+    NULL
+		
+created	datetime	NO		
+    NULL
+		
+modified	timestamp	NO		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP	
+
+
+localhost/naiteisya/interesting/		http://localhost/phpMyAdmin/tbl_sql.php?db=naiteisya&table=interesting
+SQL は正常に実行されました。
+
+SHOW CREATE TABLE members
+
+
+
+members	CREATE TABLE `members` (
+  `id` int(11) NOT NULL A...	
