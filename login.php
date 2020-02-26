@@ -75,7 +75,7 @@ $match_error = $_SESSION['match_error'];
 
         <h3 class="mt-3">内定者懇親サイトへようこそ！</h3>
         <h4 class="mt-3">ログイン・新規登録ページ</h4>
-        <p class="mt-4">メールアドレス・パスワードを入力し、ログインしてください。<br>未登録の方は登録フォームへ進みます。</p>
+        <p class="mt-4">メールアドレス・パスワードを入力し、ログインしてください。<br>未登録の方は登録フォームへ進みます。test</p>
         <div><br></div>
 
         <?php if(isset($match_error) && $_SESSION['first_visit'] === 'off'): ?>
